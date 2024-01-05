@@ -33,6 +33,7 @@
 					Events
 				</a>
 				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="/events/wsrm2024">WSRM2024</a></li>
 					<li><a class="dropdown-item" href="/events/league2023">League 2023 </a></li>
 					<li><a class="dropdown-item" href="/events/ssrm2023">SSRM2023</a></li>
 					<li><a class="dropdown-item" href="/events/wsrm2023">WSRM2023</a></li>
