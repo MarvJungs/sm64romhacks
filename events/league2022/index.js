@@ -80,243 +80,215 @@ const table = document.getElementById("calc");
  * @property {int} points
 */
 
-function main()
-{
-  calc();
-  initTableData();
+function main() {
+	calc();
+	initTableData();
 }
 
 async function initTableData() {
-  const allUserData = await getAllUserData();
-  const allTeamData = await getAllTeamData();
-  const userTable = getUserTable(allUserData);
-  const teamTable = getTeamTable(allTeamData);
-  const userLeaderboardDiv = document.querySelector("#userLeaderboard");
-  const teamLeaderboardDiv = document.querySelector("#teamLeaderboard");
-  userLeaderboardDiv.innerHTML = userTable;
-  teamLeaderboardDiv.innerHTML = teamTable;
+	const allUserData = await getAllUserData();
+	const allTeamData = await getAllTeamData();
+	const userTable = getUserTable(allUserData);
+	const teamTable = getTeamTable(allTeamData);
+	const userLeaderboardDiv = document.querySelector("#userLeaderboard");
+	const teamLeaderboardDiv = document.querySelector("#teamLeaderboard");
+	userLeaderboardDiv.innerHTML = userTable;
+	teamLeaderboardDiv.innerHTML = teamTable;
 }
 
-function calc()
-{
-  for(let a = 0; a < 15; a++)
-    {
-        table.getElementsByTagName('tr')[2].getElementsByTagName('td')[a + 1].children[0].value = "9:59:59";
-        table.getElementsByTagName('tr')[3].getElementsByTagName('td')[a + 1].children[0].value = "9:59:59";   
-        computePoints(a);
-    }
+function calc() {
+	for (let a = 0; a < 15; a++) {
+		table.getElementsByTagName('tr')[2].getElementsByTagName('td')[a + 1].children[0].value = "9:59:59";
+		table.getElementsByTagName('tr')[3].getElementsByTagName('td')[a + 1].children[0].value = "9:59:59";
+		computePoints(a);
+	}
 }
 
-function computePoints(index)
-{
-    const pointsTable = dataBase[index];
-    let startTime = "9:59:59", endTime = "9:59:59";
-    table.getElementsByTagName('tr')[2].getElementsByTagName('td')[index + 1].children[0].addEventListener("keyup", debounce((keyUpEvent) => {
-        startTime = table.getElementsByTagName('tr')[2].getElementsByTagName('td')[index + 1].children[0].value;
-        if(startTime.length === 7 && endTime.length === 7)
-        {
-            helperFunction(index, startTime, endTime, pointsTable);
-        }
-    }), DEBOUNCE_DELAY);
-    table.getElementsByTagName('tr')[3].getElementsByTagName('td')[index + 1].children[0].addEventListener("keyup", debounce((keyUpEvent) => {
-        endTime = table.getElementsByTagName('tr')[3].getElementsByTagName('td')[index + 1].children[0].value;
-        if(startTime.length === 7 && endTime.length === 7)
-        {
-            helperFunction(index, startTime, endTime, pointsTable);
-        }
-    }), DEBOUNCE_DELAY); 
+function computePoints(index) {
+	const pointsTable = dataBase[index];
+	let startTime = "9:59:59", endTime = "9:59:59";
+	table.getElementsByTagName('tr')[2].getElementsByTagName('td')[index + 1].children[0].addEventListener("keyup", debounce((keyUpEvent) => {
+		startTime = table.getElementsByTagName('tr')[2].getElementsByTagName('td')[index + 1].children[0].value;
+		if (startTime.length === 7 && endTime.length === 7) {
+			helperFunction(index, startTime, endTime, pointsTable);
+		}
+	}), DEBOUNCE_DELAY);
+	table.getElementsByTagName('tr')[3].getElementsByTagName('td')[index + 1].children[0].addEventListener("keyup", debounce((keyUpEvent) => {
+		endTime = table.getElementsByTagName('tr')[3].getElementsByTagName('td')[index + 1].children[0].value;
+		if (startTime.length === 7 && endTime.length === 7) {
+			helperFunction(index, startTime, endTime, pointsTable);
+		}
+	}), DEBOUNCE_DELAY);
 }
 
-function helperFunction(index, startTime, endTime, pointsTable)
-{
-    let totalPoints = 0;
+function helperFunction(index, startTime, endTime, pointsTable) {
+	let totalPoints = 0;
 
-    for(let i=0; i < 10; i++)
-    {
-        totalPoints = totalPoints + pointsTable.getPoints(i, startTime, endTime);
-    }
+	for (let i = 0; i < 10; i++) {
+		totalPoints = totalPoints + pointsTable.getPoints(i, startTime, endTime);
+	}
 
-    table.getElementsByTagName('tr')[4].getElementsByTagName('td')[index + 1].innerText = totalPoints;
-    if(pointsTable.getTotalSeconds(startTime) > pointsTable.getTotalSeconds(endTime))
-    {
-        /*table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = bonus[index] * getBonusFactor(startTime, pointsTable);
-        if(pointsTable.getTotalSeconds(startTime) >= pointsTable.getTotalSeconds(pointsTable.cutoffs[0]))
-        {
-          table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = bonus[index];
-        }
-        else
-        {
-          let result = bonus[index] * getTierForBonus(startTime, pointsTable) - ((pointsTable.getTotalSeconds(startTime) - pointsTable.getTotalSeconds(getCutOffForBonus(startTime, pointsTable)))) / getPossibleSecondsForBonus(startTime, pointsTable);
-          result = parseFloat(result).toPrecision(12);
-          result = Math.ceil(result);
-          
-          table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = result;
-        }*/
-        let result = bonus[index] * (getTier(startTime, pointsTable) + getAdditionalBonusFactor(getTier(startTime, pointsTable), startTime, pointsTable));
-        result = parseFloat(result).toPrecision(12);
-        result = Math.ceil(result);
-        table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = result;
-    }
-    else
-    {
-        table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = 0;
-    }
-    table.getElementsByTagName('tr')[6].getElementsByTagName('td')[index + 1].innerText = totalPoints + Number(table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText);
-    calculateTotals();
+	table.getElementsByTagName('tr')[4].getElementsByTagName('td')[index + 1].innerText = totalPoints;
+	if (pointsTable.getTotalSeconds(startTime) > pointsTable.getTotalSeconds(endTime)) {
+		/*table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = bonus[index] * getBonusFactor(startTime, pointsTable);
+		if(pointsTable.getTotalSeconds(startTime) >= pointsTable.getTotalSeconds(pointsTable.cutoffs[0]))
+		{
+			table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = bonus[index];
+		}
+		else
+		{
+			let result = bonus[index] * getTierForBonus(startTime, pointsTable) - ((pointsTable.getTotalSeconds(startTime) - pointsTable.getTotalSeconds(getCutOffForBonus(startTime, pointsTable)))) / getPossibleSecondsForBonus(startTime, pointsTable);
+			result = parseFloat(result).toPrecision(12);
+			result = Math.ceil(result);
+
+			table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = result;
+		}*/
+		let result = bonus[index] * (getTier(startTime, pointsTable) + getAdditionalBonusFactor(getTier(startTime, pointsTable), startTime, pointsTable));
+		result = parseFloat(result).toPrecision(12);
+		result = Math.ceil(result);
+		table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = result;
+	}
+	else {
+		table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText = 0;
+	}
+	table.getElementsByTagName('tr')[6].getElementsByTagName('td')[index + 1].innerText = totalPoints + Number(table.getElementsByTagName('tr')[5].getElementsByTagName('td')[index + 1].innerText);
+	calculateTotals();
 }
 
-function getTier(startTime, pointsTable)
-{
-  const seconds = pointsTable.getTotalSeconds(startTime);
-  if(seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[8]))
-  {
-    return 10;
-  }
-  else if(seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[7]))
-  {
-    return 9;
-  }
-  else if(seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[6]))
-  {
-    return 8;
-  }
-  else if(seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[5]))
-  {
-    return 7;
-  }
-  else if(seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[4]))
-  {
-    return 6;
-  }
-  else if(seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[3]))
-  {
-    return 5;
-  }
-  else if(seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[2]))
-  {
-    return 4;
-  }
-  else if(seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[1]))
-  {
-    return 3;
-  }
-  else if(seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[0]))
-  {
-    return 2;
-  }
-  else
-  {
-    return 1;
-  }
+function getTier(startTime, pointsTable) {
+	const seconds = pointsTable.getTotalSeconds(startTime);
+	if (seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[8])) {
+		return 10;
+	}
+	else if (seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[7])) {
+		return 9;
+	}
+	else if (seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[6])) {
+		return 8;
+	}
+	else if (seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[5])) {
+		return 7;
+	}
+	else if (seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[4])) {
+		return 6;
+	}
+	else if (seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[3])) {
+		return 5;
+	}
+	else if (seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[2])) {
+		return 4;
+	}
+	else if (seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[1])) {
+		return 3;
+	}
+	else if (seconds < pointsTable.getTotalSeconds(pointsTable.cutoffs[0])) {
+		return 2;
+	}
+	else {
+		return 1;
+	}
 }
 
-function getAdditionalBonusFactor(tier, starttime,  pointsTable)
-{
-  let possibleSeconds = pointsTable.getPossibleSeconds(tier - 1);
-  let secondsIntoTier = pointsTable.getTotalSeconds(pointsTable.cutoffs[tier - 1]) - pointsTable.getTotalSeconds(starttime);
-  console.log(possibleSeconds, secondsIntoTier, secondsIntoTier / possibleSeconds);
-  if(possibleSeconds == 0)
-  {
-    return 0;
-  }
-  else
-  {
-    return secondsIntoTier / possibleSeconds; 
+function getAdditionalBonusFactor(tier, starttime, pointsTable) {
+	let possibleSeconds = pointsTable.getPossibleSeconds(tier - 1);
+	let secondsIntoTier = pointsTable.getTotalSeconds(pointsTable.cutoffs[tier - 1]) - pointsTable.getTotalSeconds(starttime);
+	console.log(possibleSeconds, secondsIntoTier, secondsIntoTier / possibleSeconds);
+	if (possibleSeconds == 0) {
+		return 0;
+	}
+	else {
+		return secondsIntoTier / possibleSeconds;
 
-  }
+	}
 
 }
 
-
-function calculateTotals()
-{
-    let sum1 = sum2 = sum3 = 0;
-    for(let i=0; i < 15; i++)
-    {
-        sum1 = sum1 + Number(table.getElementsByTagName('tr')[4].getElementsByTagName('td')[i + 1].innerText);
-        sum2 = sum2 + Number(table.getElementsByTagName('tr')[5].getElementsByTagName('td')[i + 1].innerText);
-        sum3 = sum3 + Number(table.getElementsByTagName('tr')[6].getElementsByTagName('td')[i + 1].innerText);
-    }
-    table.getElementsByTagName('tr')[4].getElementsByTagName('td')[16].innerText = sum1;
-    table.getElementsByTagName('tr')[5].getElementsByTagName('td')[16].innerText = sum2;
-    table.getElementsByTagName('tr')[6].getElementsByTagName('td')[16].innerText = sum3;
+function calculateTotals() {
+	let sum1 = sum2 = sum3 = 0;
+	for (let i = 0; i < 15; i++) {
+		sum1 = sum1 + Number(table.getElementsByTagName('tr')[4].getElementsByTagName('td')[i + 1].innerText);
+		sum2 = sum2 + Number(table.getElementsByTagName('tr')[5].getElementsByTagName('td')[i + 1].innerText);
+		sum3 = sum3 + Number(table.getElementsByTagName('tr')[6].getElementsByTagName('td')[i + 1].innerText);
+	}
+	table.getElementsByTagName('tr')[4].getElementsByTagName('td')[16].innerText = sum1;
+	table.getElementsByTagName('tr')[5].getElementsByTagName('td')[16].innerText = sum2;
+	table.getElementsByTagName('tr')[6].getElementsByTagName('td')[16].innerText = sum3;
 
 }
 
 /**
  * @returns {Userdata[]}
  */
- async function getAllUserData() {
-  const response = await fetch("https://opensheet.elk.sh/1rdyarQCz71Gtv_0BI5aOBNNgj_JA3nzYb7F0K7OSWVw/user+leaderboard");
-  const data = await response.json();
-  return data;
+async function getAllUserData() {
+	const response = await fetch("https://opensheet.elk.sh/1rdyarQCz71Gtv_0BI5aOBNNgj_JA3nzYb7F0K7OSWVw/user+leaderboard");
+	const data = await response.json();
+	return data;
 }
 
 /**
  * @returns {Teamdata[]}
  */
- async function getAllTeamData() {
-  const response = await fetch("https://opensheet.elk.sh/1rdyarQCz71Gtv_0BI5aOBNNgj_JA3nzYb7F0K7OSWVw/team+leaderboard");
-  const data = await response.json();
-  return data;
+async function getAllTeamData() {
+	const response = await fetch("https://opensheet.elk.sh/1rdyarQCz71Gtv_0BI5aOBNNgj_JA3nzYb7F0K7OSWVw/team+leaderboard");
+	const data = await response.json();
+	return data;
 }
-
 
 /**
  * @param {Userdata[]} data
  * @returns {string}
  */
 function getUserTable(data) {
-  const headerRow = getLeagueUserTableHeaderRow();
-  const leagueTableRows = data.map((leagueData) => getUserTableRowFromData(leagueData)).join("");
+	const headerRow = getLeagueUserTableHeaderRow();
+	const leagueTableRows = data.map((leagueData) => getUserTableRowFromData(leagueData)).join("");
 
-  return `
-    <table border='1' align='center'>
-      ${headerRow}
-      ${leagueTableRows}
-    </table>
-  `;
+	return `
+		<table border='1' align='center'>
+			${headerRow}
+			${leagueTableRows}
+		</table>
+	`;
 }
 
 /**
  * @param {Teamdata[]} data
  * @returns {string}
  */
- function getTeamTable(data) {
-  const headerRow = getLeagueTeamTableHeaderRow();
-  const leagueTableRows = data.map((leagueData) => getTeamTableRowFromData(leagueData)).join("");
+function getTeamTable(data) {
+	const headerRow = getLeagueTeamTableHeaderRow();
+	const leagueTableRows = data.map((leagueData) => getTeamTableRowFromData(leagueData)).join("");
 
-  return `
-    <table border='1' align='center'>
-      ${headerRow}
-      ${leagueTableRows}
-    </table>
-  `;
+	return `
+		<table border='1' align='center'>
+			${headerRow}
+			${leagueTableRows}
+		</table>
+	`;
 }
 
 /**
  * @returns {string}
  */
 function getLeagueUserTableHeaderRow() {
-  return `
-    <tr>
-      <th><b>User</b></th>
-      <th><b>Team</b></th>
-      <th><b>Points</b></th>
-    </tr>
-  `;
+	return `
+		<tr>
+			<th><b>User</b></th>
+			<th><b>Team</b></th>
+			<th><b>Points</b></th>
+		</tr>
+	`;
 }
 
 /**
  * @returns {string}
  */
- function getLeagueTeamTableHeaderRow() {
-  return `
-    <tr>
-      <th><b>Team</b></th>
-      <th><b>Points</b></th>
-    </tr>
-  `;
+function getLeagueTeamTableHeaderRow() {
+	return `
+		<tr>
+			<th><b>Team</b></th>
+			<th><b>Points</b></th>
+		</tr>
+	`;
 }
 
 /**
@@ -324,54 +296,53 @@ function getLeagueUserTableHeaderRow() {
  * @returns {string}
  */
 function getUserTableRowFromData(data) {
-  const userName = data.Team;
-  const teamName = data.User;
-  const points = data.Points;
+	const userName = data.Team;
+	const teamName = data.User;
+	const points = data.Points;
 
-
-  return `
-    <tr>
-      <td>${userName}</td>
-      <td>${teamName}</td>
-      <td>${points}</td>
-    </tr>
-  `;
+	return `
+		<tr>
+			<td>${userName}</td>
+			<td>${teamName}</td>
+			<td>${points}</td>
+		</tr>
+	`;
 }
 
 /**
  * @param {Teamdata} data
  * @returns {string}
  */
- function getTeamTableRowFromData(data) {
-  const teamName = data.Team;
-  const points = data.Points;
+function getTeamTableRowFromData(data) {
+	const teamName = data.Team;
+	const points = data.Points;
 
 
-  return `
-    <tr>
-      <td>${teamName}</td>
-      <td>${points}</td>
-    </tr>
-  `;
+	return `
+		<tr>
+			<td>${teamName}</td>
+			<td>${points}</td>
+		</tr>
+	`;
 }
 
 /**
  * @function debounce
  * @param {Function} callback function to invoke after calls have been debounced
  * @param {number} delay number of milliseconds of debounce delay
- * 
+ *
  * @returns {Function} modified function with debounce logic
  */
 function debounce(callback, delay) {
-  let timeout;
+	let timeout;
 
-  return function debouncedFunction(...args) {
-    const delayedFunction = () => {
-      clearTimeout(timeout);
-      callback(...args);
-    };
+	return function debouncedFunction(...args) {
+		const delayedFunction = () => {
+			clearTimeout(timeout);
+			callback(...args);
+		};
 
-    clearTimeout(timeout);
-    timeout = setTimeout(delayedFunction, delay);
-  };
+		clearTimeout(timeout);
+		timeout = setTimeout(delayedFunction, delay);
+	};
 }
