@@ -521,6 +521,18 @@ function getPatchFromDatabase($pdo, $hack_id) {
 	}
 }
 
+function getAllPatchesFromDatabase($pdo) {
+	$sql = "SELECT h.hack_id, h.hack_patchname FROM hacks h WHERE hack_verified=1";
+	try {
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute();
+		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $data;
+	} catch (Exception $e) {
+		echo $e;
+	}
+}
+
 function getPendingPatchFromDatabase($pdo, $hack_id) {
 	$sql = "SELECT h.hack_id, h.hack_name, h.hack_version, h.hack_starcount, h.hack_release_date, GROUP_CONCAT(DISTINCT a.author_name SEPARATOR ', ') AS authors, h.hack_patchname   FROM hacks h 
 		LEFT JOIN hacks_authors ha ON (h.hack_id = ha.hack_id) 
