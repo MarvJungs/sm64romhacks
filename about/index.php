@@ -9,6 +9,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/_includes/includes.php';
 <!--BEGINNING OF HEAD-->
 
 <head>
+
 	<title>sm64romhacks - About</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="super mario, romhacks, hack, speedrun, sm64hacks, sm64romhacks, rom, modification" />
