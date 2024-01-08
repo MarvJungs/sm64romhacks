@@ -24,7 +24,6 @@ include $_SERVER['DOCUMENT_ROOT'].'/_includes/includes.php';
 
 		<script type="text/javascript" src="/_assets/_js/RomPatcher.js/js/zip.js/zip.js"></script>
 		<!-- <script type="text/javascript" src="/_assets/_js/RomPatcher.js/js/libunrar/rpc.js"></script> -->
-		<!--<script type="text/javascript" src="/_assets/_js/RomPatcher.js/js/custompatcher.js"></script>-->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 		<script type="text/javascript">
 		// CUSTOM PATCHER EXAMPLE
@@ -32,7 +31,13 @@ include $_SERVER['DOCUMENT_ROOT'].'/_includes/includes.php';
 		// user will only need to provide the ROM file, as patches will be fetched from your server!
 		// a crc (or various crcs) can be provided for source files, allowing old formats like IPS to have validation!
 		//var CUSTOM_PATCHER= setUpCustomPatcher();
-		//console.log(CUSTOM_PATCHER)
+			var CUSTOM_PATCHER;
+			fetch('/api/patches')
+			.then(res => res.json())
+			.then(data => {
+				const patches = Array.from(data).map((element) => { return {file: `/patch/${element.hack_patchname}.zip`, name: element.hack_patchname}})
+				CUSTOM_PATCHER = patches;
+			})
 		</script>
 	</head>
 	<!--END OF HEAD-->

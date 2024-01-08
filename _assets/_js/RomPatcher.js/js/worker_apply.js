@@ -3,15 +3,7 @@
 self.importScripts(
 	'./MarcFile.js',
 	'./crc.js',
-	'./formats/ips.js',
-	'./formats/aps_n64.js',
-	'./formats/aps_gba.js',
-	'./formats/ups.js',
 	'./formats/bps.js',
-	'./formats/rup.js',
-	'./formats/ppf.js',
-	'./formats/pmsr.js',
-	'./formats/vcdiff.js'
 );
 
 
@@ -23,24 +15,8 @@ self.onmessage = event => { // listen for messages from the main thread
 
 	var patch;
 	var header=patchFile.readString(6);
-	if(header.startsWith(IPS_MAGIC)){
-		patch=parseIPSFile(patchFile);
-	}else if(header.startsWith(UPS_MAGIC)){
-		patch=parseUPSFile(patchFile);
-	}else if(header.startsWith(APS_N64_MAGIC)){
-		patch=parseAPSFile(patchFile);
-	}else if(header.startsWith(APS_GBA_MAGIC)){
-		patch=APSGBA.fromFile(patchFile);
-	}else if(header.startsWith(BPS_MAGIC)){
+	if(header.startsWith(BPS_MAGIC)){
 		patch=parseBPSFile(patchFile);
-	}else if(header.startsWith(RUP_MAGIC)){
-		patch=parseRUPFile(patchFile);
-	}else if(header.startsWith(PPF_MAGIC)){
-		patch=parsePPFFile(patchFile);
-	}else if(header.startsWith(PMSR_MAGIC)){
-		patch=parseMODFile(patchFile);
-	}else if(header.startsWith(VCDIFF_MAGIC)){
-		patch=parseVCDIFF(patchFile);
 	}else{
 		errorMessage='error_invalid_patch';
 	}
