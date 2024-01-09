@@ -22,11 +22,7 @@
 		<?php include($_SERVER['DOCUMENT_ROOT'] . '/_includes/header.php'); ?>
 		<div class="container">
 			<div align="center">
-				SSRM stands for Summer SM64 ROM Hacks Marathon and is a 3-4 days long Marathon featuring a variety of Runners and SM64 ROM Hacks!<br />
-				The Marathon will be taking place from July 29th to August 2nd on the<a href="https://www.twitch.tv/sm64romhacks"> sm64romhacks Twitch channel!</a><br /><br />
-				<h5>The Schedule has been released!</h5>
-				<div id="ticker"></div>
-				<div id="schedule"></div>
+				<?php readfile($_SERVER['DOCUMENT_ROOT'] . "/_assets/_pages/ssrm2021.html"); ?>
 				<?php include($_SERVER['DOCUMENT_ROOT'] . '/_includes/footer.php'); ?>
 			</div>
 		</div>
