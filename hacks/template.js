@@ -131,11 +131,16 @@ function getHacksTable(hacks, user, users) {
 
 function getHacksImagesContent(images) {
   const imagesContent = images.map((image) => getImage(image)).join("")
-  return imagesContent
+  return `
+    <div class="container">
+      <div class="row">
+        ${imagesContent}
+      </div>
+    </div>`
 }
 
 function getImage(image) {
-  return `<img class="p-3" width=320 height=240 src="/api/images/${image}">`
+  return `<div class="col"><img class="p-3" width=320 height=240 src="/api/images/${image}"></div>`
 }
 
 function getCreatorsMarkUp(creators, users) {
