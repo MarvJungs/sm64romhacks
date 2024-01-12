@@ -1,13 +1,16 @@
 <?php
-function getClient_id() {
+function getClient_id()
+{
 	return "7xxy8kh0hvswrrnnpzjpej41h5qxzz";
 }
 
-function getClient_secret() {
+function getClient_secret()
+{
 	return "26i3l38b88g131htepkjbn8t9rolon";
 }
 
-function getNames() {
+function getNames()
+{
 	return array(
 		"Evening_Grace",
 		"SigotuSR",
@@ -104,7 +107,8 @@ function getNames() {
 	//return file("names.txt");
 }
 
-function getEndPoint() {
+function getEndPoint()
+{
 	$names = getNames();
 	$endPoint = "";
 	foreach ($names as $name) {
@@ -113,7 +117,8 @@ function getEndPoint() {
 	return "https://api.twitch.tv/helix/streams?" . $endPoint;
 }
 
-function getTwitchAuthorization() {
+function getTwitchAuthorization()
+{
 	$endPoint = " ";
 	$data = "client_id=" . getClient_id() . "&client_secret=" . getClient_secret() . "&grant_type=client_credentials";
 	$link = "https://id.twitch.tv/oauth2/token?" . $data;
@@ -133,7 +138,8 @@ function getTwitchAuthorization() {
 	return $token;
 }
 
-function getStreams() {
+function getStreams()
+{
 	$endPoint = getEndPoint();
 	$authorizationObject = getTwitchAuthorization();
 	$authorizationObject = json_decode(json_encode($authorizationObject), true);
@@ -160,7 +166,8 @@ function getStreams() {
 	return $data->data;
 }
 
-function renderStreams($streams) {
+function renderStreams($streams)
+{
 	print("<div class=\"streams\">");
 	if (sizeof($streams) == 0) {
 		print("<div></div><div>Currently Nobody is streaming!</div>");

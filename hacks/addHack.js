@@ -17,10 +17,10 @@ async function getData() {
         }
         const r = await response.json()
         return r;
-      } 
-      catch (error) {
-          console.log(error);
-      }
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 function getDataList(hacks) {

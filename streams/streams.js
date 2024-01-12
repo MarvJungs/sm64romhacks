@@ -16,10 +16,10 @@ async function getAllStreams() {
         }
         const r = await response.json()
         return r;
-      } 
-      catch (error) {
-          console.log(error);
-      }
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 function getHTMLContentForStream(stream) {
@@ -30,7 +30,7 @@ function getHTMLContentForStream(stream) {
     const user_login = stream.user_login;
     const tags = stream.tags;
 
-    if(title.toLowerCase().includes("romhack") || title.toLowerCase().includes("rom hack") || validateTags(tags)) {
+    if (title.toLowerCase().includes("romhack") || title.toLowerCase().includes("rom hack") || validateTags(tags)) {
         return `
             <div class="stream-container">
                 <a href="https://www.twitch.tv/${user_login}" target="_blank_"><img src="${thumbnail}"/></a>
@@ -49,7 +49,7 @@ function validateTags(tags) {
     tags = tags.map((tag) => tag.toLowerCase());
     const whiteList = ["romhack", "rom hack", "hack", "modded"];
     whiteList.forEach(element => {
-        if(tags.includes(element)) flag = true;
+        if (tags.includes(element)) flag = true;
     });
     return flag;
 }

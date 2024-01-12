@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", main);
 async function main() {
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
-      });
+    });
 
     const newspost = await getNewspost(params.id);
 
@@ -24,8 +24,8 @@ async function getNewspost(id) {
         }
         const r = await response.json()
         return r;
-      } 
-      catch (error) {
-          console.log(error);
-      }
+    }
+    catch (error) {
+        console.log(error);
+    }
 }

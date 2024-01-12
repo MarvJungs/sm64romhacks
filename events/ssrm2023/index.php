@@ -16,8 +16,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/_includes/includes.php';
 	<link rel="stylesheet" type="text/css" href="/_assets/_css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<link rel="shortcut icon" href="/_assets/_img/icon.ico" />
-	<script src="/_assets/_js/horaro.js?t=<?php print(filemtime($_SERVER['DOCUMENT_ROOT'] . "/_assets/_js/horaro.js"));?>"></script>
-	<script src="ssrm2023.js?t=<?php print(filemtime('ssrm2023.js'))?>)"></script>
+	<script src="/_assets/_js/horaro.js?t=<?php print(filemtime($_SERVER['DOCUMENT_ROOT'] . "/_assets/_js/horaro.js")); ?>"></script>
+	<script src="ssrm2023.js?t=<?php print(filemtime('ssrm2023.js')) ?>)"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </head>
 
@@ -28,11 +28,11 @@ include $_SERVER['DOCUMENT_ROOT'] . '/_includes/includes.php';
 			<div align="center">
 				SSRM stands for Summer SM64 ROM Hacks Marathon and is a 3-4 days long Marathon featuring a variety of Runners and SM64 ROM Hacks!<br />
 				The Marathon will be taking place from August 3rd to August 7th on the<a href="https://www.twitch.tv/sm64romhacks"> sm64romhacks Twitch channel!</a><br /><br />
-					<h5>Unfortunately our submissions are closed. Try it next time again!</h5>
-					<h5>The Schedule has been released!</h5>
-					<div id="ticker"></div>
-					<div id="schedule"></div>
-					<?php include($_SERVER['DOCUMENT_ROOT'] . '/_includes/footer.php'); ?>
+				<h5>Unfortunately our submissions are closed. Try it next time again!</h5>
+				<h5>The Schedule has been released!</h5>
+				<div id="ticker"></div>
+				<div id="schedule"></div>
+				<?php include($_SERVER['DOCUMENT_ROOT'] . '/_includes/footer.php'); ?>
 			</div>
 		</div>
 	</div>

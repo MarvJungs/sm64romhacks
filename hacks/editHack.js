@@ -4,7 +4,7 @@ async function main() {
     const container = document.querySelector("#content");
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
-      });
+    });
     const hack_url = params.hack_name;
     const hack_id = params.hack_id;
     container.innerHTML = await getHTMLContent(hack_url, hack_id)
@@ -19,10 +19,10 @@ async function getHackData(hack_name) {
         }
         const r = await response.json()
         return r;
-      } 
-      catch (error) {
-          console.log(error);
-      }
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 async function getPatchData(hack_id) {
@@ -33,16 +33,16 @@ async function getPatchData(hack_id) {
         }
         const r = await response.json()
         return r;
-      } 
-      catch (error) {
-          console.log(error);
-      }
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 async function getHTMLContent(hack_name, hack_id) {
-    if(hack_name != null) {
+    if (hack_name != null) {
         const hackData = await getHackData(hack_name);
-        const hacks = await(getHackData("all"));
+        const hacks = await (getHackData("all"));
         const allTags = hacks.tags;
         const patches = hackData.patches;
         const recommendVersions = patches.map((patch) => {
@@ -59,21 +59,21 @@ async function getHTMLContent(hack_name, hack_id) {
         const tagsDataList = allTags.map((tag) => {
             tag = tag.hack_tags
             return `<option value="${tag}">${tag}</option>`
-          }).join("");
+        }).join("");
 
-          const hackImages = hackData.images;
-          console.log(hackImages)
-          const hackImagesCheck = hackImages.map((image) => {
+        const hackImages = hackData.images;
+        console.log(hackImages)
+        const hackImagesCheck = hackImages.map((image) => {
             return `
             <div class="col text-center"><img class=p-2 width=160 height=120 src=\"/api/images/${image}"><br/><input class="col-form-input" type="checkbox" name="hack_images_checked[]" value="${image.substring(0, image.length - 4)}" id="flexCheckDefault" checked></div>
             `
-          }).join("");
+        }).join("");
 
-          let description = patches[0].hack_description;
-          description = description.replaceAll("<br/>", "\r\n");
+        let description = patches[0].hack_description;
+        description = description.replaceAll("<br/>", "\r\n");
 
-          const megapack_checked = patches[0].hack_megapack == 1 ? `checked` : `&nbsp;`;
-        
+        const megapack_checked = patches[0].hack_megapack == 1 ? `checked` : `&nbsp;`;
+
         return `
         <form action="#" method="post" enctype="multipart/form-data">
         <table class="table table-bordered">
@@ -143,7 +143,7 @@ async function getHTMLContent(hack_name, hack_id) {
 
     `
     }
-    else if(hack_id != null) {
+    else if (hack_id != null) {
 
         const patchData = (await getPatchData(hack_id))[0];
         const allHacks = (await getHackData("all")).hacks;

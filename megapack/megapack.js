@@ -55,7 +55,7 @@ async function main() {
 
   const tables = document.getElementsByClassName('myTable');
 
-  for(let myTable of tables) {
+  for (let myTable of tables) {
     /** @type {HackTableRowContent[]} */
     const tableRowContents = Array.from(myTable.getElementsByTagName("tr")).slice(1).map((tableRow) => {
       const columns = tableRow.getElementsByTagName("td");
@@ -68,7 +68,7 @@ async function main() {
         tableRow,
       }
     });
-      
+
     const tagInput = document.getElementById("tagInput");
     tagInput.value = "";
     setTagFilterHandler(tagInput, tableRowContents);
@@ -76,7 +76,7 @@ async function main() {
   }
 
 
-    
+
 }
 
 /**
@@ -86,13 +86,13 @@ async function getNormalHacks() {
   try {
     const response = await fetch(`/api/megapack?type=normal`);
     if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
+      throw new Error(`${response.status} ${response.statusText}`);
     }
     const r = await response.json()
     return r;
-  } 
+  }
   catch (error) {
-      console.log(error);
+    console.log(error);
   }
 }
 
@@ -103,13 +103,13 @@ async function getKaizoHacks() {
   try {
     const response = await fetch(`/api/megapack?type=kaizo`);
     if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
+      throw new Error(`${response.status} ${response.statusText}`);
     }
     const r = await response.json()
     return r;
-  } 
+  }
   catch (error) {
-      console.log(error);
+    console.log(error);
   }
 }
 
@@ -187,8 +187,7 @@ function getCreatorsMarkUp(creators, users) {
   return userData
 }
 
-function getURLName(hackName)
-{
+function getURLName(hackName) {
   hackName = (hackName + '')
   hackName = hackName.replaceAll(':', '_');
   return encodeURIComponent(hackName)
@@ -200,89 +199,89 @@ function getURLName(hackName)
     .replace(/~/g, '%7E')
 }
 
-  /**
- * @param {HTMLSelectElement} tagInput
+/**
+* @param {HTMLSelectElement} tagInput
+* @param {HackTableRowContent[]} tableRowContents
+*/
+function setTagFilterHandler(tagInput, tableRowContents) {
+  tagInput.addEventListener("change", debounce((changeEvent) => {
+    const searchString = changeEvent.target.value.toUpperCase();
+    const normalmegapackdiv = document.getElementById('normalmegapack');
+    const kaizomegapackdiv = document.getElementById('kaizomegapack');
+    console.log(normalmegapackdiv.style, kaizomegapackdiv.style)
+    if (searchString === 'KAIZO') {
+      normalmegapackdiv.style.display = "none";
+      kaizomegapackdiv.style.display = "block";
+    }
+    else if (searchString === '') {
+      normalmegapackdiv.style.display = "block";
+      kaizomegapackdiv.style.display = "block";
+    }
+    else {
+      normalmegapackdiv.style.display = "block";
+      kaizomegapackdiv.style.display = "none";
+    }
+    filterRows(tableRowContents, isTableRowContentKeySubstring(searchString, "tag"));
+  }), DEBOUNCE_DELAY);
+}
+
+/**
  * @param {HackTableRowContent[]} tableRowContents
+ * @param {FilterPredicate} predicate
  */
- function setTagFilterHandler(tagInput, tableRowContents) {
-    tagInput.addEventListener("change", debounce((changeEvent) => {
-      const searchString = changeEvent.target.value.toUpperCase();
-      const normalmegapackdiv = document.getElementById('normalmegapack');
-      const kaizomegapackdiv = document.getElementById('kaizomegapack');
-      console.log(normalmegapackdiv.style, kaizomegapackdiv.style)
-      if(searchString === 'KAIZO') {
-        normalmegapackdiv.style.display = "none";
-        kaizomegapackdiv.style.display = "block";
-      }
-      else if(searchString === '') {
-        normalmegapackdiv.style.display = "block";
-        kaizomegapackdiv.style.display = "block";
-      }
-      else {
-        normalmegapackdiv.style.display = "block";
-        kaizomegapackdiv.style.display = "none";
-      }
-      filterRows(tableRowContents, isTableRowContentKeySubstring(searchString, "tag"));
-    }), DEBOUNCE_DELAY);
-  }
-  
-  /**
-   * @param {HackTableRowContent[]} tableRowContents
-   * @param {FilterPredicate} predicate
-   */
-  function filterRows(tableRowContents, predicate) {
-    tableRowContents.forEach((tableRowContent) => {
-      const tableRow = tableRowContent.tableRow;
-      if (predicate(tableRowContent)) {
-        showTableRow(tableRow);
-      } else {
-        hideTableRow(tableRow);
-      }
-    });
-  }
-  
-  /**
-   * @param {string} searchString
-   * @param {SearchKey} keyName
-   * @return {FilterPredicate}
-   */
-  function isTableRowContentKeySubstring(searchString, keyName) {
-    return (tableRowContent) => {
-      if (searchString === "") {
-        return true;
-      }
-      return tableRowContent[keyName].includes(searchString);
+function filterRows(tableRowContents, predicate) {
+  tableRowContents.forEach((tableRowContent) => {
+    const tableRow = tableRowContent.tableRow;
+    if (predicate(tableRowContent)) {
+      showTableRow(tableRow);
+    } else {
+      hideTableRow(tableRow);
     }
-  }
-  
-  /**
-   * @param {string} searchString
-   * @param {SearchKey} keyName
-   * @return {FilterPredicate}
-   */
-  function isTableRowContentKeyEqual(searchString, keyName) {
-    return (tableRowContent) => {
-      if (searchString === "") {
-        return true;
-      }
-      return tableRowContent[keyName] === searchString;
+  });
+}
+
+/**
+ * @param {string} searchString
+ * @param {SearchKey} keyName
+ * @return {FilterPredicate}
+ */
+function isTableRowContentKeySubstring(searchString, keyName) {
+  return (tableRowContent) => {
+    if (searchString === "") {
+      return true;
     }
+    return tableRowContent[keyName].includes(searchString);
   }
-  
-  /**
-   * @param {HTMLTableRowElement} tableRow
-   */
-  function showTableRow(tableRow) {
-    tableRow.style.display = "table-row";
+}
+
+/**
+ * @param {string} searchString
+ * @param {SearchKey} keyName
+ * @return {FilterPredicate}
+ */
+function isTableRowContentKeyEqual(searchString, keyName) {
+  return (tableRowContent) => {
+    if (searchString === "") {
+      return true;
+    }
+    return tableRowContent[keyName] === searchString;
   }
-  
-  /**
-   * @param {HTMLTableRowElement} tableRow
-   */
-  function hideTableRow(tableRow) {
-    tableRow.style.display = "none";
-  }
-  
+}
+
+/**
+ * @param {HTMLTableRowElement} tableRow
+ */
+function showTableRow(tableRow) {
+  tableRow.style.display = "table-row";
+}
+
+/**
+ * @param {HTMLTableRowElement} tableRow
+ */
+function hideTableRow(tableRow) {
+  tableRow.style.display = "none";
+}
+
 
 
 

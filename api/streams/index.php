@@ -9,12 +9,14 @@ createHacksDatabase($pdo);
 createAuthorsDatabase($pdo);
 createHackAuthorsDatabase($pdo);
 
-function getEndPoint() {
+function getEndPoint()
+{
 	$endPoint = "game_id=2692&first=100";
 	return "https://api.twitch.tv/helix/streams?" . $endPoint;
 }
 
-function getTwitchAuthorization() {
+function getTwitchAuthorization()
+{
 	$endPoint = " ";
 	$data = "client_id=" . TWITCH_CLIENT_ID . "&client_secret=" . TWITCH_CLIENT_SECRET . "&grant_type=client_credentials";
 	$link = "https://id.twitch.tv/oauth2/token?" . $data;
@@ -33,7 +35,8 @@ function getTwitchAuthorization() {
 	return $token;
 }
 
-function getStreams() {
+function getStreams()
+{
 	$endPoint = getEndPoint();
 	$authorizationObject = getTwitchAuthorization();
 	$authorizationObject = json_decode(json_encode($authorizationObject), true);

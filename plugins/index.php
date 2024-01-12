@@ -1,1 +1,1 @@
-<?php header("Location: https://sites.google.com/view/shurislibrary/plugin-guide"); ?>
+<?php header("Location: https://sites.google.com/view/shurislibrary/plugin-guide");

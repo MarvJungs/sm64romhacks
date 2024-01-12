@@ -1,6 +1,6 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'].'/_includes/functions.php');
-include($_SERVER['DOCUMENT_ROOT'].'/_includes/db.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/_includes/functions.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/_includes/db.php');
 
 createUsersDatabase($pdo);
 createNewspostDatabase($pdo);
@@ -9,7 +9,7 @@ createAuthorsDatabase($pdo);
 createHackAuthorsDatabase($pdo);
 
 
-if(!isset($_GET['code'])){
+if (!isset($_GET['code'])) {
     echo 'no code';
     exit();
 }
@@ -18,12 +18,12 @@ $discord_code = $_GET['code'];
 
 
 $payload = [
-    'code'=>$discord_code,
-    'client_id'=>DISCORD_CLIENT_ID,
-    'client_secret'=>DISCORD_CLIENT_SECRET,
-    'grant_type'=>'authorization_code',
-    'redirect_uri'=>DISCORD_REDIRECT_URI,
-    'scope'=>'identify+email+connections',
+    'code' => $discord_code,
+    'client_id' => DISCORD_CLIENT_ID,
+    'client_secret' => DISCORD_CLIENT_SECRET,
+    'grant_type' => 'authorization_code',
+    'redirect_uri' => DISCORD_REDIRECT_URI,
+    'scope' => 'identify+email+connections',
 ];
 
 
@@ -42,11 +42,11 @@ curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
 $result = curl_exec($ch);
 
-if(!$result){
+if (!$result) {
     echo curl_error($ch);
 }
 
-$result = json_decode($result,true);
+$result = json_decode($result, true);
 $access_token = $result['access_token'];
 
 
@@ -76,17 +76,16 @@ curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
 array_push($result, curl_exec($ch));
 
-$userData = json_decode($result[0],true);
+$userData = json_decode($result[0], true);
 
-$twitch_username = getTwitchUserName(json_decode($result[1],true));
+$twitch_username = getTwitchUserName(json_decode($result[1], true));
 
-$user_data = getUserFromDatabase($pdo,$userData['id']);
+$user_data = getUserFromDatabase($pdo, $userData['id']);
 
-if(!$user_data){
-    addUserToDatabase($pdo,$userData['id'],$userData['avatar'],$userData['email'],$userData['global_name'], $twitch_username);
-}
-else {
-    updateUserInDatabase($pdo,$userData['id'],$userData['avatar'],stripChars($userData['email']),stripChars($userData['global_name']), $twitch_username);
+if (!$user_data) {
+    addUserToDatabase($pdo, $userData['id'], $userData['avatar'], $userData['email'], $userData['global_name'], $twitch_username);
+} else {
+    updateUserInDatabase($pdo, $userData['id'], $userData['avatar'], stripChars($userData['email']), stripChars($userData['global_name']), $twitch_username);
 }
 
 setcookie("logged_in", "true", time() + (86400 * 30), "/");
@@ -95,22 +94,20 @@ setcookie("name", stripChars($userData['username']), time() + (86400 * 30), "/")
 setcookie("avatar", $userData['avatar'], time() + (86400 * 30), "/");
 setcookie("email", stripChars($userData['email']), time() + (86400 * 30), "/");
 setcookie("global_name", stripChars($userData['global_name']), time() + (86400 * 30), "/");
-if($twitch_username) setcookie("twitch_handle", $twitch_username, time() + (86400 * 30), "/");
+if ($twitch_username) setcookie("twitch_handle", $twitch_username, time() + (86400 * 30), "/");
 
 header("Location: " . $_COOKIE['redirect']);
 exit();
 
 
 
-function getTwitchUserName($userData) {
+function getTwitchUserName($userData)
+{
 
-    foreach($userData as $entry) {
-        if($entry['type'] == 'twitch') {
+    foreach ($userData as $entry) {
+        if ($entry['type'] == 'twitch') {
             return $entry['name'];
         }
     }
     return NULL;
 }
-
-
-?>

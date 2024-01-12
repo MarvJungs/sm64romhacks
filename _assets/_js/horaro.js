@@ -31,11 +31,11 @@ class Horaro {
 			</table>
 			<hr/>`;
 
-			if(marathon_ticker.current === null && marathon_ticker.next === null) tickerDiv.remove(); //Marathon is over
+		if (marathon_ticker.current === null && marathon_ticker.next === null) tickerDiv.remove(); //Marathon is over
 	}
 
 	tickerToString(ticker) {
-		if(ticker) return `${ticker.data[0]} - ${ticker.data[1]} by ${ticker.data[2]}`
+		if (ticker) return `${ticker.data[0]} - ${ticker.data[1]} by ${ticker.data[2]}`
 		else return ``;
 	}
 
@@ -70,8 +70,8 @@ class Horaro {
 	}
 
 	getHeaderTableRow(coloumns) {
-		const header = 
-		`
+		const header =
+			`
 			<tr>
 				<th>Date</th>
 				<th>Time</th>
@@ -81,9 +81,9 @@ class Horaro {
 				<th>${coloumns[2]}</th>
 				<th>${coloumns[3]}</th>
 			</tr>
-		` 
-		
-		
+		`
+
+
 		return header;
 	}
 
@@ -129,22 +129,22 @@ class Horaro {
 		const d = new Date(timestamp * 1000);
 		const hh = ('0' + d.getHours()).slice(-2)			// Add leading 0.
 		const m = ('0' + d.getMinutes()).slice(-2)			// Add leading 0.
-		const ss = 	('0' + d.getSeconds()).slice(-2)		// Add leading 0.
-				
+		const ss = ('0' + d.getSeconds()).slice(-2)		// Add leading 0.
+
 		const time = hh + ':' + m + ':' + ss;
-			
+
 		return time;
 	}
 
 	convertTimestampToDate(timestamp) {
 		const d = new Date(timestamp * 1000);				// Convert the passed timestamp to milliseconds
-		const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];				
+		const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 		const yyyy = d.getFullYear()
 		const mm = ('0' + (d.getMonth() + 1)).slice(-2)		// Months are zero based. Add leading 0.
 		const dd = ('0' + d.getDate()).slice(-2)			// Add leading 0.
-				
+
 		const time = days[d.getDay()] + ', ' + yyyy + '-' + mm + '-' + dd;
-			
+
 		return time;
 
 

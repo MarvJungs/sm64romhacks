@@ -76,7 +76,7 @@ async function getUser() {
     return r;
   }
   catch (error) {
-    return { logged_in: false, admin: false, data: {twitch_handle: null} };
+    return { logged_in: false, admin: false, data: { twitch_handle: null } };
   }
 }
 
@@ -212,7 +212,7 @@ function checkActionsAbilities(creators, user) {
   creators = creators.split(", ");
   let r = false;
   creators.forEach((creator) => {
-    if(user.admin || user.logged_in && (creator.toLowerCase() === user.data.discord_username.toLowerCase() || user.data.twitch_handle != null && creator.toLowerCase() === user.data.twitch_handle.toLowerCase())) {
+    if (user.admin || user.logged_in && (creator.toLowerCase() === user.data.discord_username.toLowerCase() || user.data.twitch_handle != null && creator.toLowerCase() === user.data.twitch_handle.toLowerCase())) {
       r = true;
       return false;
     }

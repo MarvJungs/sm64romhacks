@@ -11,4 +11,3 @@ setcookie("twitch_handle", "", time() - (86400 * 30), "/");
 
 header("Location: " . $_COOKIE['redirect']);
 exit();
-?>

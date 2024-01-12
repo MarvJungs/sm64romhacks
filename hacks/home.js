@@ -53,7 +53,7 @@ async function main() {
   const tagsDropDownElement = document.getElementById('tagInput');
   tagsDropDownElement.innerHTML += tagsDropdownMenu;
 
-  if(document.getElementById("hack_release_date") != null)   document.getElementById("hack_release_date").setAttribute("max", new Date().toISOString().slice(0, 10));
+  if (document.getElementById("hack_release_date") != null) document.getElementById("hack_release_date").setAttribute("max", new Date().toISOString().slice(0, 10));
 
 
 
@@ -89,13 +89,13 @@ async function getData() {
   try {
     const response = await fetch(`/api/hacks`);
     if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
+      throw new Error(`${response.status} ${response.statusText}`);
     }
     const r = await response.json()
     return r;
-  } 
+  }
   catch (error) {
-      console.log(error);
+    console.log(error);
   }
 }
 
@@ -103,13 +103,13 @@ async function getUser() {
   try {
     const response = await fetch(`/api/user`);
     if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
+      throw new Error(`${response.status} ${response.statusText}`);
     }
     const r = await response.json()
     return r;
-  } 
+  }
   catch (error) {
-      return {logged_in: false, admin: false, data: {twitch_handle: null}};
+    return { logged_in: false, admin: false, data: { twitch_handle: null } };
   }
 }
 
@@ -117,13 +117,13 @@ async function getAllUsers() {
   try {
     const response = await fetch(`/api/users`);
     if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
+      throw new Error(`${response.status} ${response.statusText}`);
     }
     const r = await response.json()
     return r;
-  } 
+  }
   catch (error) {
-      console.log(error);
+    console.log(error);
   }
 }
 
@@ -148,7 +148,7 @@ function getTagsDropdownMenu(tags) {
   const tagsDropdownMenu = tags.map((tag) => {
     tag = tag.tag_name
     return `<option value="${tag}">${tag}</option>`
-  }).join("") 
+  }).join("")
   return tagsDropdownMenu
 }
 
@@ -208,7 +208,7 @@ function checkActionsAbilities(creators, user) {
   creators = creators.split(", ");
   let r = false;
   creators.forEach((creator) => {
-    if(user.admin || user.logged_in && (creator.toLowerCase() === user.data.discord_username.toLowerCase() || user.data.twitch_handle != null && creator.toLowerCase() === user.data.twitch_handle.toLowerCase())) {
+    if (user.admin || user.logged_in && (creator.toLowerCase() === user.data.discord_username.toLowerCase() || user.data.twitch_handle != null && creator.toLowerCase() === user.data.twitch_handle.toLowerCase())) {
       r = true;
       return false;
     }
@@ -225,10 +225,9 @@ function getCreatorsMarkUp(creators, users) {
   return userData
 }
 
-function getURLName(hackName)
-{
+function getURLName(hackName) {
   return encodeURIComponent(hackName)
-  }
+}
 
 
 /**
@@ -268,7 +267,7 @@ function setHackDatesFilterHandler(hackDatesInput, tableRowContents) {
  * @param {HTMLSelectElement} tagInput
  * @param {HackTableRowContent[]} tableRowContents
  */
- function setTagFilterHandler(tagInput, tableRowContents) {
+function setTagFilterHandler(tagInput, tableRowContents) {
   tagInput.addEventListener("change", debounce((changeEvent) => {
     const searchString = changeEvent.target.value.toUpperCase();
     filterRows(tableRowContents, isTableRowContentKeySubstring(searchString, "tag"));

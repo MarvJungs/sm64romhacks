@@ -10,10 +10,8 @@ createAuthorsDatabase($pdo);
 createHackAuthorsDatabase($pdo);
 
 
-if(isset($_GET['hack_id'])) {
+if (isset($_GET['hack_id'])) {
     print(json_encode(getPatchFromDatabase($pdo, $_GET['hack_id'])));
-}
-else {
+} else {
     print(json_encode(getAllPatchesFromDatabase($pdo)));
 }
-

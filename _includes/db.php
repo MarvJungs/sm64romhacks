@@ -14,7 +14,8 @@ try {
 	echo "Connection failed: " . $e->getMessage();
 }
 
-function createUsersDatabase($pdo) {
+function createUsersDatabase($pdo)
+{
 	$sql = "CREATE TABLE IF NOT EXISTS `users` (
 			`discord_email` varchar(255) NULL,
 			`discord_username` varchar(255) NOT NULL,
@@ -33,7 +34,8 @@ function createUsersDatabase($pdo) {
 	if (!getUserFromDatabase($pdo, "0")) addUserToDatabase($pdo, "0", NULL, NULL, "Deleted User", NULL);
 }
 
-function addUserToDatabase($pdo, $discord_id, $discord_avatar, $discord_email, $discord_username, $twitch_handle) {
+function addUserToDatabase($pdo, $discord_id, $discord_avatar, $discord_email, $discord_username, $twitch_handle)
+{
 	$sql = "INSERT INTO users (discord_email,discord_username,discord_id,discord_avatar,twitch_handle) VALUES (:discord_email,:discord_username,:discord_id,:discord_avatar,:twitch_handle)";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -49,7 +51,8 @@ function addUserToDatabase($pdo, $discord_id, $discord_avatar, $discord_email, $
 	}
 }
 
-function updateUserInDatabase($pdo, $discord_id, $discord_avatar, $discord_email, $discord_username, $twitch_handle) {
+function updateUserInDatabase($pdo, $discord_id, $discord_avatar, $discord_email, $discord_username, $twitch_handle)
+{
 	$sql = "UPDATE users SET
 		discord_avatar = :discord_avatar,
 		discord_email = :discord_email,
@@ -72,7 +75,8 @@ function updateUserInDatabase($pdo, $discord_id, $discord_avatar, $discord_email
 }
 
 
-function getUserFromDatabase($pdo, $discord_id) {
+function getUserFromDatabase($pdo, $discord_id)
+{
 	$sql = "SELECT * FROM users WHERE discord_id=:discord_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -86,7 +90,8 @@ function getUserFromDatabase($pdo, $discord_id) {
 	}
 }
 
-function getUserByNameFromDatabase($pdo, $discord_username) {
+function getUserByNameFromDatabase($pdo, $discord_username)
+{
 	$sql = "SELECT * FROM users WHERE discord_username=:discord_username";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -100,7 +105,8 @@ function getUserByNameFromDatabase($pdo, $discord_username) {
 	}
 }
 
-function deleteUserFromDatabase($pdo, $discord_id) {
+function deleteUserFromDatabase($pdo, $discord_id)
+{
 	$sql = "DELETE FROM users WHERE discord_id = :discord_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -114,7 +120,8 @@ function deleteUserFromDatabase($pdo, $discord_id) {
 }
 
 
-function getAllUsersFromDatabase($pdo) {
+function getAllUsersFromDatabase($pdo)
+{
 	$sql = "SELECT * FROM users";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -126,7 +133,8 @@ function getAllUsersFromDatabase($pdo) {
 	}
 }
 
-function createNewspostDatabase($pdo) {
+function createNewspostDatabase($pdo)
+{
 	$sql = "CREATE TABLE IF NOT EXISTS `news` (
 			`post_id` int(11) NOT NULL AUTO_INCREMENT,
 			`post_author` varchar(255) NOT NULL,
@@ -145,7 +153,8 @@ function createNewspostDatabase($pdo) {
 	}
 }
 
-function addNewspostToDatabase($pdo, $post_title, $post_text, $post_author) {
+function addNewspostToDatabase($pdo, $post_title, $post_text, $post_author)
+{
 	$sql = "INSERT INTO news (post_title,post_text,post_author,created_at, edited_at) VALUES (:post_title,:post_text,:post_author,UTC_TIMESTAMP(),UTC_TIMESTAMP())";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -159,7 +168,8 @@ function addNewspostToDatabase($pdo, $post_title, $post_text, $post_author) {
 	}
 }
 
-function deleteNewspostFromDatabase($pdo, $post_id) {
+function deleteNewspostFromDatabase($pdo, $post_id)
+{
 	$sql = "DELETE FROM news WHERE post_id = :post_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -171,7 +181,8 @@ function deleteNewspostFromDatabase($pdo, $post_id) {
 	}
 }
 
-function updateNewspostInDatabase($pdo, $post_id, $post_author, $post_title, $post_text) {
+function updateNewspostInDatabase($pdo, $post_id, $post_author, $post_title, $post_text)
+{
 	$UTC_TIMESTAMP = "UTC_TIMESTAMP()";
 	$sql = "UPDATE news SET
 		post_author = :post_author,
@@ -193,7 +204,8 @@ function updateNewspostInDatabase($pdo, $post_id, $post_author, $post_title, $po
 }
 
 
-function getNewspostFromDatabase($pdo, $post_id) {
+function getNewspostFromDatabase($pdo, $post_id)
+{
 	$sql = "SELECT * FROM news WHERE post_id=:post_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -207,7 +219,8 @@ function getNewspostFromDatabase($pdo, $post_id) {
 	}
 }
 
-function getAllNewspostsFromDatabase($pdo) {
+function getAllNewspostsFromDatabase($pdo)
+{
 	$sql = "SELECT n.post_id, n.post_author, n.created_at, n.edited_at, n.post_title, n.post_text, u.discord_username, u.discord_avatar FROM news n
 		LEFT JOIN users u ON (n.post_author = u.discord_id) 
 		ORDER BY post_id desc";
@@ -221,7 +234,8 @@ function getAllNewspostsFromDatabase($pdo) {
 	}
 }
 
-function createHacksDatabase($pdo) {
+function createHacksDatabase($pdo)
+{
 	$sql = "CREATE TABLE IF NOT EXISTS `hacks` (
 			`hack_id` int(11) NOT NULL AUTO_INCREMENT,
 			`hack_name` varchar(255) NOT NULL,
@@ -245,7 +259,8 @@ function createHacksDatabase($pdo) {
 	}
 }
 
-function createHackAuthorsDatabase($pdo) {
+function createHackAuthorsDatabase($pdo)
+{
 	$sql = "CREATE TABLE IF NOT EXISTS `hacks_authors` ( 
 				hack_id INT(11) NOT NULL, 
 				author_id INT(11) NOT NULL, 
@@ -260,7 +275,8 @@ function createHackAuthorsDatabase($pdo) {
 	}
 }
 
-function createAuthorsDatabase($pdo) {
+function createAuthorsDatabase($pdo)
+{
 	$sql = "CREATE TABLE IF NOT EXISTS `author` (
 				author_id INT(11) NOT NULL AUTO_INCREMENT,
 				author_name VARCHAR(255) NOT NULL,
@@ -274,7 +290,8 @@ function createAuthorsDatabase($pdo) {
 	}
 }
 
-function addHackToDatabase($pdo, $hack_name, $hack_url, $hack_version, $hack_starcount, $hack_release_date, $hack_patchname, $hack_description, $hack_verified, $hack_recommend, $hack_megapack) {
+function addHackToDatabase($pdo, $hack_name, $hack_url, $hack_version, $hack_starcount, $hack_release_date, $hack_patchname, $hack_description, $hack_verified, $hack_recommend, $hack_megapack)
+{
 	$sql = "INSERT INTO hacks (hack_name,hack_url,hack_version,hack_starcount,hack_release_date,hack_patchname,hack_description,hack_verified,hack_recommend,hack_megapack) VALUES (:hack_name,:hack_url,:hack_version,:hack_starcount,:hack_release_date,:hack_patchname,:hack_description,:hack_verified,:hack_recommend,:hack_megapack)";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -295,7 +312,8 @@ function addHackToDatabase($pdo, $hack_name, $hack_url, $hack_version, $hack_sta
 	}
 }
 
-function getAuthorFromDatabase($pdo, $author_name) {
+function getAuthorFromDatabase($pdo, $author_name)
+{
 	$sql = "SELECT * FROM author WHERE author_name=:author_name";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -309,7 +327,8 @@ function getAuthorFromDatabase($pdo, $author_name) {
 	}
 }
 
-function addAuthorToDatabase($pdo, $author_name) {
+function addAuthorToDatabase($pdo, $author_name)
+{
 	$sql = "INSERT INTO author (author_name) VALUES (:author_name)";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -321,7 +340,8 @@ function addAuthorToDatabase($pdo, $author_name) {
 	}
 }
 
-function addHackAuthorToDatabase($pdo, $hack_id, $author_id) {
+function addHackAuthorToDatabase($pdo, $hack_id, $author_id)
+{
 	$sql = "INSERT INTO hacks_authors (hack_id, author_id) VALUES (:hack_id,:author_id)";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -334,7 +354,8 @@ function addHackAuthorToDatabase($pdo, $hack_id, $author_id) {
 	}
 }
 
-function deleteHackAuthorFromDatabase($pdo, $hack_id) {
+function deleteHackAuthorFromDatabase($pdo, $hack_id)
+{
 	$sql = "DELETE FROM hacks_authors WHERE hack_id=:hack_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -346,7 +367,8 @@ function deleteHackAuthorFromDatabase($pdo, $hack_id) {
 	}
 }
 
-function getAmountOfHacksInDatabase($pdo) {
+function getAmountOfHacksInDatabase($pdo)
+{
 	$sql = "SELECT COUNT(*) AS 'count' FROM hacks";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -358,7 +380,8 @@ function getAmountOfHacksInDatabase($pdo) {
 	}
 }
 
-function getHackFromDatabase($pdo, $hack_url) {
+function getHackFromDatabase($pdo, $hack_url)
+{
 	$sql = "SELECT h.hack_id, h.hack_name, h.hack_url, h.hack_version, h.hack_starcount, h.hack_release_date, h.hack_patchname, h.hack_downloads, h.hack_description, h.hack_verified, h.hack_recommend, GROUP_CONCAT(DISTINCT a.author_name SEPARATOR ', ') AS authors, GROUP_CONCAT(DISTINCT t.tag_name SEPARATOR ', ') AS hack_tags, h.hack_megapack  FROM hacks h 
 		LEFT JOIN hacks_authors ha ON (h.hack_id = ha.hack_id) 
 		LEFT JOIN author a ON (ha.author_id = a.author_id) 
@@ -380,7 +403,8 @@ function getHackFromDatabase($pdo, $hack_url) {
 	}
 }
 
-function getMegapackHacksFromDatabase($pdo) {
+function getMegapackHacksFromDatabase($pdo)
+{
 	$sql = "SELECT h1.hack_name, h1.hack_url, GROUP_CONCAT(DISTINCT a.author_name SEPARATOR ', ') AS hack_author, h1.hack_starcount, h1.hack_release_date, t.tag_name AS hack_tags
 		FROM hacks h1
 		LEFT JOIN hacks h2 ON h1.hack_name = h2.hack_name AND h1.hack_release_date > h2.hack_release_date
@@ -407,7 +431,8 @@ function getMegapackHacksFromDatabase($pdo) {
 	}
 }
 
-function getMegapackKaizoHacksFromDatabase($pdo) {
+function getMegapackKaizoHacksFromDatabase($pdo)
+{
 	$sql = "SELECT h1.hack_name, h1.hack_url, GROUP_CONCAT(DISTINCT a.author_name SEPARATOR ', ') AS hack_author, h1.hack_starcount, h1.hack_release_date, t.tag_name AS hack_tags
 		FROM hacks h1
 		LEFT JOIN hacks h2 ON h1.hack_name = h2.hack_name AND h1.hack_release_date > h2.hack_release_date
@@ -433,7 +458,8 @@ function getMegapackKaizoHacksFromDatabase($pdo) {
 }
 
 
-function getHacksByUserFromDatabase($pdo, $user_id) {
+function getHacksByUserFromDatabase($pdo, $user_id)
+{
 	$sql = "SELECT * FROM users u
 		LEFT JOIN author a ON(u.discord_username=a.author_name or u.twitch_handle=a.author_name and u.twitch_handle <> null)
 		LEFT JOIN hacks_authors ha ON(a.author_id=ha.author_id)
@@ -454,7 +480,8 @@ function getHacksByUserFromDatabase($pdo, $user_id) {
 	}
 }
 
-function getAllPendingHacksFromDatabase($pdo) {
+function getAllPendingHacksFromDatabase($pdo)
+{
 	$sql = "SELECT h.hack_id, h.hack_name, h.hack_version, h.hack_starcount, h.hack_release_date FROM hacks h
 		LEFT JOIN hacks_authors ha ON (h.hack_id = ha.hack_id)
 		LEFT JOIN author a ON (ha.author_id = a.author_id) 
@@ -469,7 +496,8 @@ function getAllPendingHacksFromDatabase($pdo) {
 	}
 }
 
-function getLastHackId($pdo) {
+function getLastHackId($pdo)
+{
 	$sql = "SELECT h.hack_id FROM hacks h ORDER BY h.hack_id DESC LIMIT 1";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -482,7 +510,8 @@ function getLastHackId($pdo) {
 }
 
 
-function getAllUniqueHacksFromDatabase($pdo) {
+function getAllUniqueHacksFromDatabase($pdo)
+{
 	$sql = "SELECT h1.hack_name, h1.hack_url, GROUP_CONCAT(DISTINCT a.author_name SEPARATOR ', ') AS hack_author, GROUP_CONCAT(DISTINCT t.tag_name SEPARATOR ', ') AS hack_tags, h1.hack_release_date AS release_date, SUM(h1.hack_downloads) AS total_downloads, h1.hack_megapack FROM hacks h1 
 		LEFT JOIN hacks h2 ON (h1.hack_name = h2.hack_name AND h1.hack_release_date > h2.hack_release_date)
 		LEFT JOIN hacks_authors ha ON (h1.hack_id = ha.hack_id) 
@@ -504,7 +533,8 @@ function getAllUniqueHacksFromDatabase($pdo) {
 }
 
 
-function getPatchFromDatabase($pdo, $hack_id) {
+function getPatchFromDatabase($pdo, $hack_id)
+{
 	$sql = "SELECT h.hack_id, h.hack_name, h.hack_version, h.hack_starcount, h.hack_release_date, GROUP_CONCAT(DISTINCT a.author_name SEPARATOR ', ') AS authors, h.hack_patchname   FROM hacks h 
 		LEFT JOIN hacks_authors ha ON (h.hack_id = ha.hack_id) 
 		LEFT JOIN author a ON (ha.author_id = a.author_id) 
@@ -521,7 +551,8 @@ function getPatchFromDatabase($pdo, $hack_id) {
 	}
 }
 
-function getAllPatchesFromDatabase($pdo) {
+function getAllPatchesFromDatabase($pdo)
+{
 	$sql = "SELECT h.hack_id, h.hack_patchname FROM hacks h WHERE hack_verified=1";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -533,7 +564,8 @@ function getAllPatchesFromDatabase($pdo) {
 	}
 }
 
-function getPendingPatchFromDatabase($pdo, $hack_id) {
+function getPendingPatchFromDatabase($pdo, $hack_id)
+{
 	$sql = "SELECT h.hack_id, h.hack_name, h.hack_version, h.hack_starcount, h.hack_release_date, GROUP_CONCAT(DISTINCT a.author_name SEPARATOR ', ') AS authors, h.hack_patchname   FROM hacks h 
 		LEFT JOIN hacks_authors ha ON (h.hack_id = ha.hack_id) 
 		LEFT JOIN author a ON (ha.author_id = a.author_id) 
@@ -551,7 +583,8 @@ function getPendingPatchFromDatabase($pdo, $hack_id) {
 }
 
 
-function getRandomHackFromDatabase($pdo) {
+function getRandomHackFromDatabase($pdo)
+{
 	$sql = "SELECT * FROM hacks WHERE hack_verified=1 ORDER BY RAND() LIMIT 1";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -563,7 +596,8 @@ function getRandomHackFromDatabase($pdo) {
 	}
 }
 
-function updatePatchInDatabase($pdo, $hack_id, $hack_name, $hack_version, $hack_starcount, $hack_release_date, $hack_verified) {
+function updatePatchInDatabase($pdo, $hack_id, $hack_name, $hack_version, $hack_starcount, $hack_release_date, $hack_verified)
+{
 	$sql = "UPDATE hacks SET 
 		hack_name = :hack_name,
 		hack_version = :hack_version,
@@ -586,7 +620,8 @@ function updatePatchInDatabase($pdo, $hack_id, $hack_name, $hack_version, $hack_
 	}
 }
 
-function recommendPatchFromDatabase($pdo, $hack_id) {
+function recommendPatchFromDatabase($pdo, $hack_id)
+{
 	$sql = "UPDATE hacks SET hack_recommend = 1 WHERE hack_id = :hack_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -598,7 +633,8 @@ function recommendPatchFromDatabase($pdo, $hack_id) {
 	}
 }
 
-function unrecommendPatchFromDatabase($pdo, $hack_id) {
+function unrecommendPatchFromDatabase($pdo, $hack_id)
+{
 	$sql = "UPDATE hacks SET hack_recommend = 0 WHERE hack_id = :hack_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -610,7 +646,8 @@ function unrecommendPatchFromDatabase($pdo, $hack_id) {
 	}
 }
 
-function verifyPatchInDatabase($pdo, $hack_id) {
+function verifyPatchInDatabase($pdo, $hack_id)
+{
 	$sql = "UPDATE hacks SET 
 		hack_verified = 1
 		WHERE hack_id = :hack_id";
@@ -624,7 +661,8 @@ function verifyPatchInDatabase($pdo, $hack_id) {
 	}
 }
 
-function updateDownloadCounter($pdo, $hack_id) {
+function updateDownloadCounter($pdo, $hack_id)
+{
 	$sql = "UPDATE hacks SET hack_downloads=hack_downloads+1 WHERE hack_id=:hack_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -636,7 +674,8 @@ function updateDownloadCounter($pdo, $hack_id) {
 	}
 }
 
-function updateHackInDatabase($pdo, $hack_old_name, $hack_new_name, $hack_url, $hack_description, $hack_megapack) {
+function updateHackInDatabase($pdo, $hack_old_name, $hack_new_name, $hack_url, $hack_description, $hack_megapack)
+{
 	$sql = "UPDATE hacks SET 
 						hack_name = :hack_new_name,
 						hack_url = :hack_url,
@@ -657,7 +696,8 @@ function updateHackInDatabase($pdo, $hack_old_name, $hack_new_name, $hack_url, $
 	}
 }
 
-function getAllTagsFromDatabase($pdo) {
+function getAllTagsFromDatabase($pdo)
+{
 	$sql = "SELECT tag_name FROM tags WHERE tag_name <> \"\" ORDER BY tag_name";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -669,7 +709,8 @@ function getAllTagsFromDatabase($pdo) {
 	}
 }
 
-function deleteHackFromDatabase($pdo, $hack_name) {
+function deleteHackFromDatabase($pdo, $hack_name)
+{
 	$sql = "DELETE FROM hacks WHERE hack_name = :hack_name";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -681,7 +722,8 @@ function deleteHackFromDatabase($pdo, $hack_name) {
 	}
 }
 
-function deletePatchFromDatabase($pdo, $hack_id) {
+function deletePatchFromDatabase($pdo, $hack_id)
+{
 	$sql = "DELETE FROM hacks WHERE hack_id = :hack_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -693,7 +735,8 @@ function deletePatchFromDatabase($pdo, $hack_id) {
 	}
 }
 
-function createTagsDatabase($pdo) {
+function createTagsDatabase($pdo)
+{
 	$sql = "CREATE TABLE IF NOT EXISTS `tags` (
 				tag_id INT(11) NOT NULL AUTO_INCREMENT,
 				tag_name VARCHAR(255) NOT NULL,
@@ -707,7 +750,8 @@ function createTagsDatabase($pdo) {
 	}
 }
 
-function addTagToDatabase($pdo, $tag_name) {
+function addTagToDatabase($pdo, $tag_name)
+{
 	$sql = "INSERT INTO tags (tag_name) VALUES (:tag_name)";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -719,7 +763,8 @@ function addTagToDatabase($pdo, $tag_name) {
 	}
 }
 
-function getTagFromDatabase($pdo, $tag_name) {
+function getTagFromDatabase($pdo, $tag_name)
+{
 	$sql = "SELECT * FROM tags WHERE tag_name=:tag_name";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -733,7 +778,8 @@ function getTagFromDatabase($pdo, $tag_name) {
 	}
 }
 
-function deleteTagFromDatabase($pdo, $tag_name) {
+function deleteTagFromDatabase($pdo, $tag_name)
+{
 	$sql = "DELETE FROM tags WHERE tag_name=:tag_name";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -745,7 +791,8 @@ function deleteTagFromDatabase($pdo, $tag_name) {
 	}
 }
 
-function createHacksTagsDatabase($pdo) {
+function createHacksTagsDatabase($pdo)
+{
 	$sql = "CREATE TABLE IF NOT EXISTS `hacks_tags` ( 
 				hack_id INT(11) NOT NULL, 
 				tag_id INT(11) NOT NULL, 
@@ -760,7 +807,8 @@ function createHacksTagsDatabase($pdo) {
 	}
 }
 
-function addHackTagToDatabase($pdo, $hack_id, $tag_id) {
+function addHackTagToDatabase($pdo, $hack_id, $tag_id)
+{
 	$sql = "INSERT INTO hacks_tags (hack_id, tag_id) VALUES (:hack_id,:tag_id)";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -773,7 +821,8 @@ function addHackTagToDatabase($pdo, $hack_id, $tag_id) {
 	}
 }
 
-function deleteHackTagFromDatabase($pdo, $hack_id) {
+function deleteHackTagFromDatabase($pdo, $hack_id)
+{
 	$sql = "DELETE FROM hacks_tags WHERE hack_id=:hack_id";
 	try {
 		$stmt = $pdo->prepare($sql);
@@ -785,7 +834,8 @@ function deleteHackTagFromDatabase($pdo, $hack_id) {
 	}
 }
 
-function getHacksByTagFromDatabase($pdo, $tag_name) {
+function getHacksByTagFromDatabase($pdo, $tag_name)
+{
 	$sql = "SELECT COUNT(*) AS count FROM hacks h 
 		LEFT JOIN hacks_tags ht ON (h.hack_id = ht.hack_id)
 		LEFT JOIN tags t ON (ht.tag_id = t.tag_id)
