@@ -23,10 +23,24 @@
 	<div class="collapse navbar-collapse" id="navbarNavDropdown">
 		<ul class="navbar-nav">
 			<li class="nav-item">
+				<a class="nav-link" href="/faq">FAQ</a>
+			</li>
+			<li class="nav-item">
 				<a class="nav-link" href="/hacks">ROM Hacks </a>
 			</li> 
 			<li class="nav-item">
 				<a class="nav-link" href="/megapack">Megapack</a>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					Gameplay Tools
+				</a>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="/codes">Codes </a></li>
+					<li><a class="dropdown-item" href="/stardisplay">Star Display</a></li>
+					<li><a class="dropdown-item" href="/patcher">Online Patcher</a></li>
+					<li><a class="dropdown-item" href="/plugins">Plugin Guide</a></li>
+				</ul>
 			</li>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -45,50 +59,41 @@
 					<li><a class="dropdown-item" href="/events/ssrm2020">SSRM2020</a></li>
 				</ul>
 			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					Gameplay Tools
-				</a>
-				<ul class="dropdown-menu">
-					<li><a class="dropdown-item" href="/codes">Codes </a></li>
-					<li><a class="dropdown-item" href="/stardisplay">Star Display</a></li>
-					<li><a class="dropdown-item" href="/patcher">Online Patcher</a></li>
-					<li><a class="dropdown-item" href="/plugins">Plugin Guide</a></li>
-				</ul>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/faq">FAQ</a>
-			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="http://discord.sm64romhacks.com">Discord</a>
 			</li>
-<li class="nav-item">
-	<a class="nav-link" href="https://ko-fi.com/marvjungs">Support!</a>
-</li>
-	<?php if(!filter_var($_COOKIE['logged_in'], FILTER_VALIDATE_BOOLEAN)) { ?>    
-		<li class="nav-item"><a href="/login" class="nav-link" title="By logging in you agree with our Terms of Service">Login</a></li>
-	<?php }?>
-	<?php if(filter_var($_COOKIE['logged_in'], FILTER_VALIDATE_BOOLEAN)) { 
-		if(in_array($_COOKIE['discord_id'], ADMIN_SITE)) {
-			$available_actions = "&nbsp;<span class=\"badge badge-light\">" . sizeof(getAllPendingHacksFromDatabase($pdo)) . "</span>";
-		}
-		else {
-			$available_actions = "&nbsp;";
-		}
-		?>
-		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-				<img src="<?php echo $avatar_url;?>" width=16 height=16 />&nbsp;<?php echo $_COOKIE['global_name'] . $available_actions;?>
+			<li class="nav-item">
+				<a class="nav-link" href="/streams">Streams</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="https://ko-fi.com/marvjungs">Support!</a>
+			</li>
+			<?php if(!filter_var($_COOKIE['logged_in'], FILTER_VALIDATE_BOOLEAN)) { ?>    
+				<li class="nav-item"><a href="/login" class="nav-link" title="By logging in you agree with our Terms of Service">Login</a></li>
+			<?php }?>
+			<?php if(filter_var($_COOKIE['logged_in'], FILTER_VALIDATE_BOOLEAN)) { 
+				if(in_array($_COOKIE['discord_id'], ADMIN_SITE)) {
+					$available_actions = "&nbsp;<span class=\"badge badge-light\">" . sizeof(getAllPendingHacksFromDatabase($pdo)) . "</span>";
+				}
+				else {
+					$available_actions = "&nbsp;";
+				}
+				?>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<img src="<?php echo $avatar_url;?>" width=16 height=16 />&nbsp;<?php echo $_COOKIE['global_name'] . $available_actions;?>
 				</a>
 				<ul class="dropdown-menu">
 					<?php if(in_array($_COOKIE['discord_id'], ADMIN_SITE)) { ?>
 						<li><a class="dropdown-item" href="/admin">Admin Page</a></li>
 						<li><a class="dropdown-item" href="/users">Users</a></li> <?php } ?>
-				<li><a class="dropdown-item" href="/users/<?php print($_COOKIE['discord_id']);?>">Profile</a></li>
-				<hr/>
-				<li><a class="dropdown-item" href="/login/logout.php">Logout</a></li>
-				<li><a class="dropdown-item text-danger" href="/login/deleteAccount.php">Delete Account</a></li>
-				</ul></li><?php } ?>
+					<li><a class="dropdown-item" href="/users/<?php print($_COOKIE['discord_id']);?>">Profile</a></li>
+					<hr/>
+					<li><a class="dropdown-item" href="/login/logout.php">Logout</a></li>
+					<li><a class="dropdown-item text-danger" href="/login/deleteAccount.php">Delete Account</a></li>
+				</ul>
+			</li>
+		<?php } ?>
 		</ul>
 	</div>
 </nav>
