@@ -24,7 +24,7 @@ async function getAllStreams() {
 
 function getHTMLContentForStream(stream) {
     const thumbnail = stream.thumbnail_url.replace("{width}", 1280).replace("{height}", 720);
-    const title = stream.title.replace("<", "&lt;").replace(">", "&gt;");
+    const title = stream.title.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
     const viewer_count = stream.viewer_count;
     const user_name = stream.user_name;
     const user_login = stream.user_login;
