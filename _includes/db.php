@@ -553,7 +553,12 @@ function getPatchFromDatabase($pdo, $hack_id)
 
 function getAllPatchesFromDatabase($pdo)
 {
-	$sql = "SELECT h.hack_id, h.hack_patchname FROM hacks h WHERE hack_verified=1";
+	$sql = "SELECT h.hack_id, h.hack_name, h.hack_version, h.hack_patchname, GROUP_CONCAT(DISTINCT a.author_name SEPARATOR ', ') AS hack_author 
+			FROM hacks h 
+			LEFT JOIN hacks_authors ha ON (h.hack_id = ha.hack_id) 
+			LEFT JOIN author a ON (ha.author_id = a.author_id)
+			WHERE hack_verified=1
+			GROUP BY h.hack_id";
 	try {
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute();
