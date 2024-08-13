@@ -1,0 +1,25 @@
+.ce-block__content,
+.ce-toolbar__content {
+    max-width: unset;
+}
+
+.ce-toolbar__plus {
+    color: white;
+}
+
+[id^=editor-] {
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: 20px;
+    width: 100%;
+    padding: 1rem;
+    padding-left: 2rem;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: keep-all;
+    height: fit-content;
+} 
+
+.codex-editor__redactor {
+    padding: 0 !important;
+    min-height: 240px;
+}

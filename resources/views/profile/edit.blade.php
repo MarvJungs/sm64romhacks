@@ -1,29 +1,37 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
+<x-layout>
+    <form action="/profile" method="post">
+        @csrf
+        @method('PUT')
+        <div class="row">
+            <div class="col">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" class="form-control mb-4 w-auto"
+                    @disabled(true) value="{{ $user->display_name }}">
             </div>
-
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
+            <div class="col">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" @disabled(true)
+                    class="form-control mb-4 w-auto" value="{{ $user->email }}">
             </div>
         </div>
-    </div>
-</x-app-layout>
+
+        <div class="row">
+            <div class="col">
+                <label for="gender">Gender</label>
+                <input type="text" name="gender" id="gender" class="form-control mb-4 w-auto"
+                    value="{{ $user->gender }}">
+            </div>
+            <div class="col">
+                <label for="country">Country</label>
+                <select name="country" id="country" class="form-select mb-4 w-auto">
+                    <option value=""></option>
+                    @foreach ($countries as $country)
+                        <option value="{{ $country['iso2'] }}" @selected($user->country == $country['iso2'])>{{ $country['name'] }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <button class="form-control btn btn-primary" type="submit">Save Changes!</button>
+    </form>
+</x-layout>

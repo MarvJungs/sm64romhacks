@@ -1,3 +1,35 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("./bootstrap/bootstrap.css");
+@import url("./fontawesome/fontawesome.css");
+@import url("./fontawesome/brands.css");
+@import url("./fontawesome/solid.css");
+@import url("./streams.css");
+@import url("./megapack.css");
+@import url('./editorjs.css');
+/* @import url('./RomPatcher.css'); */
+@import url('./patcher.css');
+@import url('/node_modules/flag-icons/css/flag-icons.min.css');
+
+label:has(+ [required])::after {
+    content: ' *';
+}
+
+a:hover {
+    color: #007053;
+    text-decoration: underline;
+}
+
+a {
+    color: #00bc8c;
+    text-decoration: none;
+}
+
+.nav-link {
+    color: #00bc8c;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: white;
+    text-decoration: none;
+}
+
