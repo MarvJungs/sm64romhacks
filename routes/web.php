@@ -17,9 +17,10 @@ use App\Http\Controllers\DisruptionController;
 use App\Http\Controllers\ModerationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/news');
+// Route::redirect('/', '/news');
 Route::redirect('/stardisplay', 'https://github.com/aglab2/SM64StarDisplay');
 Route::redirect('/plugins', 'https://sites.google.com/view/shurislibrary/plugin-guide');
 Route::redirect('/faq', 'https://docs.google.com/document/d/10m5ViLktz-d6SwhHtSeb7gVzDUldOqIBlJte_kr4U14/edit#heading=h.ynvmen1681ne');
@@ -27,6 +28,7 @@ Route::redirect('/discord', 'https://discord.com/invite/BYrpMBG');
 Route::redirect('/support', 'https://ko-fi.com/marvjungs');
 Route::redirect('login', 'auth/discord');
 
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('hacks/download/{version}', [HackController::class, 'download']);
 Route::get('hacks/random', [HackController::class, 'random']);
 Route::get('hacks/{hack}/create', [VersionController::class, 'create']);

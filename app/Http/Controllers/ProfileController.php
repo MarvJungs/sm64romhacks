@@ -18,7 +18,8 @@ class ProfileController extends Controller
 
         return view('profile.index', [
             'user' => $user,
-            'versions' => $user->author->versions
+            'versions' => $user->author?->versions,
+            'comments' => $user->comments
         ]);
     }
 

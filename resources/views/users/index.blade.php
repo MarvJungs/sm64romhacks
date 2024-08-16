@@ -13,13 +13,18 @@
         @foreach ($users as $user)
             <tbody>
                 <tr>
-                    <td><img src="{{$user->avatar}}" height="32" width="32" /> {{$user->display_name}}</td>
-                    <td>{{$user->id}}</td>
-                    <td>{{$user->role->name}}</td>
-                    <td><span class="fi fi-{{strtolower($user->country)}} w-100 h-auto"></span></td>
-                    <td>{{$user->gender}}</td>
-                    <td>{{$user->created_at}}</td>
-                    <td>{{$user->updated_at}}</td>
+                    <td>
+                        <img src="{{ $user->avatar }}" height="32" width="32" />
+                        <a href="/users/{{ $user->id }}">
+                            {{ $user->display_name }}
+                        </a>
+                    </td>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->role->name }}</td>
+                    <td><span class="fi fi-{{ strtolower($user->country) }} w-100 h-auto"></span></td>
+                    <td>{{ $user->gender }}</td>
+                    <td>{{ $user->created_at }}</td>
+                    <td>{{ $user->updated_at }}</td>
                 </tr>
             </tbody>
         @endforeach

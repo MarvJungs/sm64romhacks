@@ -18,6 +18,15 @@ class UsersController extends Controller
         ]);
     }
 
+    public function show(User $user)
+    {
+        return view('users.show', [
+            'user' => $user,
+            'versions' => $user->author?->versions,
+            'comments' => $user->comments->sortByDesc('created_at')
+        ]);
+    }
+
     public function manage()
     {
         $users = User::all()->filter(function (User $user, int $key) {
