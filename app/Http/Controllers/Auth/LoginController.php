@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Notifications\Registered;
+use App\Mail\RegisteredMail;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +37,7 @@ class LoginController extends Controller
             $user = User::create(
                 array_merge($data, ['id' => $discord_user->id, 'role_id' => $role_id])
             );
-            $user->notify(new Registered());
+            dd(Mail::to($user->email)->send(new RegisteredMail($user)));
         }
         Auth::login($user);
 
