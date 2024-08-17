@@ -37,7 +37,7 @@ class LoginController extends Controller
             $user = User::create(
                 array_merge($data, ['id' => $discord_user->id, 'role_id' => $role_id])
             );
-            dd(Mail::to($user->email)->send(new RegisteredMail($user)));
+            (Mail::to($user->email)->send(new RegisteredMail($user)));
         }
         Auth::login($user);
 
