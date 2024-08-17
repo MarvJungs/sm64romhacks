@@ -1,5 +1,5 @@
 <x-layout>
-    <form action="{{ route('cheats.store') }}" method="POST" id="createCheat">
+    <form action="{{ route('cheats.store') }}" method="POST" id="cheatForm">
         @csrf
         <div class="row mb-4">
             <div class="col">
@@ -11,26 +11,14 @@
         </div>
         <div class="row mb-4">
             <div class="col">
-                <div class="card">
-                    <div class="card-header">Description</div>
-                    <div class="card-body over-hidden">
-                        <div class="card-text">
-                            <div id="editor-description" class="p-3"></div>
-                        </div>
-                    </div>
-                </div>
+                <label class="mb-3" for="description">Description</label>
+                <div id="editor-description"></div>
             </div>
         </div>
         <div class="row mb-4">
             <div class="col">
-                <div class="card">
-                    <div class="card-header">Cheat Code</div>
-                    <div class="card-body over-hidden">
-                        <div class="card-text">
-                            <div id="editor-cheat" class="p-3"></div>
-                        </div>
-                    </div>
-                </div>
+                <label for="code">Cheat Code</label>
+                <textarea name="code" class="form-control" id="code" cols="15" rows="10"></textarea>
             </div>
         </div>
         <div class="d-flex justify-content-center">
