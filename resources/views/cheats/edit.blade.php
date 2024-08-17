@@ -4,7 +4,7 @@
         <div class="row mb-4">
             <div class="col">
                 <label for="title">Display Name</label>
-                <input class="form-control" name="title" id="title" required>
+                <input class="form-control" name="title" id="title" value="{{ $cheat->title }}" required>
                 <input type="hidden" name="description" id="description" value="{{ $cheat->description }}">
                 <input type="hidden" name="code" id="code">
             </div>
@@ -18,7 +18,9 @@
         <div class="row mb-4">
             <div class="col">
                 <label for="code">Cheat Code</label>
-                <textarea name="code" class="form-control" id="code" cols="15" rows="10"></textarea>
+                <textarea name="code" class="form-control" id="code" cols="15" rows="10">
+                    {{ $cheat->code }}
+                </textarea>
             </div>
         </div>
         <div class="d-flex justify-content-center">

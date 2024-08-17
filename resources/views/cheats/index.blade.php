@@ -14,7 +14,9 @@
                 <h2 class="text-decoration-underline">{{ $cheat->title }}</h2>
             </div>
             <div class="col">
-                <button type="button" data-bs-toggle="tooltip" title="Copy Cheatcode" class="btn btn-primary" onclick="copyCheat('{{ Str::slug($cheat->title) }}')"><span class="fa-solid fa-link"></span></button><br />
+                <button type="button" data-bs-toggle="tooltip" title="Copy Cheatcode" class="btn btn-primary"
+                    onclick="copyCheat('{{ Str::slug($cheat->title) }}')"><span
+                        class="fa-solid fa-link"></span></button><br />
             </div>
         </div>
         @isset($cheat->description)
@@ -25,9 +27,7 @@
         @endisset
         <h3>Cheat Code</h3>
         <div id={{ Str::slug($cheat->title) }}>
-            @foreach (json_decode($cheat->code) as $item)
-                {!! parseEditorText($item) !!}
-            @endforeach
+            {!! nl2br($cheat->code) !!}
         </div>
         <hr />
     @endforeach
