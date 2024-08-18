@@ -14,14 +14,14 @@ class APIHacksController extends Controller
     {
         $hacks = Hack::with([
             'versions:id,hack_id,name,starcount,releasedate,downloadcount,filename',
-            'versions.authors:name'
-            ])
-        ->orderBy('name')
-        ->get([
-            'hacks.id',
-            'hacks.name',
-            'hacks.description',
-        ]);
+            'versions.authors:name',
+            'tags:name'
+        ])
+            ->orderBy('hacks.name')
+            ->get([
+                'hacks.id',
+                'hacks.name',
+            ]);
         return response()->json($hacks);
     }
 
@@ -34,7 +34,7 @@ class APIHacksController extends Controller
             $hack = Hack::with([
                 'versions:id,hack_id,name,starcount,releasedate,downloadcount,filename',
                 'versions.authors:name'
-                ])->findOrFail($id, ['hacks.id', 'hacks.name', 'hacks.description']);
+            ])->findOrFail($id, ['hacks.id', 'hacks.name', 'hacks.description']);
             return response()->json($hack);
         } catch (\Throwable $th) {
             return response()->json([

@@ -20,12 +20,12 @@ return new class extends Migration
 
         Schema::create('hacks', function (Blueprint $table) {
             $table->uuid('id')->primary()->nullable(false);
-            $table->string('name')->unique()->nullable(false);
+            $table->string('name')->unique()->nullable(false)->index();
             $table->text('description')->nullable(true);
             $table->float('difficulty')->default(0.00)->nullable(false);
             $table->float('peak')->default(0.00)->nullable(false);
             $table->boolean('megapack')->default(false)->nullable(false);
-            $table->boolean('verified')->default(false)->nullable(false);
+            $table->boolean('verified')->default(false)->nullable(false)->index();
             $table->boolean('rejected')->default(false)->nullable(false);
             $table->timestamps();
         });
