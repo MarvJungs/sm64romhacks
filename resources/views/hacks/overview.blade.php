@@ -33,17 +33,7 @@
                 <th scope="col" hidden>Tags</th>
             </tr>
         </thead>
-        <tbody>
-            {{-- @foreach ($hacks as $hack)
-                <tr>
-                    <td><a href="/hacks/{{ $hack->id }}">{{ $hack->name }}</a></td>
-                    <td>{!! getAuthorsList($hack) !!}</td>
-                    <td>{{ $hack->release_date }}</td>
-                    <td>{{ $hack->starcount }}</td>
-                    <td class='text-muted'>Downloads: {{ $hack->total_downloads }}</td>
-                    <td hidden>{{ implode(', ', $hack->tags()->pluck('name')->toArray()) }}</td>
-                </tr>
-            @endforeach --}}
+        <tbody id="hacksTableBody">
         </tbody>
     </table>
 </section>

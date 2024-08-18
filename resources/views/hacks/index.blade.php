@@ -5,6 +5,14 @@
                 placeholder="Search for Hacknames...">
         </div>
         <div class="col">
+            <input name="authornameFilter" id="authornameFilter" class="form-control" type="text"
+                placeholder="Search for Authornames...">
+        </div>
+        <div class="col">
+            <input name="releasedateFilter" id="releasedateFilter" class="form-control" type="text"
+                placeholder="Search for Release Dates...">
+        </div>
+        <div class="col">
             <select name="tagFilter" id="tagFilter" class="form-select">
                 <option value="">Select A Category</option>
                 @foreach ($tags as $tag)
@@ -13,7 +21,7 @@
             </select>
         </div>
         <div class="col">
-            <select id="sortDropdown" class="form-select">
+            <select id="sortFilter" class="form-select">
                 <option value="">Sort By</option>
                 <option value="name_asc">Hackname (ASC)</option>
                 <option value="name_desc">Hackname (DESC)</option>

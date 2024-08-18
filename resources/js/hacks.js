@@ -5,8 +5,8 @@ const DEBOUNCE_DELAY = 200;
 const HACK_NAME_COLUMN_INDEX = 0;
 const AUTHOR_NAME_COLUMN_INDEX = 1;
 const HACK_DATE_COLUMN_INDEX = 2;
-const HACK_DOWNLOADS_COLUMN_INDEX = 3;
-const TAG_COLUMN_INDEX = 4;
+const HACK_DOWNLOADS_COLUMN_INDEX = 4;
+const TAG_COLUMN_INDEX = 5;
 
 /**
  * @typedef {Object} HackTableRowContent
@@ -37,11 +37,17 @@ const TAG_COLUMN_INDEX = 4;
  */
 
 async function main() {
-    const data = await getData();
-    const hacksTable = getHacksTable(data);
-    const hacksCollectionDiv = document.querySelector("#hacksCollection");
-    hacksCollectionDiv.innerHTML = hacksTable;
+    let data;
+    let url = '/api/v1/hacks';
+    const hacksTableBody = document.getElementById('hacksTableBody');
     const myTable = document.getElementById("hacksTable");
+    do {
+        data = await getData(url);
+        const hacksTable = getHackTableRows(data.data);
+        hacksTableBody.innerHTML += hacksTable;
+        url = data.next_page_url;
+    }
+    while(data.next_page_url != null);
 
     if (document.getElementById("hack_release_date") != null) document.getElementById("hack_release_date").setAttribute("max", new Date().toISOString().slice(0, 10));
 
@@ -60,19 +66,19 @@ async function main() {
         }
     });
 
-    const hackNamesInput = document.getElementById("hackNamesInput");
+    const hackNamesInput = document.getElementById("hacknameFilter");
     setHackNamesFilterHandler(hackNamesInput, tableRowContents);
 
-    const authorNamesInput = document.getElementById("authorNamesInput");
+    const authorNamesInput = document.getElementById("authornameFilter");
     setAuthorNamesFilterHandler(authorNamesInput, tableRowContents);
 
-    const hackDatesInput = document.getElementById("hackDatesInput");
+    const hackDatesInput = document.getElementById("releasedateFilter");
     setHackDatesFilterHandler(hackDatesInput, tableRowContents);
 
-    const tagInput = document.getElementById("tagInput");
+    const tagInput = document.getElementById("tagFilter");
     setTagFilterHandler(tagInput, tableRowContents);
 
-    const sortInput = document.getElementById('sortInput');
+    const sortInput = document.getElementById('sortFilter');
     sortInput.addEventListener("change", debounce((onChange) => {
         const sortRequirement = onChange.target.value;
         console.log(sortRequirement)
@@ -100,9 +106,9 @@ async function main() {
 /**
  * @returns {Hack[]}
  */
-async function getData() {
+async function getData(url) {
     try {
-        const response = await fetch(`/api/v1/hacks`);
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`${response.status} ${response.statusText}`);
         }
@@ -118,32 +124,11 @@ async function getData() {
  * @param {Hack[]} hacks
  * @returns {string}
  */
-function getHacksTable(hacks) {
-    const headerRow = getHacksTableHeaderRow();
+function getHackTableRows(hacks) {
     const hackTableRows = hacks.map((hack) => getTableRowFromHack(hack)).join("");
 
     return `
-    <table class="table table-sm table-bordered table-hover" id="hacksTable">
-      ${headerRow}
       ${hackTableRows}
-    </table>
-  `;
-}
-
-/**
- * @returns {string}
- */
-function getHacksTableHeaderRow() {
-
-    return `
-    <tr>
-      <th><b>Hackname</b></th>
-      <th class="creator"><b>Creator</b></th>
-      <th class="text-nowrap">Initial Release Date</th>
-      <th>Starcount</th>
-      <th>Downloads</th>
-      <th hidden>Tag</th>
-    </tr>
   `;
 }
 

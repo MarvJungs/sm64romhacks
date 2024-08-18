@@ -18,10 +18,7 @@ class APIHacksController extends Controller
             'tags:name'
         ])
             ->orderBy('hacks.name')
-            ->get([
-                'hacks.id',
-                'hacks.name',
-            ]);
+            ->paginate(400, ['hacks.id', 'hacks.name']);
         return response()->json($hacks);
     }
 
