@@ -6,10 +6,12 @@ use App\Models\Hack;
 use App\Models\Version;
 use App\Http\Requests\StoreHackRequest;
 use App\Http\Requests\UpdateHackRequest;
+use App\Models\Download;
 use Illuminate\Http\Request;
 use App\Models\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class HackController extends Controller
 {
@@ -174,6 +176,11 @@ class HackController extends Controller
         $versionname = $version->name;
         $extension = pathinfo($version->filename, PATHINFO_EXTENSION);
         $version->increment('downloadcount');
+
+        Download::create([
+            'version_id' => $version->id,
+            'user_id' => Auth::user()?->id
+        ]);
 
         $downloadedFilename = Str::slug(Str::wrap($hackname, '', '-') . $versionname) . '.' . $extension;
         return Storage::download($version->filename, $downloadedFilename);
