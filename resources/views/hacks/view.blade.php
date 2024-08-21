@@ -18,10 +18,12 @@
                     <td>{{ $hack->name }}</td>
                     <td>{{ $version->name }}</td>
                     <td>
-                        <a href="/hacks/download/{{ $version->id }}">Download</a>
-                        <span class="text-muted">({{ round(Storage::size($version->filename) / 1048576, 2) }}
-                            MB)</span><br />
-                        <span class="text-muted">Downloads: {{ $version->downloadcount }}</span><br />
+                        <a href="/hacks/download/{{ $version->id }}">Download</a> |
+                        <a href="/patcher?id={{ $version->id }}">Patch File</a> <br />
+                        <span class="text-muted">Downloads: {{ $version->downloadcount }} |
+                            {{ round(Storage::size($version->filename) / 1048576, 2) }}
+                            MB
+                        </span>
                     </td>
                     <td>{{ implode(', ', $version->authors()->pluck('name')->toArray()) }}</td>
                     <td>{{ $version->starcount }}</td>
@@ -101,7 +103,7 @@
                     </header>
                     <div class="card-body">
                         <h2 class="card-title">{{ $comment->title }}</h2>
-                        <hr/>
+                        <hr />
                         <p class="card-text">{!! nl2br(htmlspecialchars($comment->text)) !!}</p>
                     </div>
                     <footer class="card-footer text-body-secondary">
