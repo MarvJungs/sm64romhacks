@@ -5,8 +5,7 @@
 @import url("./streams.css");
 @import url("./megapack.css");
 @import url('./editorjs.css');
-/* @import url('./RomPatcher.css'); */
-@import url('./patcher.css');
+@import url('./RomPatcher.css');
 @import url('/node_modules/flag-icons/css/flag-icons.min.css');
 
 label:has(+ [required])::after {

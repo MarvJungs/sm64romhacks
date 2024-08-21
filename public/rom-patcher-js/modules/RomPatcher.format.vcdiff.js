@@ -6,7 +6,6 @@
 	some code and ideas borrowed from:
 	https://hack64.net/jscripts/libpatch.js?6
 */
-import BinFile from "./BinFile";
 //const VCDIFF_MAGIC=0xd6c3c400;
 const VCDIFF_MAGIC='\xd6\xc3\xc4';
 /*
@@ -19,6 +18,7 @@ const XDELTA_110_MAGIC='%XDZ004';
 */
 if(typeof module !== "undefined" && module.exports){
 	module.exports = VCDIFF;
+	BinFile = require("./BinFile");
 }
 
 function VCDIFF(patchFile){
@@ -184,14 +184,19 @@ VCDIFF.fromFile=function(file){
 
 function VCDIFF_Parser(binFile, offset)
 {
-    BinFile.call(this, 0);
 	this.fileSize=binFile.fileSize;
 	this._u8array=binFile._u8array;
-	this._dataView=binFile._dataView;
     this.offset=offset || 0;
-}
 
-VCDIFF_Parser.prototype=Object.create(BinFile.prototype);
+	/* reimplement readU8, readU32 and skip from BinFile */
+	/* in web implementation, there are no guarantees BinFile will be dynamically loaded before this one */
+	/* so we cannot rely on cloning BinFile.prototype */
+	this.readU8 = binFile.readU8;
+	this.readU32 = binFile.readU32;
+	this.skip = binFile.skip;
+	this.isEOF = binFile.isEOF;
+	this.seek = binFile.seek;
+}
 VCDIFF_Parser.prototype.read7BitEncodedInt=function(){
 	var num=0, bits = 0;
 

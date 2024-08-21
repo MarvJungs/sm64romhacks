@@ -31,7 +31,7 @@
 
 
 
-export default function BinFile(source, onLoad) {
+function BinFile(source, onLoad) {
 	this.littleEndian = false;
 	this.offset = 0;
 	this._lastRead = null;

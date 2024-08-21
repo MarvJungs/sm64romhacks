@@ -1,22 +1,27 @@
-import './rom-patcher-js/modules/BinFile';
-import './rom-patcher-js/modules/HashCalculator';
-import './rom-patcher-js/modules/RomPatcher.format.ips';
-import './rom-patcher-js/modules/RomPatcher.format.ups';
-import './rom-patcher-js/modules/RomPatcher.format.aps_n64';
-import './rom-patcher-js/modules/RomPatcher.format.aps_gba';
-import './rom-patcher-js/modules/RomPatcher.format.bps';
-import './rom-patcher-js/modules/RomPatcher.format.rup';
-import './rom-patcher-js/modules/RomPatcher.format.ppf';
-import './rom-patcher-js/modules/RomPatcher.format.pmsr';
-import './rom-patcher-js/modules/RomPatcher.format.vcdiff';
-import './rom-patcher-js/modules/zip.js/zip.min';
-import './rom-patcher-js/RomPatcher';
-import './rom-patcher-js/RomPatcher.webapp';
+import RomPatcherWeb from './rom-patcher-js/RomPatcher.webapp';
 
-window.addEventListener('load', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const myPatcherSettings = {
         language: 'en',
-        allowDropFiles: false /* if true, it adds drag and drop support,*/
+        requireValidation: false, /* if true, user won't be able to apply patch if the provided ROM is not valid*/
+        allowDropFiles: false /* if true, it adds basic drag and drop support */
     };
-    RomPatcherWeb.initialize(myPatcherSettings, 'my_patch.ips');
+    const version_id = new URLSearchParams(window.location.search).get('id');
+    if (version_id) {
+        document.getElementById('rom-patcher-input-file-patch').remove();
+        fetch(`/api/v1/version/${version_id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                RomPatcherWeb.initialize(myPatcherSettings, {
+                    file: `/hacks/download/${version_id}`,
+                    name: `${data.hack.name} - v.${data.name}`,
+                    inputCrc32: 0x3ce60709,
+                    outputName: `${data.hack.name} - v.${data.name}`
+                });
+            });
+    }
+    else {
+        document.getElementById('rom-patcher-select-patch').remove();
+        RomPatcherWeb.initialize(myPatcherSettings)
+    }
 });
