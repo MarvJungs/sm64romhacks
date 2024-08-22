@@ -12,10 +12,6 @@
                 <label for="name">Event Title</label>
                 <input íd="name" class="form-control" name="name" value="{{ $event->name }}" required>
             </div>
-            <div class="col">
-                <label for="horaro_id">Schedule ID</label>
-                <input id="horaro_id" class="form-control" name="horaro_id" value="{{ $event->horaro_id }}">
-            </div>
         </div>
         <div class="hstack gap-3 mb-4">
             <div class="p-2">

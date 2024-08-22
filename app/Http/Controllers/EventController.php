@@ -6,6 +6,7 @@ use App\Models\Event;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -36,10 +37,22 @@ class EventController extends Controller
     {
         $event = Event::where(['slug' => $request->slug])->get();
         if (sizeof($event) == 0) {
+            $response = Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
+                ->post(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events', [
+                    'entity_metadata' => [
+                        'location' => 'https://www.twitch.tv/sm64romhacks'
+                    ],
+                    'name' => $request->title,
+                    'privacy_level' => 2,
+                    'scheduled_start_time' => $request->start_utc,
+                    'scheduled_end_time' => $request->end_utc,
+                    'description' => getDiscordEmbedText($request->description),
+                    'entity_type' => 3,
+                ]);
             $event = Event::create([
                 'slug' => $request->slug,
                 'name' => $request->title,
-                'horaro_id' => $request->schedule_id != null ? $request->schedule_id : null,
+                'guild_schedule_id' => $response->json()['id'],
                 'start_utc' => $request->start_utc != null ? $request->start_utc : null,
                 'end_utc' => $request->end_utc != null ? $request->end_utc : null,
                 'description' => $request->description != null ? $request->description : null,
@@ -82,10 +95,23 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
+        // dd($event->guild_schedule_id);
+        $response = Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
+            ->patch(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events/' . $event->guild_schedule_id, [
+                'entity_metadata' => [
+                    'location' => 'https://www.twitch.tv/sm64romhacks'
+                ],
+                'name' => $request->name,
+                'privacy_level' => 2,
+                'scheduled_start_time' => $request->start_utc,
+                'scheduled_end_time' => $request->end_utc,
+                'description' => getDiscordEmbedText($request->description),
+                'entity_type' => 3,
+            ]);
         $event->update([
             'slug' => $request->slug,
             'name' => $request->name,
-            'horaro_id' => $request->horaro_id != null ? $request->horaro_id : null,
+            'guild_schedule_id' => $response->notFound() ? null : $response->json()['id'],
             'start_utc' => $request->start_utc != null ? $request->start_utc : null,
             'end_utc' => $request->end_utc != null ? $request->end_utc : null,
             'description' => $request->description != null ? $request->description : null,
@@ -100,6 +126,10 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        if (!is_null($event->guild_schedule_id)) {
+            $response = Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
+                ->delete(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events/' . $event->guild_schedule_id);
+        }
         $event->delete();
         return redirect('/')->with('success', 'event ' . $event->name . ' has successfully been deleted');
     }

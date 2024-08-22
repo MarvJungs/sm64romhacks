@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->nullable(false);
-            $table->string('horaro_id')->nullable(true);
+            $table->string('guild_schedule_id')->nullable(true);
             $table->string('name')->nullable(false);
             $table->text('description')->nullable(true);
-            $table->dateTime('start_utc')->nullable(true);
-            $table->dateTime('end_utc')->nullable(true);
+            $table->dateTime('start_utc')->nullable(false);
+            $table->dateTime('end_utc')->nullable(false);
             $table->boolean('marathon')->nullable(false);
             $table->timestamps();
         });

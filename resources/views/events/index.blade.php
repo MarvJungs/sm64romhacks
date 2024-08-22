@@ -13,7 +13,7 @@
     @foreach ($events as $event)
         <div class="card mb-4">
             <h5 class="card-header">
-                <form action="/events/destroy" method="post">
+                <form action="{{route('events.destroy', ['event' => $event])}}" method="post">
                     @csrf
                     @method('DELETE')
                     {{ $event->name }}

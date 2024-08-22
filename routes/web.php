@@ -46,12 +46,7 @@ Route::get('apps/league2022', [AppController::class, 'league2022'])->name('apps.
 Route::get('apps/league2023', [AppController::class, 'league2023'])->name('apps.league2023');
 Route::get('users/{user}', [UsersController::class, 'show'])->name('users.show');
 
-Route::resource('/events', EventController::class)->only([
-    'create',
-    'store',
-    'edit',
-    'update'
-])->middleware('checkrole:3,2,1');
+Route::resource('/events', EventController::class)->except('show')->middleware('checkrole:3,2,1');
 Route::resource('cheats', CheatController::class);
 Route::resource('events', EventController::class)->only(['show']);
 Route::resource('hacks', HackController::class);

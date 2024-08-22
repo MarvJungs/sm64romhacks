@@ -13,7 +13,7 @@ class Event extends Model
     protected $fillable = [
         'slug',
         'name',
-        'horaro_id',
+        'guild_schedule_id',
         'start_utc',
         'end_utc',
         'description',

@@ -12,10 +12,6 @@
                 <label for="title">Event Title</label>
                 <input íd="title" class="form-control" name="title" required>
             </div>
-            <div class="col">
-                <label for="schedule_id">Schedule ID</label>
-                <input id="schedule_id" class="form-control" name="schedule_id">
-            </div>
         </div>
         <div class="hstack gap-3 mb-4">
             <div class="p-2">
