@@ -31,6 +31,13 @@
                     @endforeach
                 </select>
             </div>
+            <div class="col d-flex align-items-center">
+                <div class="form-check">
+                    <label class="form-check-label" for="notify">Receive Updates?</label>
+                    <input class="form-check-input" type="checkbox" name="notify" id="notify"
+                        @checked($user->notify)>
+                </div>
+            </div>
         </div>
         <button class="form-control btn btn-primary" type="submit">Save Changes!</button>
     </form>
