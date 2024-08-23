@@ -32,3 +32,6 @@ a {
     text-decoration: none;
 }
 
+.clickable {
+    cursor: pointer;
+}

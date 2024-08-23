@@ -22,14 +22,14 @@
 @endphp
 
 <section id="hacksCollection">
-    <table class="table table-hover mt-3" id="hacksTable">
+    <table class="table table-hover" id="hacksTable">
         <thead>
             <tr>
-                <th scope="col">Hackname</th>
-                <th scope="col">Creator</th>
-                <th scope="col">Initial Release Date</th>
-                <th scope="col">Starcount</th>
-                <th scope="col">Downloads</th>
+                <th id="hack" class="clickable text-primary" scope="col">Hackname</th>
+                <th id="creator" class="clickable text-primary" scope="col">Creator</th>
+                <th id="releasedate" class="clickable text-primary" scope="col">Release Date</th>
+                <th id="starcount" class="clickable text-primary" scope="col">Starcount</th>
+                <th id="downloads" class="clickable text-primary" scope="col">Downloads</th>
                 <th scope="col" hidden>Tags</th>
             </tr>
         </thead>

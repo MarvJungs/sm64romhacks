@@ -47,11 +47,7 @@ async function main() {
         hacksTableBody.innerHTML += hacksTable;
         url = data.next_page_url;
     }
-    while(data.next_page_url != null);
-
-    if (document.getElementById("hack_release_date") != null) document.getElementById("hack_release_date").setAttribute("max", new Date().toISOString().slice(0, 10));
-
-
+    while (data.next_page_url != null);
 
     /** @type {HackTableRowContent[]} */
     const tableRowContents = Array.from(myTable.getElementsByTagName("tr")).slice(1).map((tableRow) => {
@@ -66,6 +62,8 @@ async function main() {
         }
     });
 
+    const params = getSearchQuery();
+
     const hackNamesInput = document.getElementById("hacknameFilter");
     setHackNamesFilterHandler(hackNamesInput, tableRowContents);
 
@@ -78,29 +76,66 @@ async function main() {
     const tagInput = document.getElementById("tagFilter");
     setTagFilterHandler(tagInput, tableRowContents);
 
-    const sortInput = document.getElementById('sortFilter');
-    sortInput.addEventListener("change", debounce((onChange) => {
-        const sortRequirement = onChange.target.value;
-        console.log(sortRequirement)
-        data.hacks.sort((a, b) => {
-            switch (sortRequirement) {
-                case "hack_name_asc":
-                    return a.hack_name.toLowerCase() > b.hack_name.toLowerCase();
-                case "hack_name_desc":
-                    return b.hack_name.toLowerCase() > a.hack_name.toLowerCase();
-                case "hack_release_date_asc":
-                    return new Date(a.release_date) - new Date(b.releaseDate);
-                case "hack_release_date_desc":
-                    return new Date(b.releaseDate) - new Date(a.releaseDate);
-                case "hack_download_count_asc":
-                    return Number(a.total_downloads) - Number(b.total_downloads);
-                case "hack_download_count_desc":
-                    return Number(b.total_downloads) - Number(a.total_downloads);
-                default:
-                    return a.hack_name.toLowerCase() - b.hack_name.toLowerCase();
+    const headers = Array.from(myTable.rows[0].children);
+    headers.forEach((header) => {
+        header.addEventListener('click', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('order', header.id);
+            if(header.id == params.order) {
+                urlParams.set('direction', 'desc');
             }
-        })
-    }))
+            else {
+                urlParams.set('direction', 'asc');
+            }
+            window.location.search = urlParams;
+        });
+    });
+    
+    const index = headers.findIndex((header) => header.id == params.order);
+    sortTable(index, params.direction);
+}
+
+function sortTable(columnIndex, direction) {
+    const table = document.getElementById("hacksTable");
+    const rows = Array.from(table.rows).slice(1);
+
+    rows.sort((rowA, rowB) => {
+        let cellA = rowA.cells[columnIndex].innerText.toLowerCase();
+        let cellB = rowB.cells[columnIndex].innerText.toLowerCase();
+        let factor;
+        if (direction == 'desc') {
+            factor = -1;
+        }
+        else {
+            factor = 1;
+        }
+
+        switch (columnIndex) {
+            case 0:
+            case 1:
+                return factor * cellA.localeCompare(cellB);
+            case 2:
+                return factor * (new Date(cellA) - new Date(cellB));
+            case 3:
+                return factor * (Number(cellA) - Number(cellB));
+            case 4:
+                cellA = cellA.replace('downloads: ', '');
+                cellB = cellB.replace('downloads: ', '');
+                return factor * (Number(cellA) - Number(cellB));
+            default:
+                break;
+        }
+    });
+
+    rows.forEach(row => table.tBodies[0].appendChild(row));
+}
+
+function getSearchQuery() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
+        order: urlParams.get('order'),
+        direction: urlParams.get('direction')
+    };
 }
 
 /**
