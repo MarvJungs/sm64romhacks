@@ -31,6 +31,7 @@ class User extends Authenticatable
         'author_id',
         'gender',
         'country',
+        'notify'
     ];
 
     /**

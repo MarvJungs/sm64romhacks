@@ -66,8 +66,8 @@
                             </a>
                             <ul class="dropdown-menu">
                                 @foreach ($events as $event)
-                                    <li><a class="dropdown-item text-uppercase"
-                                            href="/events/{{ $event->slug }}">{{ substr_replace($event->slug, ' ', strlen($event->slug) - 4, 0) }}</a>
+                                    <li><a class="dropdown-item"
+                                            href="/events/{{ $event->slug }}">{{ $event->name }}</a>
                                     </li>
                                 @endforeach
                             </ul>

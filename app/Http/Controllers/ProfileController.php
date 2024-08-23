@@ -46,7 +46,8 @@ class ProfileController extends Controller
     {
         $request->user()->update([
             'gender' => $request->gender,
-            'country' => $request->country
+            'country' => $request->country,
+            'notify' => filter_var($request->notify, FILTER_VALIDATE_BOOLEAN)
         ]);
         return Redirect::route('profile.index');
     }

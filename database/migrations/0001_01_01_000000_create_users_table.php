@@ -51,6 +51,7 @@ return new class extends Migration
             $table->unsignedBigInteger('author_id')->nullable(true);
             $table->string('country')->nullable(true);
             $table->string('gender')->nullable(true);
+            $table->boolean('notify')->nullable(false)->default(false);
             $table->timestamps();
         });
 
