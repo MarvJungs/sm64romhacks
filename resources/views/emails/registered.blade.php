@@ -319,8 +319,8 @@
                                             <div
                                                 style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#FFFFFF;">
                                                 <p>With Kind Regards<br>Your sm64romhacks Team</p><a
-                                                    href="mailto:info@sm64romhacks.com">info@sm64romhacks.com<br><a
-                                                        href="https://www.sm64romhacks.com">https://www.sm64romhacks.com</a></a>
+                                                    href="mailto:info@sm64romhacks.com" style="color: #00bc8c">info@sm64romhacks.com</a><br><a
+                                                        href="https://www.sm64romhacks.com" style="color: #00bc8c">https://www.sm64romhacks.com</a></a>
                                             </div>
                                         </td>
                                     </tr>
