@@ -37,17 +37,12 @@ const TAG_COLUMN_INDEX = 5;
  */
 
 async function main() {
-    let data;
     let url = '/api/v1/hacks';
     const hacksTableBody = document.getElementById('hacksTableBody');
     const myTable = document.getElementById("hacksTable");
-    do {
-        data = await getData(url);
-        const hacksTable = getHackTableRows(data.data);
-        hacksTableBody.innerHTML += hacksTable;
-        url = data.next_page_url;
-    }
-    while (data.next_page_url != null);
+    const data = await getData(url);
+    const hacksTable = getHackTableRows(data);
+    hacksTableBody.innerHTML += hacksTable;
 
     /** @type {HackTableRowContent[]} */
     const tableRowContents = Array.from(myTable.getElementsByTagName("tr")).slice(1).map((tableRow) => {
@@ -81,7 +76,7 @@ async function main() {
         header.addEventListener('click', () => {
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('order', header.id);
-            if(header.id == params.order) {
+            if (header.id == params.order) {
                 urlParams.set('direction', 'desc');
             }
             else {
@@ -90,7 +85,7 @@ async function main() {
             window.location.search = urlParams;
         });
     });
-    
+
     const index = headers.findIndex((header) => header.id == params.order);
     sortTable(index, params.direction);
 }
@@ -174,11 +169,12 @@ function getHackTableRows(hacks) {
 function getTableRowFromHack(hack) {
     const id = hack.id;
     const name = hack.name;
-    const authors = (hack.authors).join(', ');
-    const releaseDate = hack.release_date;
+    const versionData = getVersionsData(hack);
+    const authors = versionData.authors;
+    const releaseDate = versionData.releaseDate;
     const tag = (hack.tags).join(', ');
-    const downloads = hack.total_downloads;
-    const starcount = hack.starcount
+    const downloads = versionData.downloads;
+    const starcount = versionData.starcount
 
     return `
     <tr>
@@ -190,6 +186,42 @@ function getTableRowFromHack(hack) {
       <td hidden>${tag}</td>
     </tr>
   `;
+}
+
+function getVersionsData(hack) {
+    const versions = hack.versions;
+    if(versions.length == 0) {
+        return {
+            authors: 'unknown',
+            releaseDate: '9999-12-31',
+            downloads: 0,
+            starcount: 0
+        }
+    }
+    return {
+        authors: versions[0].authors.map((author) => author.name).join(', '),
+        releaseDate: versions[0].releasedate,
+        downloads: getDownloads(versions),
+        starcount: getMaxStarcount(versions)
+    }
+}
+
+function getDownloads(versions) {
+    let downloads = 0;
+    versions.forEach(version => {
+        downloads += version.downloadcount
+    });
+    return downloads;
+}
+
+function getMaxStarcount(versions) {
+    let starcount = 0;
+    versions.forEach(version => {
+        if (version.starcount > starcount) {
+            starcount = version.starcount;
+        }
+    });
+    return starcount;
 }
 
 /**

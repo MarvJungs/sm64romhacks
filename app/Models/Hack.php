@@ -22,33 +22,6 @@ class Hack extends Model
         'rejected'
     ];
 
-    protected $appends = ['total_downloads', 'release_date', 'starcount', 'authors'];
-
-    protected function getTotalDownloadsAttribute()
-    {
-        return (int)$this->versions()->sum('downloadcount');
-    }
-
-    protected function getReleaseDateAttribute()
-    {
-        return $this->versions()->orderBy('releasedate', 'asc')->pluck('releasedate')->first();
-    }
-
-    protected function getStarcountAttribute()
-    {
-        return $this->versions()->max('starcount');
-    }
-
-    protected function getAuthorsAttribute()
-    {
-        $firstVersion = $this->versions()->orderBy('releasedate', 'asc')->first();
-        if ($firstVersion) {
-            // $authors = $firstVersion->authors->pluck('name')->toArray();
-            return $firstVersion->authors->pluck('name');
-        }
-        return ['unknown'];
-    }
-
     public function versions(): HasMany
     {
         return $this->HasMany(Version::class);

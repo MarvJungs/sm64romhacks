@@ -33,7 +33,7 @@
                 <th scope="col" hidden>Tags</th>
             </tr>
         </thead>
-        <tbody id="hacksTableBody">
+        <tbody id="hacksTableBody">         
         </tbody>
     </table>
 </section>

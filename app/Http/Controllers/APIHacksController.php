@@ -12,12 +12,13 @@ class APIHacksController extends Controller
     public function index()
     {
         $hacks = Hack::with([
-            'versions:id,hack_id,name,starcount,releasedate,downloadcount,filename',
+            'versions' => function ($query) {
+                $query->orderBy('releasedate', 'asc')->orderBy('name', 'asc');
+            },
             'versions.authors:name',
             'tags:name'
         ])
-            ->orderBy('hacks.name')
-            ->paginate(400, ['hacks.id', 'hacks.name']);
+            ->orderBy('hacks.name')->get();
         return response()->json($hacks);
     }
 
