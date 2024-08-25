@@ -14,10 +14,12 @@ class APIHacksController extends Controller
         $hacks = Hack::with([
             'versions' => function ($query) {
                 $query->orderBy('releasedate', 'asc')->orderBy('name', 'asc');
+                $query->select(['id', 'hack_id', 'name', 'starcount', 'releasedate', 'downloadcount']);
             },
             'versions.authors:name',
             'tags:name'
         ])
+            ->select(['id', 'name'])
             ->orderBy('hacks.name')->get();
         return response()->json($hacks);
     }

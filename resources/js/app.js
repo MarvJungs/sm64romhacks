@@ -2,10 +2,10 @@ import Alpine from 'alpinejs';
 import * as bootstrap from 'bootstrap';
 import '@floating-ui/dom';
 import './bootstrap';
+import './hacks.js';
 import './editors.js';
 import './fontawesome/brands.js';
 import './fontawesome/solid.js';
-import './hacks.js';
 import './megapack.js';
 import './newsModal.js';
 import './apps/league2022/league2022.js'
