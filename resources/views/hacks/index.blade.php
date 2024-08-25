@@ -34,7 +34,7 @@
                 </a>
             </div>
         @endif
-        <hr />
     </div>
+    <hr />
     @include('hacks.overview', ['hacks' => $hacks])
 </x-layout>

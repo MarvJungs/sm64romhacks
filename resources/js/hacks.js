@@ -76,7 +76,7 @@ async function main() {
         header.addEventListener('click', () => {
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('order', header.id);
-            if (header.id == params.order) {
+            if (header.id == params.order || !params.order) {
                 urlParams.set('direction', 'desc');
             }
             else {
@@ -87,7 +87,12 @@ async function main() {
     });
 
     const index = headers.findIndex((header) => header.id == params.order);
-    sortTable(index, params.direction);
+    if (index == -1) {
+        sortTable(0, 'asc');
+    }
+    else {
+        sortTable(index, params.direction);
+    }
 }
 
 function sortTable(columnIndex, direction) {
