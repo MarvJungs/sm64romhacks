@@ -9,8 +9,7 @@
             foreach ($authors as $author) {
                 if ($author->user) {
                     $authorsList .= '<a href="/users/' . $author->user->id . '">' . $author->name . '</a>, ';
-                }
-                else {
+                } else {
                     $authorsList .= $author->name . ', ';
                 }
             }
@@ -30,7 +29,8 @@
         the world of ROM Hacks.
     </p>
     <p>
-        <em>Contents of this page were last updated: 2024-01-01 (yyyy-mm-dd)</em>
+        <em>Contents of this page were last updated: <span
+                class='time'>{{ date('Y-m-d H:i:s', Storage::lastModified('megapack/Grand Rom Hack Megapack 2024 (Summer Edition).zip')) }}</span></em>
     </p>
     <div class="btn-group-lg megapackButtons" role="group">
         <a class="btn btn-primary" href="/megapack/download?type=normal">Download Megapack</a>
