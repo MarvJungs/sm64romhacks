@@ -95,7 +95,7 @@
                             @if ($comment->user->country)
                                 <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
                             @endif
-                            {{ $comment->user->display_name }}
+                            {{ $comment->user->global_name }}
                             @if ($comment->user->gender)
                                 ({{ $comment->user->gender }})
                             @endif

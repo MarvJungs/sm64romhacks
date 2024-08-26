@@ -82,8 +82,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src={{ Auth::user()->avatar }} width="32"
-                                        height="32" />&nbsp;{{ Auth::user()->display_name }} </a>
+                                    <img src="{{ Auth::user()->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="32" width="32"/>&nbsp;{{ Auth::user()->global_name }} </a>
                                 <ul class="dropdown-menu">
                                     @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                                         <li><a class="dropdown-item" href="/moderation">Moderation</a></li>

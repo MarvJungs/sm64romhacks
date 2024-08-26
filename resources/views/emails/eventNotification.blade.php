@@ -158,7 +158,7 @@
                                             style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                             <div
                                                 style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#FFFFFF;">
-                                                <p>Dear {{ $user->display_name }},</p>
+                                                <p>Dear {{ $user->global_name }},</p>
                                                 <p>You are receiving this email because you agreed on receiving Emails
                                                     upon updates regarding our Community space!</p>
                                                 <p>Today we are informing you that a new event has been created which we

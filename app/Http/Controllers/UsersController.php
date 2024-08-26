@@ -30,7 +30,7 @@ class UsersController extends Controller
     public function manage()
     {
         $users = User::all()->filter(function (User $user, int $key) {
-            return Auth::user()->display_name != $user->display_name &&
+            return Auth::user()->global_name != $user->global_name &&
                 Auth::user()->role->priority < $user->role->priority;
         });
 
@@ -38,7 +38,7 @@ class UsersController extends Controller
             return Auth::user()->role->priority < $role->priority;
         });
 
-        $allUsers = User::all()->sortBy('display_name');
+        $allUsers = User::all()->sortBy('global_name');
         $allAuthors = Author::all()->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE);
 
 

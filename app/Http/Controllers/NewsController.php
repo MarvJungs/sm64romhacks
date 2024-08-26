@@ -72,7 +72,7 @@ class NewsController extends Controller
                         ],
                         [
                             "name" => "Author",
-                            "value" => Auth::user()->display_name,
+                            "value" => Auth::user()->global_name,
                             "inline" => true
                         ]
                     ],

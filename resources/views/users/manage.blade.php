@@ -8,7 +8,7 @@
                 <label for="user_id">Select A User</label>
                 <select class="form-select" name="user_id" id="user_id">
                     @foreach ($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->display_name }}</option>
+                        <option value="{{ $user->id }}">{{ $user->global_name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -34,7 +34,7 @@
             <div class="col">
                 <select class="form-select" name="user_id" id="user_id">
                     @foreach ($allUsers as $user)
-                        <option value="{{ $user->id }}">{{ $user->display_name }}</option>
+                        <option value="{{ $user->id }}">{{ $user->global_name }}</option>
                     @endforeach
                 </select>
             </div>

@@ -27,7 +27,7 @@
                     <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
                 @endif
                 <a href='/users/{{ $comment->user->id }}'>
-                    {{ $comment->user->display_name }}
+                    {{ $comment->user->global_name }}
                 </a>
                 @if ($comment->user->gender)
                     <span class="text-secondary">({{ $comment->user->gender }})</span>

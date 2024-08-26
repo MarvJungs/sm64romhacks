@@ -1,7 +1,7 @@
 <x-layout>
     <h2>
-        <img src="{{ $user->avatar }}" height="64" width="64" />
-        {{ $user->display_name }}
+        <img src="{{ $user->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="64" width="64" />
+        {{ $user->global_name }}
 
         @if (isset($user->country))
             <span class="fi fi-{{ strtolower($user->country) }}"></span>

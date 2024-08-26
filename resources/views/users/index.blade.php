@@ -14,9 +14,9 @@
             <tbody>
                 <tr>
                     <td>
-                        <img src="{{ $user->avatar }}" height="32" width="32" />
+                        <img src="{{ $user->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="32" width="32"/>
                         <a href="/users/{{ $user->id }}">
-                            {{ $user->display_name }}
+                            {{ $user->global_name }}
                         </a>
                     </td>
                     <td>{{ $user->id }}</td>

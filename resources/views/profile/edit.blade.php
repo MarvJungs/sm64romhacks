@@ -6,7 +6,7 @@
             <div class="col">
                 <label for="name">Name</label>
                 <input type="text" name="name" id="name" class="form-control mb-4 w-auto"
-                    @disabled(true) value="{{ $user->display_name }}">
+                    @disabled(true) value="{{ $user->global_name }}">
             </div>
             <div class="col">
                 <label for="email">Email</label>

@@ -13,8 +13,8 @@
         <div class="card-footer d-flex justify-content-between">
             <div>
                 Written By
-                <img src="{{ $news->user->avatar }}" height="24" width="24">
-                {{ $news->user->display_name }}
+                <img src="{{ $news->user->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="24" width="24">
+                {{ $news->user->global_name }}
                 @if ($news->user->gender)
                     <sup class="text-muted">({{ $news->user->gender }})</sup>
                 @endif

@@ -11,7 +11,7 @@
                             @endif
                             {{ $message->title }}
                         </h4>
-                        @if (Auth::check() && Auth::user()->display_name == $message->user->display_name)
+                        @if (Auth::check() && Auth::user()->global_name == $message->user->global_name)
                             <div class="d-flex gap-3">
                                 <a class="btn btn-primary" href="/news/{{ $message->id }}/edit">
                                     <span class="fa-solid fa-pen"></span>
@@ -35,8 +35,8 @@
                     </div>
                     <div class="card-footer">
                         Written By
-                        <img src="{{ $message->user->avatar }}" height="24" width="24">
-                        {{ $message->user->display_name }}
+                        <img src="{{ $message->user->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="24" width="24">
+                        {{ $message->user->global_name }}
                         @if ($message->user->gender)
                             <sup class="text-muted">({{ $message->user->gender }})</sup>
                         @endif
@@ -114,7 +114,7 @@
                             @if ($comment->user->country)
                                 <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
                             @endif
-                            {{ $comment->user->display_name }}
+                            {{ $comment->user->global_name }}
                             @if ($comment->user->gender)
                                 ({{ $comment->user->gender }})
                             @endif
