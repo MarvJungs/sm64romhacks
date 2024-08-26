@@ -7,7 +7,7 @@
     <meta name="keywords" content="super mario, romhacks, hack, speedrun, sm64hacks, sm64romhacks, rom, modification" />
     <meta name="description"
         content="Welcome to SM64ROMHacks! We have a really big collection of SM64 ROM Hacks which wait to be played! Community News/Events will also be tracked here" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
     <link rel="shortcut icon" href="{{ asset('images/icon.ico') }}" />
 
 </head>
@@ -91,7 +91,12 @@
                                     @endif
                                     <li><a class="dropdown-item" href="/profile/">Profile</a></li>
                                     <hr />
-                                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button class="dropdown-item" type="submit">Logout</button>
+                                        </form>
+                                    </li>
                                     <li>
                                         <form action="/profile" method="post">
                                             @csrf
