@@ -1,6 +1,7 @@
 import Alpine from 'alpinejs';
 import * as bootstrap from 'bootstrap';
 import '@floating-ui/dom';
+import './time.js';
 import './bootstrap';
 import './hacks.js';
 import './editors.js';

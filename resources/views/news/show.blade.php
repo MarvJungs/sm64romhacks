@@ -12,7 +12,7 @@
         </div>
         <div class="card-footer d-flex justify-content-between">
             <div>
-                Written By 
+                Written By
                 <img src="{{ $news->user->avatar }}" height="24" width="24">
                 {{ $news->user->display_name }}
                 @if ($news->user->gender)
@@ -21,7 +21,10 @@
                 @if ($news->user->country)
                     <span class="fi fi-{{ strtolower($news->user->country) }}"></span>
                 @endif
-                on {{ $news->created_at }}
+                <span class="time">
+                    {{ $news->created_at }}
+                </span>
+                on
             </div>
             <div>
                 <a class="btn btn-primary" href="/news">

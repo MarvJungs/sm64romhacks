@@ -43,7 +43,9 @@
                         @if ($message->user->country)
                             <span class="fi fi-{{ strtolower($message->user->country) }}"></span>
                         @endif
-                        on {{ $message->created_at }}
+                        on <span class="time">
+                            {{ $message->created_at }}
+                        </span>
                     </div>
                 </div>
             @endforeach
@@ -103,7 +105,11 @@
                         <p class="card-text">{!! nl2br(htmlspecialchars($comment->text)) !!}</p>
                     </div>
                     <footer class="card-footer text-body-secondary">
-                        Created at {{ $comment->created_at }} by
+                        Created at
+                        <span class="time">
+                            {{ $comment->created_at }}
+                        </span>
+                        by 
                         <a href="/users/{{ $comment->user->id }}">
                             @if ($comment->user->country)
                                 <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>

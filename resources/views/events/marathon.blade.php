@@ -8,18 +8,22 @@
         @endif
         <hr />
     </div>
-    
+
     @if (sizeof($event->disruptions) > 0)
         @foreach ($event->disruptions as $disruption)
             @if ($disruption->active)
                 <p class="alert alert-danger d-flex align-items-center" role="alert">
                     <span class="fa-solid fa-exclamation bi flex-shrink-0 me-2" role="img" aria-label="Danger:"></span>
-                    <span class="m-1">{{ $disruption->created_at }}: {{ $disruption->text }}</span>
+                    <span class="m-1">
+                        <span class="time">¨
+                            {{ $disruption->created_at }}
+                        </span>
+                        : {{ $disruption->text }}</span>
                 </p>
             @endif
         @endforeach
     @endif
-    
+
     @if ($event->description)
         @foreach (json_decode($event->description) as $item)
             {!! parseEditorText($item) !!}
@@ -29,7 +33,8 @@
 
     @if (isset($schedule))
         <p>The Schedule has been released! Check down the table below to make sure to not miss any runs! Be sure to head
-            over to our <a href="https://www.twitch.tv/sm64romhacks" target="_blank">Event Channel</a> to catch the Action
+            over to our <a href="https://www.twitch.tv/sm64romhacks" target="_blank">Event Channel</a> to catch the
+            Action
             live!</p>
         <table class="table table-hover table-bordered">
             <thead>

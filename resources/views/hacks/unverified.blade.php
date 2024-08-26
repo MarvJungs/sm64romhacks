@@ -9,8 +9,7 @@
             foreach ($authors as $author) {
                 if ($author->user) {
                     $authorsList .= '<a href="/users/' . $author->user->id . '">' . $author->name . '</a>, ';
-                }
-                else {
+                } else {
                     $authorsList .= $author->name . ', ';
                 }
             }
@@ -49,7 +48,11 @@
                     <td>{!! getAuthorList($hack) !!}</td>
                     <td>{{ getReleaseDate($hack) }}</td>
                     <td>{{ getStarcount($hack) }}</td>
-                    <td>{{ $hack->created_at }}</td>
+                    <td>
+                        <span class="time">
+                            {{ $hack->created_at }}
+                        </span>
+                    </td>
                     <td class="d-flex">
 
                         <form action="/hacks" method="post">

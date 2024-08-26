@@ -50,13 +50,13 @@
             @foreach ($comments as $comment)
                 <div class="card mb-3">
                     <h3 class="card-header">
-                        <a href="/hacks/{{$comment->hack->id}}">
-                            {{$comment->hack->name}}
+                        <a href="/hacks/{{ $comment->hack->id }}">
+                            {{ $comment->hack->name }}
                         </a>
                     </h3>
                     <div class="card-body">
                         <h4 class="card-title">
-                            {{$comment->title}}
+                            {{ $comment->title }}
                         </h4>
                         <p class="card-text">
                             {!! $comment->text !!}
@@ -64,7 +64,10 @@
                     </div>
                     <div class="card-footer">
                         <span class="text-secondary">
-                            Written at {{$comment->created_at}}
+                            Written at
+                            <span class="time">
+                                {{ $comment->created_at }}
+                            </span>
                         </span>
                     </div>
                 </div>

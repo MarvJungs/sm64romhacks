@@ -10,7 +10,11 @@
             @if ($disruption->active)
                 <p class="alert alert-danger d-flex align-items-center" role="alert">
                     <span class="fa-solid fa-exclamation bi flex-shrink-0 me-2" role="img" aria-label="Danger:"></span>
-                    <span class="m-1">{{ $disruption->created_at }}: {{ $disruption->text }}</span>
+                    <span class="m-1">
+                        <span class="time">
+                            {{ $disruption->created_at }}:
+                        </span>
+                        {{ $disruption->text }}</span>
                 </p>
             @endif
         @endforeach

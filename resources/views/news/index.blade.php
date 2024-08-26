@@ -49,7 +49,9 @@
                 @if ($message->user->country)
                     <span class="fi fi-{{ strtolower($message->user->country) }}"></span>
                 @endif
-                on {{ $message->created_at }}
+                on <span class="time">
+                    {{ $message->created_at }}
+                </span>
             </div>
         </div>
     @endforeach

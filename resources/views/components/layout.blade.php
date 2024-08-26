@@ -21,24 +21,6 @@
     </div>
 
     <div class="container">
-
-        <script>
-            setInterval(() => {
-                var t = new Date();
-                let options = {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                    hour12: false
-                };
-                t = new Intl.DateTimeFormat('sv', options).format(t);
-                document.getElementById('time').innerHTML = t;
-            }, 1000);
-        </script>
-
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <a class="navbar-brand" href="/"><img class="img-responsive d-inline-block align-text-top"
@@ -127,7 +109,7 @@
                     </ul>
                 </div>
             </nav>
-            <p class='text-end' id='time'></p>
+            <p class='text-end' id='currentTime'></p>
         </header>
 
         <main>

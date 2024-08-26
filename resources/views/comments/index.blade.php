@@ -32,7 +32,9 @@
                 @if ($comment->user->gender)
                     <span class="text-secondary">({{ $comment->user->gender }})</span>
                 @endif
-                at {{ $comment->created_at }}
+                at <span class="time">
+                    {{ $comment->created_at }}
+                </span>
             </div>
         </div>
     @endforeach

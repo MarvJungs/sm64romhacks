@@ -69,7 +69,7 @@
                         <a href="/hacks/{{ $comment->hack->id }}">
                             {{ $comment->hack->name }}
                         </a>
-                        <form action="/comments/{{$comment->id}}" method="post">
+                        <form action="/comments/{{ $comment->id }}" method="post">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger" type="submit">
@@ -87,7 +87,9 @@
                     </div>
                     <div class="card-footer">
                         <span class="text-secondary">
-                            Written at {{ $comment->created_at }}
+                            Written at <span class="time">
+                                {{ $comment->created_at }}
+                            </span>
                         </span>
                     </div>
                 </div>

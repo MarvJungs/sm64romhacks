@@ -23,7 +23,11 @@
                     <td>{{ $user->role->name }}</td>
                     <td><span class="fi fi-{{ strtolower($user->country) }} w-100 h-auto"></span></td>
                     <td>{{ $user->gender }}</td>
-                    <td>{{ $user->created_at }}</td>
+                    <td>
+                        <span class="time">
+                            {{ $user->created_at }}
+                        </span>
+                    </td>
                     <td>{{ $user->updated_at }}</td>
                 </tr>
             </tbody>

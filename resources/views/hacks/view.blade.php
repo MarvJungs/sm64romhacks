@@ -107,7 +107,9 @@
                         <p class="card-text">{!! nl2br(htmlspecialchars($comment->text)) !!}</p>
                     </div>
                     <footer class="card-footer text-body-secondary">
-                        Created at {{ $comment->created_at }}
+                        Created at <span class="time">
+                            {{ $comment->created_at }}
+                        </span>
                     </footer>
                 </div>
             @endforeach
