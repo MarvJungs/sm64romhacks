@@ -19,6 +19,8 @@ let sortedMap;
 */
 
 function main() {
+	const pointsTable = document.getElementById('pojntsTable');
+	if(!pointsTable) return;
 	calc();
 }
 

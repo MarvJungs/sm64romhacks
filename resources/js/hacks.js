@@ -37,9 +37,11 @@ const TAG_COLUMN_INDEX = 5;
  */
 
 async function main() {
-    let url = '/api/v1/hacks';
     const hacksTableBody = document.getElementById('hacksTableBody');
     const myTable = document.getElementById("hacksTable");
+    if (!myTable) return;
+
+    const url = '/api/v1/hacks';
     const data = await getData(url);
     const hacksTable = getHackTableRows(data);
     hacksTableBody.innerHTML += hacksTable;

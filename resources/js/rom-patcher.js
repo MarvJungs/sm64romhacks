@@ -1,6 +1,9 @@
 import RomPatcherWeb from './rom-patcher-js/RomPatcher.webapp';
 
 document.addEventListener('DOMContentLoaded', function () {
+    const romPatcherContainer = document.getElementById('rom-patcher-container');
+    if(!romPatcherContainer) return;
+    
     const myPatcherSettings = {
         language: 'en',
         requireValidation: false, /* if true, user won't be able to apply patch if the provided ROM is not valid*/
