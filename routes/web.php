@@ -8,7 +8,6 @@ use App\Http\Controllers\MegapackController;
 use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\StreamController;
 use App\Http\Controllers\TermsOfServiceController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PatchController;
 use App\Http\Controllers\VersionController;
 use App\Http\Controllers\UsersController;
@@ -20,13 +19,11 @@ use App\Http\Controllers\AppController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-// Route::redirect('/', '/news');
 Route::redirect('/stardisplay', 'https://github.com/aglab2/SM64StarDisplay');
 Route::redirect('/plugins', 'https://sites.google.com/view/shurislibrary/plugin-guide');
 Route::redirect('/faq', 'https://docs.google.com/document/d/10m5ViLktz-d6SwhHtSeb7gVzDUldOqIBlJte_kr4U14/edit#heading=h.ynvmen1681ne');
 Route::redirect('/discord', 'https://discord.com/invite/BYrpMBG');
 Route::redirect('/support', 'https://ko-fi.com/marvjungs');
-Route::redirect('login', 'auth/discord');
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('hacks/download/{version}', [HackController::class, 'download']);
@@ -39,9 +36,6 @@ Route::get('patcher', [PatchController::class, 'index']);
 Route::get('/streams', [StreamController::class, 'index']);
 Route::get('/tos', [TermsOfServiceController::class, 'index']);
 Route::get('/privacy-policy', [PrivacyPolicyController::class, 'index']);
-Route::get('auth/discord', [LoginController::class, 'redirectToDiscord']);
-Route::get('auth/discord/login', [LoginController::class, 'handleDiscordCallback']);
-Route::get('logout', [LoginController::class, 'logout']);
 Route::get('apps/league2022', [AppController::class, 'league2022'])->name('apps.league2022');
 Route::get('apps/league2023', [AppController::class, 'league2023'])->name('apps.league2023');
 Route::get('users/{user}', [UsersController::class, 'show'])->name('users.show');
@@ -76,7 +70,6 @@ Route::middleware('checkrole:1,2')->group(function () {
     Route::get('/moderation/users', [UsersController::class, 'manage'])->name('users.manage');
     Route::patch('/users', [UsersController::class, 'update'])->name('users.update');
     Route::patch('/authors', [UsersController::class, 'assignAuthorToUser'])->name('users.assignAuthorToUser');
-
     Route::patch('/hacks', [HackController::class, 'reject'])->name('hacks.reject');
     Route::put('/hacks', [HackController::class, 'accept'])->name('hacks.accept');
 });

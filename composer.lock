@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a66bac3bd6785ee2a3c07e82e8b5a98",
+    "content-hash": "9a44f6cb9254440877c77b5aa2d5fb96",
     "packages": [
         {
             "name": "artesaos/seotools",
@@ -1179,6 +1179,59 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "jakyeru/larascord",
+            "version": "v6.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JakyeRU/Larascord.git",
+                "reference": "1673d0223a14114d7a1b09f6baa7d808b49f40ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JakyeRU/Larascord/zipball/1673d0223a14114d7a1b09f6baa7d808b49f40ac",
+                "reference": "1673d0223a14114d7a1b09f6baa7d808b49f40ac",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.5",
+                "laravel/breeze": "^v2.0",
+                "laravel/framework": "^11",
+                "php": "^8.2|^8.3"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^9"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Jakyeru\\Larascord\\LarascordServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jakyeru\\Larascord\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jakye",
+                    "email": "jakyeru@gmail.com"
+                }
+            ],
+            "description": "Larascord is a package that allows you to authenticate users in your Laravel application using Discord.",
+            "support": {
+                "issues": "https://github.com/JakyeRU/Larascord/issues",
+                "source": "https://github.com/JakyeRU/Larascord/tree/v6.0.1"
+            },
+            "time": "2024-08-06T13:58:27+00:00"
         },
         {
             "name": "laravel/breeze",
