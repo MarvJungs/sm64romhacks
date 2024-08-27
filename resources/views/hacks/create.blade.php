@@ -29,7 +29,7 @@
                             <label for="image[]">Images</label>
                             <input type="file" name="image[]" id="image[]" class="form-control" multiple>
                         </div>
-                        @if ((Auth::check() && Auth::user()->role->priority <= 2))
+                        @if (Auth::check() && Auth::user()->hasRole(705528172581486704))
                             <div class="col">
                                 <div class="form-check">
                                     <label for="megapack" class="form-check-label">Megapack</label>

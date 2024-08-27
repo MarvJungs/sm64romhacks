@@ -12,7 +12,7 @@ class StoreNewsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->role->priority <= 3;
+        return Auth::check() && Auth::user()->hasRole(705528172581486704);
     }
 
     /**

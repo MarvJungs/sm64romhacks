@@ -40,7 +40,7 @@ Route::get('apps/league2022', [AppController::class, 'league2022'])->name('apps.
 Route::get('apps/league2023', [AppController::class, 'league2023'])->name('apps.league2023');
 Route::get('users/{user}', [UsersController::class, 'show'])->name('users.show');
 
-Route::resource('/events', EventController::class)->except('show')->middleware('checkrole:3,2,1');
+Route::resource('/events', EventController::class)->except('show')->middleware('checkrole:705528172581486704');
 Route::resource('cheats', CheatController::class);
 Route::resource('events', EventController::class)->only(['show']);
 Route::resource('hacks', HackController::class);
@@ -56,12 +56,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
-Route::middleware('checkrole:3,2,1')->group(function () {
+Route::middleware('checkrole:705528172581486704')->group(function () {
     Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation.index');
     Route::resource('/moderation/events', EventController::class)->only('index')->name('index', 'events.index');
 });
 
-Route::middleware('checkrole:1,2')->group(function () {
+Route::middleware('checkrole:705528172581486704')->group(function () {
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
     Route::get('/moderation/comments', [CommentController::class, 'index'])->name('comments.index');

@@ -15,7 +15,8 @@ class RolesSeeder extends Seeder
         DB::table('roles')->insert([
             ['id' => 705528016914087976, 'name' => 'Administrator'],
             ['id' => 889424068644847688, 'name' => 'Dyno'],
-            ['id' => 705528172581486704, 'name' => 'Site Helper'],
+            ['id' => 705528172581486704, 'name' => 'Moderator'],
+            ['id' => 705530192839311381, 'name' => 'Site Helper'],
             ['id' => 738163465352511520, 'name' => 'Affiliates'],
             ['id' => 734916203390173275, 'name' => 'Server Booster'],
             ['id' => 725414492628058212, 'name' => 'Major Hack Creator'],

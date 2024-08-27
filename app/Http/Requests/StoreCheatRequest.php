@@ -12,7 +12,7 @@ class StoreCheatRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->role->priority <= 2;
+        return Auth::check() && Auth::user()->hasRole(705528172581486704);
     }
 
     /**

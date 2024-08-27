@@ -14,6 +14,18 @@
         <a class="btn btn-primary btn-floating m-1" href="/profile/edit" role="button"><span
                 class="fa-solid fa-pencil fa-fw"></span></a>
     </h2>
+    <em>
+        Roles:
+        @if (!is_null($guildMemberRoles))
+            <ul>
+                @foreach ($guildMemberRoles as $guildMemberRole)
+                    <li>{{ $roles[$guildMemberRole] }}</li>
+                @endforeach
+            </ul>
+        @else
+            unknown
+        @endif
+    </em>
     <hr class="mb-5" />
     <section class="mb-4">
         <h1>Released Hacks</h1>

@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            @if (Auth::check() && Auth::user()->role->priority <= 2)
+            @if (Auth::check() && Auth::user()->hasRole(705528172581486704))
                 <div class="row mb-3">
                     <div class="col-sm-10 offset-sm-2">
                         <div class="form-check">
@@ -44,7 +44,7 @@
                     <button class="form-control btn btn-primary" type="submit">Submit</button>
                 </div>
             </div>
-            <input type="hidden" name="description" id="description" value="{{$hack->description}}">
+            <input type="hidden" name="description" id="description" value="{{ $hack->description }}">
         </form>
     </div>
 </x-layout>

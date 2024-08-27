@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
@@ -93,8 +94,12 @@ class User extends Authenticatable
         return $this->hasMany(News::class);
     }
 
-    public function hasRole($role_priority): bool
+    public function hasRole($role_id): bool
     {
-        return in_array($this->role_id, $role_priority);
+        if (!session()->exists('guildMemberRoles')) {
+            session()->put('guildMemberRoles', Auth::user()->getGuildMember(703951576162762813)->roles);
+        }
+        $guildMemberRoles = session()->get('guildMemberRoles');
+        return in_array($role_id, $guildMemberRoles);
     }
 }

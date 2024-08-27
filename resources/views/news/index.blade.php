@@ -1,7 +1,7 @@
 <x-layout>
     <div class="d-flex justify-content-between mb-4">
         <h1>News</h1>
-        @if (Auth::check() && Auth::user()->role->priority <= 2)
+        @if (Auth::check() && Auth::user()->hasRole(705528172581486704))
             <a href="/news/create" class="align-self-center btn btn-success">
                 <span class="fa-solid fa-plus"></span>
                 Create New Newspost
@@ -41,7 +41,8 @@
             </div>
             <div class="card-footer">
                 Written By
-                <img src="{{ $message->user->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="24" width="24">
+                <img src="{{ $message->user->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="24"
+                    width="24">
                 {{ $message->user->global_name }}
                 @if ($message->user->gender)
                     <sup class="text-muted">({{ $message->user->gender }})</sup>
