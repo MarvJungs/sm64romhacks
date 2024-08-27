@@ -206,7 +206,10 @@ function getVersionsData(hack) {
         }
     }
     return {
-        authors: versions[0].authors.map((author) => author.name).join(', '),
+        authors: versions[0].authors.map((author) =>{
+            if (!author.user) return author.name
+            return `<a href="/users/${author.user.id}">${author.user.global_name}</a>`
+        }).join(', '),
         releaseDate: versions[0].releasedate,
         downloads: getDownloads(versions),
         starcount: getMaxStarcount(versions)

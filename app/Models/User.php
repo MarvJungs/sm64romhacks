@@ -9,6 +9,7 @@ use Jakyeru\Larascord\Traits\InteractsWithDiscord;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
@@ -38,7 +39,6 @@ class User extends Authenticatable
         'premium_type',
         'public_flags',
         'roles',
-        'author_id'
     ];
 
     /**
@@ -78,9 +78,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function author(): BelongsTo
+    public function author(): HasOne
     {
-        return $this->belongsTo(Author::class);
+        return $this->hasOne(Author::class);
     }
 
     public function comments()

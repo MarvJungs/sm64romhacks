@@ -37,12 +37,12 @@ return new class extends Migration
             $table->foreign('hack_id')->references('id')->on('hacks')->onDelete('cascade')->onUpdate('cascade');
         });
 
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade')->onUpdate('cascade');
-        });
-
         Schema::table('versions', function (Blueprint $table) {
             $table->foreign('hack_id')->references('id')->on('hacks')->onDelete('cascade')->onUpdate('cascade');
+        });
+
+        Schema::table('authors', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

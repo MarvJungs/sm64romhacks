@@ -16,7 +16,8 @@ class APIHacksController extends Controller
                 $query->orderBy('releasedate', 'asc')->orderBy('name', 'asc');
                 $query->select(['id', 'hack_id', 'name', 'starcount', 'releasedate', 'downloadcount']);
             },
-            'versions.authors:name',
+            'versions.authors',
+            'versions.authors.user',
             'tags:name'
         ])
             ->select(['id', 'name'])

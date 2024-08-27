@@ -23,8 +23,8 @@ class UserObserver implements ShouldHandleEventsAfterCommit
             if ($twitch_connection->verified) {
                 $twitch_name = $twitch_connection->name;
                 $author = Author::where(['name' => $twitch_name])->get()->first();
-                $user->update([
-                    'author_id' => $author->id
+                $author->update([
+                    'user_id' => $user->id
                 ]);
             }
         }
