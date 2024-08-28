@@ -6,6 +6,7 @@ use App\Models\Version;
 use App\Models\Hack;
 use App\Http\Requests\StoreVersionRequest;
 use App\Http\Requests\UpdateVersionRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class VersionController extends Controller
@@ -15,6 +16,7 @@ class VersionController extends Controller
      */
     public function create(Hack $hack)
     {
+        Gate::authorize('create', Version::class);
         return view('versions/create', ['hack' => $hack]);
     }
 
@@ -54,6 +56,7 @@ class VersionController extends Controller
      */
     public function edit(Hack $hack, Version $version)
     {
+        Gate::authorize('update', $version);
         $authors = $version->authors()->get()->pluck('name')->implode(', ');
         return view('versions/edit', ['hack' => $hack, 'version' => $version, 'authors' => $authors]);
     }
@@ -76,6 +79,7 @@ class VersionController extends Controller
      */
     public function destroy(Hack $hack, Version $version)
     {
+        Gate::authorize('delete', $version);
         Storage::delete($version->filename);
         $version->delete();
 

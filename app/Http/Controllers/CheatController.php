@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cheat;
 use App\Http\Requests\StoreCheatRequest;
 use App\Http\Requests\UpdateCheatRequest;
+use Illuminate\Support\Facades\Gate;
 
 class CheatController extends Controller
 {
@@ -22,6 +23,7 @@ class CheatController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Cheat::class);
         return view('cheats.create');
     }
 
@@ -44,18 +46,11 @@ class CheatController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Cheat $cheat)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Cheat $cheat)
     {
+        Gate::authorize('update', $cheat);
         return view('cheats.edit', ['cheat' => $cheat]);
     }
 
@@ -77,6 +72,7 @@ class CheatController extends Controller
      */
     public function destroy(Cheat $cheat)
     {
-        //
+        Gate::authorize('delete', $cheat);
+        $cheat->delete();
     }
 }

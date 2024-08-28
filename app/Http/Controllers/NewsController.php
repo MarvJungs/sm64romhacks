@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateNewsRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class NewsController extends Controller
 {
@@ -28,6 +29,7 @@ class NewsController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', News::class);
         return view('news.create');
     }
 
@@ -103,6 +105,7 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
+        Gate::authorize('update', $news);
         return view('news.edit', [
             'news' => $news
         ]);
@@ -127,12 +130,8 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
+        Gate::authorize('delete', $news);
         $news->delete();
         return redirect('/news')->with('success', 'newspost has been deleted');
-    }
-
-    public function subscribe(Request $request)
-    {
-        
     }
 }

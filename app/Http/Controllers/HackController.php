@@ -12,6 +12,7 @@ use App\Models\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class HackController extends Controller
 {
@@ -63,6 +64,7 @@ class HackController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Hack::class);
         return view('hacks/create');
     }
 
@@ -137,6 +139,7 @@ class HackController extends Controller
      */
     public function edit(Hack $hack)
     {
+        Gate::authorize('update', $hack);
         return view('hacks/edit', ['hack' => $hack]);
     }
 
@@ -158,6 +161,7 @@ class HackController extends Controller
      */
     public function destroy(Hack $hack)
     {
+        Gate::authorize('forceDelete', $hack);
         foreach ($hack->images as $image) {
             Storage::delete($image->filename);
         }

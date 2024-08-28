@@ -7,8 +7,7 @@ use App\Models\Comment;
 use App\Models\Hack;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -47,8 +46,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
+        Gate::authorize('delete', Comment::class);
         $comment->delete();
         return back()->with('success', 'comment has been deleted');
-        // return redirect('/moderation/comments')->with('success', 'comment has been deleted');
     }
 }

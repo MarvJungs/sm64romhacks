@@ -8,6 +8,7 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Mail\EventMail;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 
 class EventController extends Controller
@@ -29,6 +30,7 @@ class EventController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Event::class);
         return view('events.create');
     }
 
@@ -93,6 +95,7 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
+        Gate::authorize('update', $event);
         return view('events.edit', ['event' => $event]);
     }
 
@@ -131,6 +134,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        Gate::authorize('delete', $event);
         if (!is_null($event->guild_schedule_id)) {
             $response = Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
                 ->delete(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events/' . $event->guild_schedule_id);
