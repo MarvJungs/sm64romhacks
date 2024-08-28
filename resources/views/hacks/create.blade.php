@@ -53,7 +53,7 @@
                 </div>
             </div>
             <input type="number" name="count" id="count" value="1" hidden>
-            <input type="hidden" name="description" id="description" value="{{ $hack->description }}">
+            <input type="hidden" name="description" id="description">
 
         </form>
     </div>
