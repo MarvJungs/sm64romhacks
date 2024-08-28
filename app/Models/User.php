@@ -97,9 +97,13 @@ class User extends Authenticatable
     public function hasRole($role_id): bool
     {
         if (!session()->exists('guildMemberRoles')) {
-            session()->put('guildMemberRoles', Auth::user()->getGuildMember(703951576162762813)->roles);
+            try {
+                session()->put('guildMemberRoles', Auth::user()->getGuildMember(703951576162762813)->roles);
+            } catch (\Throwable $th) {
+                session()->put('guildMemberRoles', null);
+            }
         }
         $guildMemberRoles = session()->get('guildMemberRoles');
-        return in_array($role_id, $guildMemberRoles);
+        return !is_null($guildMemberRoles) && in_array($role_id, $guildMemberRoles);
     }
 }
