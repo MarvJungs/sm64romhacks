@@ -40,6 +40,7 @@ class User extends Authenticatable
         'premium_type',
         'public_flags',
         'roles',
+        'notify',
     ];
 
     /**
@@ -92,6 +93,16 @@ class User extends Authenticatable
     public function news()
     {
         return $this->hasMany(News::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(705528016914087976);
+    }
+
+    public function isModerator(): bool
+    {
+        return $this->hasRole(705528172581486704);
     }
 
     public function hasRole($role_id): bool
