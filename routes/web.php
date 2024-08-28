@@ -19,32 +19,33 @@ use App\Http\Controllers\AppController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/stardisplay', 'https://github.com/aglab2/SM64StarDisplay');
-Route::redirect('/plugins', 'https://sites.google.com/view/shurislibrary/plugin-guide');
-Route::redirect('/faq', 'https://docs.google.com/document/d/10m5ViLktz-d6SwhHtSeb7gVzDUldOqIBlJte_kr4U14/edit#heading=h.ynvmen1681ne');
-Route::redirect('/discord', 'https://discord.com/invite/BYrpMBG');
-Route::redirect('/support', 'https://ko-fi.com/marvjungs');
+Route::redirect('/stardisplay', 'https://github.com/aglab2/SM64StarDisplay')->name('stardisplay');
+Route::redirect('/plugins', 'https://sites.google.com/view/shurislibrary/plugin-guide')->name('plugins');
+Route::redirect('/faq', 'https://docs.google.com/document/d/10m5ViLktz-d6SwhHtSeb7gVzDUldOqIBlJte_kr4U14/edit#heading=h.ynvmen1681ne')->name('faq');
+Route::redirect('/discord', 'https://discord.com/invite/BYrpMBG')->name('discord');
+Route::redirect('/support', 'https://ko-fi.com/marvjungs')->name('support');
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::get('hacks/download/{version}', [HackController::class, 'download']);
-Route::get('hacks/random', [HackController::class, 'random']);
-Route::get('hacks/{hack}/create', [VersionController::class, 'create']);
-Route::get('hacks/{hack}/{version}/edit', [VersionController::class, 'edit']);
-Route::get('megapack', [MegapackController::class, 'index']);
-Route::get('megapack/download', [MegapackController::class, 'download']);
-Route::get('patcher', [PatchController::class, 'index']);
-Route::get('/streams', [StreamController::class, 'index']);
-Route::get('/tos', [TermsOfServiceController::class, 'index']);
-Route::get('/privacy-policy', [PrivacyPolicyController::class, 'index']);
+Route::get('hacks/download/{version}', [HackController::class, 'download'])->name('hack.download');
+Route::get('hacks/random', [HackController::class, 'random'])->name('hack.random');
+Route::get('hacks/{hack}/create', [VersionController::class, 'create'])->name('version.create');
+Route::get('hacks/{hack}/{version}/edit', [VersionController::class, 'edit'])->name('version.edit');
+Route::get('megapack', [MegapackController::class, 'index'])->name('megapack.index');
+Route::get('megapack/download', [MegapackController::class, 'download'])->name('megapack.download');
+Route::get('patcher', [PatchController::class, 'index'])->name('patcher.index');
+Route::get('/streams', [StreamController::class, 'index'])->name('streams.index');
+Route::get('/tos', [TermsOfServiceController::class, 'index'])->name('tos.index');
+Route::get('/privacy-policy', [PrivacyPolicyController::class, 'index'])->name('privacy.name');
 Route::get('apps/league2022', [AppController::class, 'league2022'])->name('apps.league2022');
 Route::get('apps/league2023', [AppController::class, 'league2023'])->name('apps.league2023');
 Route::get('users/{user}', [UsersController::class, 'show'])->name('users.show');
 
-Route::resource('/events', EventController::class)->except('show')->middleware('checkrole:705528172581486704');
+Route::resource('/events', EventController::class)->except(['show', 'index'])
+    ->middleware('checkrole:705528172581486704');
 Route::resource('cheats', CheatController::class);
 Route::resource('events', EventController::class)->only(['show']);
 Route::resource('hacks', HackController::class);
-Route::resource('hacks/{hack}/version', VersionController::class);
+Route::resource('hacks/{hack}/version', VersionController::class)->except(['create', 'edit']);
 Route::resource('news', NewsController::class);
 Route::resource('/moderation/disruptions', DisruptionController::class);
 
