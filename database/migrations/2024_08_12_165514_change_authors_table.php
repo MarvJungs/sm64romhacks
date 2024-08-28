@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->unique();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->timestamps();
         });
 
         $index = 1;

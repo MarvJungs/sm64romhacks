@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('locale');
             $table->boolean('mfa_enabled');
             $table->string('refresh_token')->nullable();
+            $table->boolean('notify')->nullable(false)->default(false);
             $table->timestamps();
         });
 

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->uuid('version_id');
-            $table->timestamps();
             $table->unique(['version_id', 'name']);
         });
 
