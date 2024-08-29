@@ -11,9 +11,12 @@ use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
+use Carbon\Carbon;
 
 #[ObservedBy([UserObserver::class])]
-class User extends Authenticatable
+class User extends Authenticatable implements Sitemapable
 {
     use HasFactory;
     use Notifiable;
@@ -74,6 +77,14 @@ class User extends Authenticatable
         'public_flags' => 'integer',
         'roles' => 'json',
     ];
+
+    public function toSitemapTag(): Url|string|array
+    {
+        return Url::create(route('users.show', $this))
+            ->setLastModificationDate(Carbon::create($this->updated_at))
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.1);
+    }
 
     public function role(): BelongsTo
     {

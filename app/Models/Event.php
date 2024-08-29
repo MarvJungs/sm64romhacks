@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
-class Event extends Model
+class Event extends Model implements Sitemapable
 {
     use HasFactory;
 
@@ -19,6 +22,14 @@ class Event extends Model
         'description',
         'marathon'
     ];
+
+    public function toSitemapTag(): array|string|Url
+    {
+        return Url::create(route('events.show', $this))
+            ->setLastModificationDate(Carbon::create($this->updated_at))
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.1);
+    }
 
     public function getRouteKeyName(): string
     {
