@@ -22,7 +22,9 @@ class Hack extends Model implements Sitemapable
         'description',
         'megapack',
         'verified',
-        'rejected'
+        'rejected',
+        'created_at',
+        'updated_at'
     ];
 
     public function toSitemapTag(): Url|string|array

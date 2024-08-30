@@ -16,7 +16,7 @@ class StreamController extends Controller
         OpenGraph::setTitle('Streams');
         OpenGraph::setDescription('Overview of Ongoing Livestreams related to SM64 ROM Hacks');
         OpenGraph::setType('Streams');
-        
+
         return view('streams/index', ['streams' => $this->filterStreams($this->getStreams())]);
     }
 
