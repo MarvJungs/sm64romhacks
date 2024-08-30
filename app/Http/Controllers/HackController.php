@@ -98,7 +98,7 @@ class HackController extends Controller
                     'starcount' => $request->starcount[$i],
                     'releasedate' => $request->releasedate[$i] ?? '9999-12-31',
                     'downloadcount' => 0,
-                    'recommend' => 0,
+                    'recommened' => 0,
                     'filename' => ''
                 ]
             );
@@ -128,7 +128,8 @@ class HackController extends Controller
 
         return response()->json([
             'message' => 'Form submitted successfully',
-            'request' => json_encode($request->all())], 200);
+            'request' => json_encode($request->all())
+        ], 200);
     }
 
     /**
@@ -144,8 +145,32 @@ class HackController extends Controller
 
         SEOMeta::setTitle($hack->name);
 
+        $versions = $hack->versions->sort(function ($a, $b) {
+
+            $recommenedComparison = $b['recommened'] - $a['recommened'];
+            if ($recommenedComparison !== 0) {
+                return $recommenedComparison;
+            }
+
+            if ($a['releasedate'] === '9999-12-31') {
+                return 1;
+            }
+
+            if ($b['releasedate'] === '9999-12-31') {
+                return -1;
+            }
+
+            $dateComparison = strtotime($b['releasedate']) - strtotime($a['releasedate']);
+            if ($dateComparison !== 0) {
+                return $dateComparison;
+            }
+
+            return $a['demo'] - $b['demo'];
+        });
+
         return view('hacks/view', [
             'hack' => $hack,
+            'versions' => $versions,
             'comments' => $hack->comments->sortByDesc('created_at')
         ]);
     }
@@ -164,6 +189,33 @@ class HackController extends Controller
      */
     public function update(UpdateHackRequest $request, Hack $hack)
     {
+        $recommened_versions = $request->recommened;
+        $demo_versions = $request->demo;
+
+        foreach ($hack->versions as $version) {
+            $version->update([
+                'recommened' => 0,
+                'demo' => 0
+            ]);
+        }
+
+        if (!is_null($recommened_versions)) {
+            foreach ($recommened_versions as $recommened_version) {
+                Version::find($recommened_version)->update([
+                    'recommened' => 1
+                ]);
+            }
+        }
+
+        if (!is_null($demo_versions)) {
+            foreach ($demo_versions as $demo_version) {
+                Version::find($demo_version)->update([
+                    'demo' => 1
+                ]);
+            }
+        }
+
+
         $hack->update([
             'name' => $request->name,
             'description' => $request->description,
