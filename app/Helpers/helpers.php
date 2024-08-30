@@ -34,6 +34,9 @@ function parseEditorText($prop)
 function getDiscordEmbedText($text)
 {
     $result = '';
+    if (is_null($text)) {
+        return $result;
+    }
     foreach (json_decode($text) as $prop) {
         switch ($prop->type) {
             case 'paragraph':
@@ -60,6 +63,9 @@ function getDiscordEmbedText($text)
 function getOpenGraphText($text)
 {
     $result = '';
+    if (is_null($text)) {
+        return $result;
+    }
     foreach (json_decode($text) as $prop) {
         if ($prop->type == 'paragraph') {
             $result .= $prop->data->text;
