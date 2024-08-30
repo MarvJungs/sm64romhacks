@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('releasedate')->default('9999-12-31')->nullable(false);
             $table->integer('downloadcount')->default(0)->nullable(false);
             $table->string('filename')->nullable(false);
-            $table->boolean('recommend')->default(false)->nullable(false);
+            $table->boolean('recommened')->default(false)->nullable(false);
             $table->boolean('demo')->default(false)->nullable(false);
             $table->timestamps();
             $table->unique(['hack_id','name']);
@@ -45,13 +45,13 @@ return new class extends Migration
                         'releasedate' => $version->hack_release_date,
                         'downloadcount' => $version->hack_downloads,
                         'filename' => 'patch/' . $version->hack_patchname . '.zip',
-                        'recommend' => $version->hack_recommend,
+                        'recommened' => $version->hack_recommend,
                         'demo' => $version->hack_demo,
                         'created_at' => date('Y-m-d h:i:s', Storage::lastModified('patch/' . $version->hack_patchname . '.zip')),
                         'updated_at' => date('Y-m-d h:i:s', Storage::lastModified('patch/' . $version->hack_patchname . '.zip'))
                     ]);
                 } catch (\Throwable $th) {
-                    print($th->getMessage() . "\n");
+                    print $th->getMessage() . "\n";
                 }
             }
         }

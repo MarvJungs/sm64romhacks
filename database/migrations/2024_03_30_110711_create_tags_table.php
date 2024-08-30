@@ -37,7 +37,6 @@ return new class extends Migration
                         'name' => $tag_name
                     ]);
                 } catch (\Throwable $th) {
-                    // print($th->getMessage() . "\n");
                 }
             }
         }

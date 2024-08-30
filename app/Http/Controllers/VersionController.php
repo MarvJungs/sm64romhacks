@@ -35,7 +35,8 @@ class VersionController extends Controller
                 'releasedate' => $request->releasedate ?? '9999-12-31',
                 'downloadcount' => 0,
                 'filename' => '',
-                'recommend' => 0
+                'recommened' => 0,
+                'demo' => 0
             ]
         );
 

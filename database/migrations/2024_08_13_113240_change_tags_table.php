@@ -29,15 +29,12 @@ return new class extends Migration
                 DB::table('tags')->insert([
                    'id' => $index,
                    'name' => $hack_tag->name,
-                   'created_at' => now(),
-                   'updated_at' => now()
                 ]);
                 DB::table('hack_tag')->where('name', '=', $hack_tag->name)->update([
                     'tag_id' => $index
                 ]);
                 $index++;
             } catch (\Throwable $th) {
-                // print($th->getMessage() . "\n");
             }
         }
 

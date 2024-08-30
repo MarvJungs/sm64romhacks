@@ -42,7 +42,6 @@ return new class extends Migration
                     ]
                 ]);
             } catch (\Throwable $th) {
-                // print($th->getMessage() . "\n");
             }
         }
     }

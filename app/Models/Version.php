@@ -21,7 +21,8 @@ class Version extends Model
         'releasedate',
         'downloadcount',
         'filename',
-        'recommend'
+        'recommened',
+        'demo'
     ];
 
     public function hack(): BelongsTo

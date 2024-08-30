@@ -43,7 +43,6 @@ return new class extends Migration
                         'version_id' => $version_id
                     ]);
                 } catch (Throwable $th) {
-                    // print($th->getMessage() . "\n");
                 }
             }
         }

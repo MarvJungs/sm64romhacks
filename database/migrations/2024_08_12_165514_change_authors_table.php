@@ -26,12 +26,9 @@ return new class extends Migration {
                 DB::table('authors')->insert([
                     'id' => $index,
                     'name' => $version_author->name,
-                    'created_at' => now(),
-                    'updated_at' => now()
                 ]);
                 $index++;
             } catch (\Throwable $th) {
-                // print ($th->getMessage() . "\n");
             }
         }
     }
