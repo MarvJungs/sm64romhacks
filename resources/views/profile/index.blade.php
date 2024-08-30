@@ -44,7 +44,11 @@
                 <tbody>
                     @foreach ($versions as $version)
                         <tr>
-                            <td>{{ $version->hack->name }}</td>
+                            <td>
+                                <a href="{{ route('hacks.show', $version->hack) }}">
+                                    {{ $version->hack->name }}
+                                </a>
+                            </td>
                             <td>{{ $version->name }}</td>
                             <td>{{ $version->starcount }}</td>
                             <td>{{ $version->releasedate }}</td>
@@ -78,10 +82,10 @@
             @foreach ($comments as $comment)
                 <div class="card mb-3">
                     <h3 class="card-header d-flex justify-content-between">
-                        <a href="/hacks/{{ $comment->hack->id }}">
+                        <a href="{{ route('hacks.show', $comment->hack) }}">
                             {{ $comment->hack->name }}
                         </a>
-                        <form action="/comments/{{ $comment->id }}" method="post">
+                        <form action="{{ route('comments.destroy', $comment) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger" type="submit">

@@ -50,7 +50,7 @@
             @foreach ($comments as $comment)
                 <div class="card mb-3">
                     <h3 class="card-header">
-                        <a href="/hacks/{{ $comment->hack->id }}">
+                        <a href="{{ route('hacks.show', ['hack' => $comment->hack]) }}">
                             {{ $comment->hack->name }}
                         </a>
                     </h3>

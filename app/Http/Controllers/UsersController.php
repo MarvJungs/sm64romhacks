@@ -7,14 +7,17 @@ use App\Models\User;
 use App\Models\Author;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
+use App\Models\Role;
 
 class UsersController extends Controller
 {
     public function index()
     {
         $users = User::all();
+        $roles = Role::all()->pluck('name', 'id')->toArray();
         return view('users.index', [
-            'users' => $users
+            'users' => $users,
+            'roles' => $roles,
         ]);
     }
 

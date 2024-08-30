@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Attribute;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +26,11 @@ class Hack extends Model implements Sitemapable
         'created_at',
         'updated_at'
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'name';
+    }
 
     public function toSitemapTag(): Url|string|array
     {

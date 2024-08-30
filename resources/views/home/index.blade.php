@@ -17,7 +17,8 @@
                                     <span class="fa-solid fa-pen"></span>
                                     Edit News Post
                                 </a>
-                                <form class="d-inline-flex" action="/news/{{ $message->id }}" method="post">
+                                <form class="d-inline-flex" action="{{ route('news.destroy', $message) }}"
+                                    method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger" type="submit">
@@ -35,7 +36,8 @@
                     </div>
                     <div class="card-footer">
                         Written By
-                        <img src="{{ $message->user->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="24" width="24">
+                        <img src="{{ $message->user->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="24"
+                            width="24">
                         {{ $message->user->global_name }}
                         @if ($message->user->gender)
                             <sup class="text-muted">({{ $message->user->gender }})</sup>
@@ -70,13 +72,13 @@
                 @foreach ($versions as $version)
                     <tr>
                         <td>
-                            <a href="/hacks/{{ $version->hack->id }}">
+                            <a href="{{ route('hacks.show', $version->hack) }}">
                                 {{ $version->hack->name }}
                             </a>
                         </td>
                         <td>{{ $version->name }}</td>
                         <td>
-                            <a href="/hacks/download/{{ $version->id }}">Download</a>
+                            <a href="{{ route('hack.download', $version) }}">Download</a>
                             <span class="text-muted">({{ round(Storage::size($version->filename) / 1048576, 2) }}
                                 MB)</span><br />
                             <span class="text-muted">Downloads: {{ $version->downloadcount }}</span><br />
@@ -95,7 +97,7 @@
             @foreach ($comments as $comment)
                 <div class="card mb-4">
                     <header class="card-header">
-                        <a href="/hacks/{{ $comment->hack->id }}">
+                        <a href="{{ route('hacks.show', $comment->hack) }}">
                             <h5>{{ $comment->hack->name }}</h5>
                         </a>
                     </header>
@@ -109,8 +111,8 @@
                         <span class="time">
                             {{ $comment->created_at }}
                         </span>
-                        by 
-                        <a href="/users/{{ $comment->user->id }}">
+                        by
+                        <a href="{{ route('users.show', $comment->user) }}">
                             @if ($comment->user->country)
                                 <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
                             @endif

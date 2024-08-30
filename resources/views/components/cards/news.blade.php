@@ -12,7 +12,7 @@
                     <span class="fa-solid fa-pen"></span>
                     Edit News Post
                 </a>
-                <form class="d-inline-flex" action="/news/{{ $message->id }}" method="post">
+                <form class="d-inline-flex" action="{{ route('news.destroy', $message) }}" method="post">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger" type="submit">
@@ -31,7 +31,9 @@
     <div class="card-footer">
         Written By
         <img src="{{ $message->user->getAvatar(['extension' => 'png', 'size' => 256]) }}" height="24" width="24">
-        <a href="/users/{{ $message->user->id }}">{{ $message->user->global_name }}</a>
+        <a href="{{ route('users.show', $message->user) }}">
+            {{ $message->user->global_name }}
+        </a>
         @if ($message->user->gender)
             <sup class="text-muted">({{ $message->user->gender }})</sup>
         @endif

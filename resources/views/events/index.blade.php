@@ -47,7 +47,7 @@
                         <p class="card-text">{!! parseEditorText($item) !!}</p>
                     @endforeach
                 @endif
-                <a href="/events/{{ $event->slug }}" class="btn btn-info">View Event</a>
+                <a href="{{ route('events.show', $event) }}" class="btn btn-info">View Event</a>
             </div>
             <div class="card-footer text-body-secondary">
                 Created at <span class="time">

@@ -8,7 +8,7 @@
             $authorsList = '';
             foreach ($authors as $author) {
                 if ($author->user) {
-                    $authorsList .= '<a href="/users/' . $author->user->id . '">' . $author->name . '</a>, ';
+                    $authorsList .= '<a href="' . route('users.show', $author->user) . '">' . $author->name . '</a>, ';
                 } else {
                     $authorsList .= $author->name . ', ';
                 }

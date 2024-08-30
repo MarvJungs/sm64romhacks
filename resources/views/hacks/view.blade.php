@@ -22,8 +22,8 @@
                 <td>{{ $hack->name }}</td>
                 <td>{{ $version->name }}</td>
                 <td>
-                    <a href="/hacks/download/{{ $version->id }}">Download</a> |
-                    <a href="/patcher?id={{ $version->id }}">Patch File</a> <br />
+                    <a href="{{ route('hack.download', $version) }}">Download</a> |
+                    <a href="{{ route('patcher.index', ['id' => $version->id]) }}">Patch File</a> <br />
                     <span class="text-muted">Downloads: {{ $version->downloadcount }} |
                         {{ round(Storage::size($version->filename) / 1048576, 2) }}
                         MB
@@ -72,6 +72,7 @@
                 </h2>
                 <div id="addComment" class="accordion-collapse collapse" data-bs-parent="#accordion">
                     <div class="accordion-body">
+                        
                         <form action="/comments" method="post">
                             @csrf
                             <input type="hidden" name="hack_id" value="{{ $hack->id }}">
@@ -95,7 +96,7 @@
             @foreach ($comments as $comment)
                 <div class="card mb-4">
                     <header class="card-header">
-                        <a href="/users/{{ $comment->user->id }}">
+                        <a href="{{ route('users.show', $comment->user) }}">
                             @if ($comment->user->country)
                                 <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
                             @endif

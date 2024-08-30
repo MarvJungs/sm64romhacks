@@ -78,6 +78,11 @@ class User extends Authenticatable implements Sitemapable
         'roles' => 'json',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'global_name';
+    }
+
     public function toSitemapTag(): Url|string|array
     {
         return Url::create(route('users.show', $this))
@@ -116,7 +121,7 @@ class User extends Authenticatable implements Sitemapable
         return $this->hasRole(705528172581486704);
     }
 
-    public function hasRole($role_id): bool
+    public function getRoles(): array
     {
         if (!session()->exists('guildMemberRoles')) {
             try {
@@ -126,6 +131,12 @@ class User extends Authenticatable implements Sitemapable
             }
         }
         $guildMemberRoles = session()->get('guildMemberRoles');
+        return $guildMemberRoles;
+    }
+
+    public function hasRole($role_id): bool
+    {
+        $guildMemberRoles = $this->getRoles();
         return !is_null($guildMemberRoles) && in_array($role_id, $guildMemberRoles);
     }
 }

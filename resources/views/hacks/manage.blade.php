@@ -10,7 +10,7 @@
         $authorsList = '';
         foreach ($authors as $author) {
             if ($author->user) {
-                $authorsList .= '<a href="/users/' . $author->user->id . '">' . $author->name . '</a>, ';
+                $authorsList .= '<a href="' . route('users.show', $author->user) . '">' . $author->name . '</a>, ';
             } else {
                 $authorsList .= $author->name . ', ';
             }
@@ -27,19 +27,19 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h2>{{ $hack->name }} - <span class="fa-regular fa-star"></span> x {{ getStarcount($hack) }} </h2>
                 <div class="d-flex gap-3">
-                    <a href="/hacks/{{ $hack->id }}/edit" class="btn btn-primary">
+                    <a href="{{ route('hacks.edit', $hack) }}" class="btn btn-primary">
                         <span class="fa-solid fa-pen"></span>
                         Edit Hack
                     </a>
-                    <a href="/hacks/{{ $hack->id }}/create" class="btn btn-success">
+                    <a href="{{ route('version.create', $hack) }}" class="btn btn-success">
                         <span class="fa-solid fa-plus"></span>
                         Add New Version
                     </a>
-                    <a href="/hacks/{{ $hack->id }}" class="btn btn-info">
+                    <a href="{{ route('hacks.show', $hack) }}" class="btn btn-info">
                         <span class="fa-solid fa-eye"></span>
                         View Hack
                     </a>
-                    <form action="/hacks/{{ $hack->id }}" method="post">
+                    <form action="{{ route('hacks.destroy', $hack) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger" type="submit">
@@ -65,7 +65,7 @@
                             <th>Authors</th>
                             <th>Starcount</th>
                             <th>Release Date</th>
-                            <th class="text-center">Aktions</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,12 +76,11 @@
                                 <td>{{ $version->starcount }}</td>
                                 <td>{{ $version->releasedate }}</td>
                                 <td class="d-flex flex-row gap-2 justify-content-around">
-                                    <a href="/hacks/{{ $hack->id }}/{{ $version->id }}/edit"
-                                        class="btn btn-primary">
+                                    <a href="{{ route('version.edit', [$hack, $version]) }}" class="btn btn-primary">
                                         <span class="fa-solid fa-pen"></span>
                                         Edit Version
                                     </a>
-                                    <form action="/hacks/{{ $hack->id }}/version/{{ $version->id }}"
+                                    <form action="{{route('version.destroy', $version)}}"
                                         method="post">
                                         @csrf
                                         @method('DELETE')

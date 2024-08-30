@@ -4,7 +4,7 @@
         @if (sizeof($event->disruptions) > 0)
             <div class="card mb-4">
                 <div class="card-header">
-                    <h2>{{$event->name}}</h2>
+                    <h2>{{ $event->name }}</h2>
                 </div>
                 <div class="card-body">
                     @foreach ($event->disruptions as $disruption)
@@ -17,7 +17,7 @@
                                     </span>
                                 </div>
                                 <form class="justify-content-center"
-                                    action="/moderation/disruptions/{{ $disruption->id }}" method="post">
+                                    action="{{ route('disruptions.update', $disruption) }}" method="post">
                                     @csrf
                                     @method('PATCH')
                                     <button class="btn btn-primary" type="submit">

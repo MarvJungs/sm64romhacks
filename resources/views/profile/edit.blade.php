@@ -1,5 +1,5 @@
 <x-layout>
-    <form action="/profile" method="post">
+    <form action="{{ route('profile.update') }}" method="post">
         @csrf
         @method('PUT')
         <div class="row">

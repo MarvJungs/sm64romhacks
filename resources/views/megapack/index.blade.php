@@ -8,7 +8,7 @@
             $authorsList = '';
             foreach ($authors as $author) {
                 if ($author->user) {
-                    $authorsList .= '<a href="/users/' . $author->user->id . '">' . $author->name . '</a>, ';
+                    $authorsList .= '<a href="' . route('users.show', $author->user) . '">' . $author->name . '</a>, ';
                 } else {
                     $authorsList .= $author->name . ', ';
                 }
@@ -73,7 +73,9 @@
                     @foreach ($megapack[$difficulty] as $hack)
                         <tr>
                             <td>
-                                <a href="/hacks/{{ $hack->id }}">{{ $hack->name }}</a>
+                                <a href="{{ route('hacks.show', $hack) }}">
+                                    {{ $hack->name }}
+                                </a>
                             </td>
                             <td>
                                 {!! getAuthorsList($hack) !!}
@@ -121,7 +123,9 @@
                 @foreach ($megapack['kaizo'] as $hack)
                     <tr>
                         <td>
-                            <a href="/hacks/{{ $hack->id }}">{{ $hack->name }}</a>
+                            <a href="{{ route('hacks.show', $hack) }}">
+                                {{ $hack->name }}
+                            </a>
                         </td>
                         <td>
                             {!! getAuthorsList($hack) !!}

@@ -185,7 +185,7 @@ function getTableRowFromHack(hack) {
 
     return `
     <tr>
-      <td><a href="/hacks/${id}">${name}</a></td>
+      <td><a href="/hacks/${name}">${name}</a></td>
       <td>${authors}</td>
       <td class="text-nowrap">${releaseDate}</td>
       <td>${starcount}</td>
@@ -208,7 +208,7 @@ function getVersionsData(hack) {
     return {
         authors: versions[0].authors.map((author) =>{
             if (!author.user) return author.name
-            return `<a href="/users/${author.user.id}">${author.user.global_name}</a>`
+            return `<a href="/users/${author.user.global_name}">${author.user.global_name}</a>`
         }).join(', '),
         releaseDate: versions[0].releasedate,
         downloads: getDownloads(versions),

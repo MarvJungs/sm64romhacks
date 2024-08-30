@@ -3,11 +3,11 @@
     @foreach ($comments as $comment)
         <div class="card mb-4">
             <div class="card-header">
-                <form action="/comments/{{ $comment->id }}" method="post">
+                <form action="{{ route('comments.destroy', $comment) }}" method="post">
                     @csrf
                     @method('DELETE')
                     <h2>
-                        <a href="/hacks/{{ $comment->hack->id }}">
+                        <a href="{{ route('hacks.show', $comment->hack) }}">
                             {{ $comment->hack->name }}
                         </a>
                         <button class="btn btn-danger" type="submit">
@@ -26,7 +26,7 @@
                 @if ($comment->user->country)
                     <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
                 @endif
-                <a href='/users/{{ $comment->user->id }}'>
+                <a href="{{ route('users.show', $comment->user) }}">
                     {{ $comment->user->global_name }}
                 </a>
                 @if ($comment->user->gender)

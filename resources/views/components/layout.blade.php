@@ -5,7 +5,7 @@
     {!! SEOMeta::generate() !!}
 
     {!! OpenGraph::generate() !!}
-        
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     @vite(['resources/js/app.js', 'resources/css/app.css'])
     <link rel="shortcut icon" href="{{ asset('images/icon.ico') }}" />
@@ -98,7 +98,7 @@
                                         </form>
                                     </li>
                                     <li>
-                                        <form action="/profile" method="post">
+                                        <form action="{{ route('profile.destroy') }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button class="dropdown-item text-danger" type="submit">Delete
@@ -107,7 +107,7 @@
                                     </li>
                                 </ul>
                             @else
-                            <li class="nav-item"><a href="/login" class="nav-link"
+                            <li class="nav-item"><a href="{{ route('login') }}" class="nav-link"
                                     title="By logging in you agree with our Terms of Service">Login</a></li>
                             </li>
                         @endif
@@ -236,9 +236,9 @@
             <!-- Copyright -->
             <div class="text-center p-3">
                 &copy;
-                <a href="https://sm64romhacks.com/">sm64romhacks.com</a>&nbsp;&#8226;&nbsp;Version:
-                {{ env('APP_VERSION') }}&nbsp;&#8226;&nbsp;<a href="/tos">Terms of
-                    Service</a>&nbsp;&#8226;&nbsp;<a href="/privacy-policy">Privacy Policy</a><br />2019 -
+                <a href="{{ route('home.index') }}">sm64romhacks.com</a>&nbsp;&#8226;&nbsp;Version:
+                {{ env('APP_VERSION') }}&nbsp;&#8226;&nbsp;<a href="{{ route('tos.index') }}">Terms of
+                    Service</a>&nbsp;&#8226;&nbsp;<a href="{{ route('privacy.name') }}">Privacy Policy</a><br />2019 -
                 <script>
                     document.write(new Date().getFullYear())
                 </script>
