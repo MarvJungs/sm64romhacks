@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\Role;
 use App\Models\User;
 use App\Models\Author;
-use Illuminate\Support\Facades\Auth;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
 
 class UsersController extends Controller
 {
@@ -20,6 +20,11 @@ class UsersController extends Controller
 
     public function show(User $user)
     {
+        SEOMeta::setTitle($user->global_name);
+
+        OpenGraph::setTitle($user->global_name);
+        OpenGraph::setType('Profile');
+
         return view('users.show', [
             'user' => $user,
             'versions' => $user->author?->versions,

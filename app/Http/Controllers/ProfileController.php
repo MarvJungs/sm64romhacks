@@ -11,11 +11,14 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use App\Models\Role;
 use Throwable;
+use Artesaos\SEOTools\Facades\SEOMeta;
 
 class ProfileController extends Controller
 {
     public function index(): View
     {
+        SEOMeta::setTitle('Profile');
+
         $user = Auth::user();
         $roles = Role::all()->pluck('name', 'id')->toArray();
         try {

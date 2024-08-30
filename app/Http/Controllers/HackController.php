@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Artesaos\SEOTools\Facades\SEOMeta;
 
 class HackController extends Controller
 {
@@ -34,6 +36,12 @@ class HackController extends Controller
         } else {
             $hacks = $hacks->sortBy('name');
         }
+
+        SEOMeta::setTitle('Hacks');
+
+        OpenGraph::setTitle('Hacks');
+        OpenGraph::setDescription('An Overview of all the SM64 ROM Hacks we offer, free to download!');
+        OpenGraph::setType('Overview');
 
         return view('hacks/index', [
             'tags' => $tags,
@@ -128,6 +136,14 @@ class HackController extends Controller
      */
     public function show(Hack $hack)
     {
+
+        OpenGraph
+            ::setTitle($hack->name)
+            ->setType('Article')
+            ->setDescription(getOpenGraphText($hack->description));
+
+        SEOMeta::setTitle($hack->name);
+
         return view('hacks/view', [
             'hack' => $hack,
             'comments' => $hack->comments->sortByDesc('created_at')

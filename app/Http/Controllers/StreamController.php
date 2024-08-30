@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
+
 class StreamController extends Controller
 {
     private array $whitelist_titles = ['romhack', 'rom hack'];
     private array $whitelist_tags = ['romhack', 'rom hack', 'hack', 'modded', 'mod'];
     public function index()
     {
+        SEOMeta::setTitle('Streams');
+
+        OpenGraph::setTitle('Streams');
+        OpenGraph::setDescription('Overview of Ongoing Livestreams related to SM64 ROM Hacks');
+        OpenGraph::setType('Streams');
+        
         return view('streams/index', ['streams' => $this->filterStreams($this->getStreams())]);
     }
 

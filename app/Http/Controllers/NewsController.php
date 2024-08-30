@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
 
 class NewsController extends Controller
 {
@@ -17,6 +19,12 @@ class NewsController extends Controller
      */
     public function index()
     {
+        SEOMeta::setTitle('News');
+
+        OpenGraph::setTitle('News');
+        OpenGraph::setDescription('An Overview of the recent news going on concerning the community.');
+        OpenGraph::setType('Articles');
+
         $news = News::orderByDesc('created_at')->paginate(15);
 
         return view('news.index', [
@@ -95,6 +103,12 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
+        SEOMeta::setTitle('News');
+
+        OpenGraph::setTitle('News');
+        OpenGraph::setDescription(getOpenGraphText($news->text));
+        OpenGraph::setType('Article');
+
         return view('news.show', [
             'news' => $news
         ]);
