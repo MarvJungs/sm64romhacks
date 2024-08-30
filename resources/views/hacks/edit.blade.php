@@ -33,6 +33,25 @@
                 </div>
             @endif
 
+            <div class="row mb-3">
+                <div class="col">Version</div>
+                <div class="col">Recommened</div>
+                <div class="col">Demo</div>
+            </div>
+            @foreach ($hack->versions as $version)
+                <div class="row mb-3">
+                    <div class="col">{{ $version->name }}</div>
+                    <div class="col">
+                        <input class="form-check-input" type="checkbox" name="recommened[]" value="{{ $version->id }}"
+                            @checked($version->recommened)>
+                    </div>
+                    <div class="col">
+                        <input class="form-check-input" type="checkbox" name="demo[]" value="{{ $version->id }}"
+                            @checked($version->demo)>
+                    </div>
+                </div>
+            @endforeach
+
             <div class="row mb-4">
                 <div class="col">
                     <div id="editor-description"></div>
