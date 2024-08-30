@@ -10,6 +10,8 @@ use App\Mail\EventMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
 
 class EventController extends Controller
 {
@@ -76,6 +78,12 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+        SEOMeta::setTitle($event->slug);
+
+        OpenGraph::setTitle($event->slug);
+        OpenGraph::setDescription(getOpenGraphText($event->description));
+        OpenGraph::setType('Event');
+
         $response = Http::get($this->horaro_api_endpoint . $event->slug . '/schedules');
         if ($event->marathon) {
             if ($response->successful()) {

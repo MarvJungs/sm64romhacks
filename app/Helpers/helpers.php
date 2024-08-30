@@ -1,7 +1,5 @@
 <?php
 
-use function PHPSTORM_META\type;
-
 function parseEditorText($prop)
 {
     switch ($prop->type) {
@@ -56,5 +54,16 @@ function getDiscordEmbedText($text)
     }
     $result = strip_tags($result);
     $result = str_replace('&nbsp;', ' ', $result);
+    return $result;
+}
+
+function getOpenGraphText($text)
+{
+    $result = '';
+    foreach (json_decode($text) as $prop) {
+        if ($prop->type == 'paragraph') {
+            $result .= $prop->data->text;
+        }
+    }
     return $result;
 }

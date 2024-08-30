@@ -6,6 +6,8 @@ use App\Models\Cheat;
 use App\Http\Requests\StoreCheatRequest;
 use App\Http\Requests\UpdateCheatRequest;
 use Illuminate\Support\Facades\Gate;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
 
 class CheatController extends Controller
 {
@@ -14,6 +16,12 @@ class CheatController extends Controller
      */
     public function index()
     {
+        SEOMeta::setTitle('Cheat Codes');
+
+        OpenGraph::setTitle('Cheat Codes');
+        OpenGraph::setDescription('An Overview of commonly used cheat codes ready to use!');
+        OpenGraph::setType('Cheat Codes');
+
         $cheats = Cheat::all();
         return view('cheats.index', ['cheats' => $cheats]);
     }

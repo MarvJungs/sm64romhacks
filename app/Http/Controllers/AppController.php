@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Artesaos\SEOTools\Facades\SEOMeta;
+
 class AppController extends Controller
 {
     public function league2022()
@@ -34,6 +37,12 @@ class AppController extends Controller
             ],
         ];
 
+        SEOMeta::setTitle('League 2022');
+
+        OpenGraph::setTitle('League 2022');
+        OpenGraph::setDescription('This is a points calculator for the SM64 ROM Hacks League 2022 Competition!');
+        OpenGraph::setType('Calculator');
+
         return view('apps.league2022', [
             'games' => $games
         ]);
@@ -51,6 +60,13 @@ class AppController extends Controller
             'ZAR96',
             'ZAR170'
         ];
+
+        SEOMeta::setTitle('League 2023');
+
+        OpenGraph::setTitle('League 2023');
+        OpenGraph::setDescription('This is a points calculator for the SM64 ROM Hacks League 2023 Competition!');
+        OpenGraph::setType('Calculator');
+
         return view('apps.league2023', [
             'categories' => $categories
         ]);
