@@ -53,7 +53,7 @@ class UsersController extends Controller
             'role_id' => $request->role_id
         ]);
 
-        return redirect('/users');
+        return redirect(route('users.index'));
     }
 
     public function assignAuthorToUser(UpdateUserRequest $request)
@@ -63,6 +63,6 @@ class UsersController extends Controller
         $user->update([
             'author_id' => $request->author_id
         ]);
-        return redirect('/')->with('success', 'assigned author successfully');
+        return redirect(route('home.index'))->with('success', 'assigned author successfully');
     }
 }

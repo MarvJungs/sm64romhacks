@@ -38,7 +38,7 @@ class CommentController extends Controller
             'title' => $request->title,
             'text' => $request->text
         ]);
-        return redirect('/hacks/' . $hack->id . '#comments');
+        return redirect(route('hacks.show', $hack) . '#comments');
     }
 
     /**

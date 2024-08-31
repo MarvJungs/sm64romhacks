@@ -65,7 +65,7 @@ class ProfileController extends Controller
             'country' => $request->country,
             'notify' => filter_var($request->notify, FILTER_VALIDATE_BOOLEAN)
         ]);
-        return Redirect::route('profile.index');
+        return redirect(route('profile.index'));
     }
 
     /**
@@ -82,6 +82,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return redirect(route('home.index'));
     }
 }

@@ -126,10 +126,7 @@ class HackController extends Controller
             }
         }
 
-        return response()->json([
-            'message' => 'Form submitted successfully',
-            'request' => json_encode($request->all())
-        ], 200);
+        return redirect(route('hacks.index'))->with('success', 'hack has successfully been submitted for review');
     }
 
     /**
@@ -221,7 +218,7 @@ class HackController extends Controller
             'description' => $request->description,
             'megapack' => $request->megapack ?? $hack->megapack
         ]);
-        return redirect('/hacks/' . $hack->id);
+        return redirect(route('hacks.show', $hack));
     }
 
     /**
@@ -239,7 +236,7 @@ class HackController extends Controller
         }
 
         $hack->delete();
-        return redirect('/moderation/hacks/manage')->with('success', 'Hack ' . $hack->name . ' has been deleted');
+        return redirect(route('hacks.manage'))->with('success', 'Hack ' . $hack->name . ' has been deleted');
     }
 
     public function download(Version $version)
@@ -259,8 +256,8 @@ class HackController extends Controller
     }
     public function random()
     {
-        $hacks = Hack::all()->unique('id')->where('verified', '=', '1');
-        return redirect('hacks/' . $hacks->random()->id);
+        $hack = Hack::where('verified', '=', '1')->get()->random();
+        return redirect(route('hacks.show', $hack));
     }
 
     public function accept(Request $request)
@@ -270,7 +267,7 @@ class HackController extends Controller
         $hack->rejected = 0;
         $hack->save();
 
-        return redirect('/hacks');
+        return redirect(route('hacks.index'));
     }
 
     public function reject(Request $request)
@@ -280,6 +277,6 @@ class HackController extends Controller
         $hack->rejected = 1;
         $hack->save();
 
-        return redirect('/hacks');
+        return redirect(route('hacks.index'));
     }
 }

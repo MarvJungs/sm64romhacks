@@ -49,7 +49,7 @@ class VersionController extends Controller
             $version->authors()->createOrFirst(['name' => $author]);
         }
 
-        return redirect('/hacks/' . $request->hack_id);
+        return redirect(route('hacks.show', $version->hack));
     }
 
     /**
@@ -72,7 +72,7 @@ class VersionController extends Controller
             'starcount' => $request->starcount,
             'releasedate' => $request->releasedate
         ]);
-        return redirect('/hacks/' . $request->hack_id);
+        return redirect(route('hacks.show', $hack));
     }
 
     /**
@@ -89,8 +89,8 @@ class VersionController extends Controller
                 Storage::delete($image->filename);
             }
             $hack->delete();
-            return redirect('/hacks')->with('success', 'The version has successfully been deleted. As the hack has no other versions available, the hack has been deleted as a result');
+            return redirect(route('hacks.index'))->with('success', 'The version has successfully been deleted. As the hack has no other versions available, the hack has been deleted as a result');
         }
-        return redirect('/hacks/' . $hack->id)->with('success', 'version has successfully been deleted');
+        return redirect(route('hacks.show', $hack))->with('success', 'version has successfully been deleted');
     }
 }

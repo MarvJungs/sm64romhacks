@@ -95,7 +95,7 @@ class NewsController extends Controller
             ],
         ]);
 
-        return redirect('news');
+        return redirect(route('news.index'));
     }
 
     /**
@@ -136,7 +136,7 @@ class NewsController extends Controller
             'important' => filter_var($request->important, FILTER_VALIDATE_BOOLEAN),
         ]);
 
-        return redirect('/news')->with('success', 'newspost has been updated');
+        return redirect(route('news.index'))->with('success', 'newspost has been updated');
     }
 
     /**
@@ -146,6 +146,6 @@ class NewsController extends Controller
     {
         Gate::authorize('delete', $news);
         $news->delete();
-        return redirect('/news')->with('success', 'newspost has been deleted');
+        return redirect(route('news.index'))->with('success', 'newspost has been deleted');
     }
 }

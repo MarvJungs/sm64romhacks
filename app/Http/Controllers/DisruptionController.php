@@ -42,7 +42,7 @@ class DisruptionController extends Controller
             'text' => $request->text,
         ]);
 
-        return redirect('/moderation/events')->with('success', 'disruption has been added to the event');
+        return redirect(route('events.index'))->with('success', 'disruption has been added to the event');
     }
 
     /**
@@ -55,13 +55,13 @@ class DisruptionController extends Controller
                 'active' => false
             ]);
             $disruption->save();
-            return redirect('/moderation/disruptions')->with('success', 'disruption was set to inactive');
+            return redirect(route('disruptions.index'))->with('success', 'disruption was set to inactive');
         } elseif (!filter_var($disruption->active, FILTER_VALIDATE_BOOLEAN)) {
             $disruption->update([
                 'active' => true
             ]);
             $disruption->save();
-            return redirect('/moderation/disruptions')->with('success', 'disruption was set to active');
+            return redirect(route('disruptions.index'))->with('success', 'disruption was set to active');
         }
     }
 }

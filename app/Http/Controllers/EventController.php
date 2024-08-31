@@ -68,9 +68,9 @@ class EventController extends Controller
             foreach ($notifyable_users as $notifyable_user) {
                 Mail::to($notifyable_user->email)->send(new EventMail($notifyable_user, $event));
             }
-            return redirect('/events/' . $request->slug)->with('success', 'event has successfully been added');
+            return redirect(route('events.show', $event))->with('success', 'event has successfully been added');
         }
-        return redirect('/events/' . $request->slug)->with('error', 'event already exists');
+        return redirect(route('events.show', $event))->with('error', 'event already exists');
     }
 
     /**
@@ -134,7 +134,7 @@ class EventController extends Controller
             'marathon' => isset($request->marathon)
         ]);
 
-        return redirect('/events/' . $event->slug)->with('success', 'event has been updated');
+        return redirect(route('events.show', $event))->with('success', 'event has been updated');
     }
 
     /**
@@ -148,6 +148,6 @@ class EventController extends Controller
                 ->delete(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events/' . $event->guild_schedule_id);
         }
         $event->delete();
-        return redirect('/')->with('success', 'event ' . $event->name . ' has successfully been deleted');
+        return redirect(route('home.index'))->with('success', 'event ' . $event->name . ' has successfully been deleted');
     }
 }

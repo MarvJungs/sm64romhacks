@@ -48,9 +48,9 @@ class CheatController extends Controller
                 'code' => $request->code
             ]);
             $cheat->save();
-            return redirect('/cheats')->with('success', 'code added');
+            return redirect(route('cheats.index'))->with('success', 'code added');
         }
-        return redirect('/cheats')->with('error', 'code already exists');
+        return redirect(route('cheats.index'))->with('error', 'code already exists');
     }
 
     /**
@@ -72,7 +72,7 @@ class CheatController extends Controller
         $cheat->code = $request->code;
         $cheat->update();
 
-        return redirect('/cheats');
+        return redirect(route('cheats.index'));
     }
 
     /**
