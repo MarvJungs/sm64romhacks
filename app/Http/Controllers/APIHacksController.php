@@ -20,7 +20,7 @@ class APIHacksController extends Controller
             'versions.authors.user',
             'tags:name'
         ])
-            ->select(['id', 'name'])
+            ->select(['id', 'name', 'slug'])
             ->orderBy('hacks.name')->get();
         return response()->json($hacks);
     }

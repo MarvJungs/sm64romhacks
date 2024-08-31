@@ -19,6 +19,7 @@ class Hack extends Model implements Sitemapable
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
         'megapack',
         'verified',
@@ -29,7 +30,7 @@ class Hack extends Model implements Sitemapable
 
     public function getRouteKeyName(): string
     {
-        return 'name';
+        return 'slug';
     }
 
     public function toSitemapTag(): Url|string|array

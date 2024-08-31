@@ -176,6 +176,7 @@ function getHackTableRows(hacks) {
 function getTableRowFromHack(hack) {
     const id = hack.id;
     const name = hack.name;
+    const slug = hack.slug;
     const versionData = getVersionsData(hack);
     const authors = versionData.authors;
     const releaseDate = versionData.releaseDate;
@@ -185,7 +186,7 @@ function getTableRowFromHack(hack) {
 
     return `
     <tr>
-      <td><a href="/hacks/${name}">${name}</a></td>
+      <td><a href="/hacks/${slug}">${name}</a></td>
       <td>${authors}</td>
       <td class="text-nowrap">${releaseDate}</td>
       <td>${starcount}</td>
