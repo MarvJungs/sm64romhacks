@@ -14,6 +14,8 @@ class Tag extends Model
         'name'
     ];
 
+    public $timestamps = false;
+
     public function hack(): BelongsToMany
     {
         return $this->belongsToMany(Hack::class);

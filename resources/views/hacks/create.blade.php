@@ -1,60 +1,67 @@
 <x-layout>
     <h1 class="text-center text-decoration-underline">Hack Submission Form</h1>
 
-    <div class="d-flex align-items-start text-nowrap">
-        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home"
-                type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Hack Metadata</button>
-            <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile"
-                type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Version
-                Metadata</button>
+    <form method="POST" action="{{ route('hacks.store') }}" enctype="multipart/form-data" id="hackForm">
+        @csrf
+        <div class="row m-3">
+            <div class="col">
+                <label for="name">Hackname</label>
+                <input type="text" name="name" class="form-control" id="name" required>
+            </div>
+            <div class="col">
+                <label for="tagname">Tags</label>
+                <input type="text" name="tagname" class="form-control" id="tagname">
+            </div>
+            <div class="col">
+                <label for="image[]">Images</label>
+                <input type="file" name="image[]" id="image[]" class="form-control" multiple>
+            </div>
+            @if (Auth::check() && Auth::user()->hasRole(705528172581486704))
+                <div class="col">
+                    <div class="form-check">
+                        <label for="megapack" class="form-check-label">Megapack</label>
+                        <input type="checkbox" name="megapack" id="megapack" class="form-check-input">
+                    </div>
+                </div>
+            @endif
         </div>
 
-        <form method="POST" action="{{ route('hacks.store') }}" enctype="multipart/form-data" id="hackForm">
-            @csrf
-
-            <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                    aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="row m-3">
-                        <div class="col">
-                            <label for="name">Hackname</label>
-                            <input type="text" name="name" class="form-control" id="name" required>
-                        </div>
-                        <div class="col">
-                            <label for="tagname">Tags</label>
-                            <input type="text" name="tagname" class="form-control" id="tagname">
-                        </div>
-                        <div class="col">
-                            <label for="image[]">Images</label>
-                            <input type="file" name="image[]" id="image[]" class="form-control" multiple>
-                        </div>
-                        @if (Auth::check() && Auth::user()->hasRole(705528172581486704))
-                            <div class="col">
-                                <div class="form-check">
-                                    <label for="megapack" class="form-check-label">Megapack</label>
-                                    <input type="checkbox" name="megapack" id="megapack" class="form-check-input">
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div id="editor-description"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row m-3">
-                    <div class="col">
-                        <button class="form-control btn btn-primary" type="submit">Submit</button>
-                    </div>
-                </div>
+        <div class="row mb-4">
+            <div class="col">
+                <label for="versionname">Versionname</label>
+                <input type="text" name="versionname" id="versionname" class="form-control" required>
             </div>
-            <input type="number" name="count" id="count" value="1" hidden>
-            <input type="hidden" name="description" id="description">
+            <div class="col">
+                <label for="releasedate">Releasedate</label>
+                <input type="date" name="releasedate" id="releasedate" class="form-control" required>
+            </div>
+            <div class="col">
+                <label for="starcount">Starcount</label>
+                <input type="number" name="starcount" id="starcount" class="form-control" required>
+            </div>
+            <div class="col">
+                <label for="patchfile">Patchfile</label>
+                <input type="file" name="patchfile" id="patchfile" class="form-control" required>
+            </div>
+            <div class="col">
+                <label for="authors">Authors</label>
+                <input type="text" name="author" id="author" class="form-control">
+            </div>
+        </div>
 
-        </form>
+        <div class="row mb-4">
+            <div class="col">
+                <div id="editor-description"></div>
+            </div>
+        </div>
+
+        <div class="row m-3">
+            <div class="col">
+                <button class="form-control btn btn-primary" type="submit">Submit</button>
+            </div>
+        </div>
+        <input type="hidden" name="description" id="description">
+
+    </form>
     </div>
 </x-layout>

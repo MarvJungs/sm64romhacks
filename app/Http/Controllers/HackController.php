@@ -83,35 +83,35 @@ class HackController extends Controller
     {
         $hackData = [
             'name' => $request->name,
+            'slug' => Str::slug($request->name),
             'megapack' => 0,
             'verified' => 0
         ];
 
         $hack = Hack::createOrFirst($hackData);
 
-        for ($i = 0; $i < $request->count; $i++) {
-            $version = $hack->versions()->createOrFirst(
-                [
-                    'name' => $request->versionname[$i]
-                ],
-                [
-                    'starcount' => $request->starcount[$i],
-                    'releasedate' => $request->releasedate[$i] ?? '9999-12-31',
-                    'downloadcount' => 0,
-                    'recommened' => 0,
-                    'filename' => ''
-                ]
-            );
+        $version = $hack->versions()->createOrFirst(
+            [
+                'name' => $request->versionname
+            ],
+            [
+                'starcount' => $request->starcount ?? 0,
+                'releasedate' => $request->releasedate ?? '9999-12-31',
+                'downloadcount' => 0,
+                'recommened' => 0,
+                'filename' => ''
+            ]
+        );
 
-            if ($request->hasFile('patchfile') && $version->wasRecentlyCreated) {
-                $version->update(['filename' => $request->file('patchfile')[$i]->store('patch')]);
-            }
-
-            $authors = explode(', ', $request->author[$i]);
-            foreach ($authors as $author) {
-                $version->authors()->createOrFirst(['name' => $author]);
-            }
+        if ($request->hasFile('patchfile') && $version->wasRecentlyCreated) {
+            $version->update(['filename' => $request->file('patchfile')->store('patch')]);
         }
+
+        $authors = explode(', ', $request->author);
+        foreach ($authors as $author) {
+            $version->authors()->createOrFirst(['name' => $author]);
+        }
+
 
         if ($request->has('tagname')) {
             $tags = explode(', ', $request->tagname);
