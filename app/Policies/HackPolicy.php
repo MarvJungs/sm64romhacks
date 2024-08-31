@@ -20,14 +20,8 @@ class HackPolicy
      */
     public function update(User $user, Hack $hack): bool
     {
-        $versions = $hack->versions->sortBy('releasedate');
-        $authors = $versions->first()->authors->toArray();
-        foreach ($authors as $author) {
-            if ($author['user_id'] == $user->id) {
-                return true;
-            }
-        }
-        return $user->isAdmin() || $user->isModerator();
+        return $user->isAuthorOfHack($hack) ||
+            $user->isAdmin() || $user->isModerator();
     }
 
     /**

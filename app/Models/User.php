@@ -139,4 +139,13 @@ class User extends Authenticatable implements Sitemapable
         $guildMemberRoles = $this->getRoles();
         return !is_null($guildMemberRoles) && in_array($role_id, $guildMemberRoles);
     }
+
+    public function isAuthorOfHack(Hack $hack): bool
+    {
+        $firstVersion = $hack->versions->sortBy('releasedate')->first();
+        $authors = $firstVersion->authors;
+        return $authors->contains(function (Author $author) {
+            return !is_null($author->user) && $author->user_id == Auth::user()->id;
+        });
+    }
 }

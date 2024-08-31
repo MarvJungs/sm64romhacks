@@ -1,5 +1,14 @@
 <x-layout>
-    <h1 class="text-center text-decoration-underline">{{ $hack->name }}</h1>
+    <h1 class="text-center">
+        <span class="text-decoration-underline">
+            {{ $hack->name }}
+        </span>
+        @if (Auth::check() && Auth::user()->isAuthorOfHack($hack))
+            &nbsp;<a href="{{ route('hacks.edit', $hack) }}" class="btn btn-primary">
+                <span class="fa-solid fa-pen"></span> Edit Hack
+            </a>
+        @endif
+    </h1>
 
     <table class="table">
         <thead>
@@ -72,7 +81,7 @@
                 </h2>
                 <div id="addComment" class="accordion-collapse collapse" data-bs-parent="#accordion">
                     <div class="accordion-body">
-                        
+
                         <form action="/comments" method="post">
                             @csrf
                             <input type="hidden" name="hack_id" value="{{ $hack->id }}">
