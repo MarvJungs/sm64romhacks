@@ -58,10 +58,9 @@ class UsersController extends Controller
 
     public function assignAuthorToUser(UpdateUserRequest $request)
     {
-
-        $user = User::find($request->user_id);
-        $user->update([
-            'author_id' => $request->author_id
+        $author = Author::find($request->author_id);
+        $author->update([
+            'user_id' => $request->user_id
         ]);
         return redirect(route('home.index'))->with('success', 'assigned author successfully');
     }
