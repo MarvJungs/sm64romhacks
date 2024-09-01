@@ -22,6 +22,8 @@ return new class extends Migration
             $table->uuid('id')->primary()->nullable(false);
             $table->string('name')->unique()->nullable(false)->index();
             $table->text('description')->nullable(true);
+            $table->string('videolink')->nullable(true);
+            $table->string('logo')->nullable(true);
             $table->float('difficulty')->default(0.00)->nullable(false);
             $table->float('peak')->default(0.00)->nullable(false);
             $table->boolean('megapack')->default(false)->nullable(false);

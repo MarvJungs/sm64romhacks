@@ -51,7 +51,7 @@ return new class extends Migration
                         'updated_at' => date('Y-m-d h:i:s', Storage::lastModified('patch/' . $version->hack_patchname . '.zip'))
                     ]);
                 } catch (\Throwable $th) {
-                    print $th->getMessage() . "\n";
+                    print "\n" . $th->getMessage();
                 }
             }
         }

@@ -3,9 +3,16 @@
         <span class="text-decoration-underline">
             {{ $hack->name }}
         </span>
-        @if (Auth::check() && Auth::user()->isAuthorOfHack($hack))
+        @if (
+            (Auth::check() && Auth::user()->isAuthorOfHack($hack)) ||
+                Auth::user()->isAdmin() ||
+                Auth::user()->isModerator() ||
+                Auth::user()->isSiteHelper())
             &nbsp;<a href="{{ route('hacks.edit', $hack) }}" class="btn btn-primary">
                 <span class="fa-solid fa-pen"></span> Edit Hack
+            </a> &nbsp;
+            <a href="{{ route('version.create', $hack) }}" class="btn btn-success">
+                <span class="fa-solid fa-plus"></span> Add Version
             </a>
         @endif
     </h1>
@@ -45,7 +52,7 @@
             @endforeach
         </tbody>
     </table>
-    @if ($hack->description)
+    @if ($hack->description && $hack->description != '[]')
         <div class="card">
             <div class="card-body">
                 @foreach (json_decode($hack->description) as $item)
@@ -54,18 +61,62 @@
             </div>
         </div>
     @endif
-
-    <div class="container w-50 d-flex justify-content-center">
-        <div class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                @foreach ($hack->images as $image)
-                    <div class="carousel-item active flex-column " data-bs-interval="2500">
-                        <img src="{{ Storage::url($image->filename) }}" class="d-block w-100"
-                            {{ getimagesize('storage/' . $image->filename)[3] }}>
-                    </div>
-                @endforeach
-            </div>
+    <div class="row mb-4">
+        <div class="col">
+            @if ($hack->videolink)
+                <iframe
+                    src="https://www.youtube.com/embed/{{ substr($hack->videolink, strpos($hack->videolink, '?v=') + 3) }}"
+                    width="560" height="315" title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            @else
+                <svg class="mb-4" width="560" height="315" xmlns="http://www.w3.org/2000/svg">
+                    <rect height="100%" width="100%" fill="#1d1d1d" />
+                    <image width="160" height="90" x="200" y="72" href="http://localhost:8000/images/logo.png" />
+                    <text x="95" y="190" fill="#aeaeae" font-size="36">The Video is unavailable.</text>
+                    <text x="5" y="236" fill="#6c6c6c">HTTP ERROR 502: PUP KAG DQMXXK FTUZW U IAGXP BGF HMXGQMNXQ</text>
+                    <text x="5" y="256" fill="#6c6c6c">UZRADYMFUAZ TQDQ? FTMF IAGXP NQ DQMXXK RGZZK NGF FTUE</text>
+                    <text x="5" y="276" fill="#6c6c6c">YQEEMSQ DQMXXK AZXK QJUEFE FA SUHQ KAG EXQQBXQEE ZUSTFE</text>
+                    <text x="5" y="296" fill="#6c6c6c">MNAGF ITMF FTUE YQEEMSQ OAGXP YQMZ.</text>
+                </svg>
+            @endif
         </div>
+        <div class="col">
+            @if (sizeof($hack->images) > 0)
+                <div class="carousel slide carousel-fade" id="imageSlider" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach ($hack->images as $index => $image)
+                            @if ($index == 0)
+                                <div class="carousel-item active" data-bs-interval="5000">
+                                @else
+                                    <div class="carousel-item" data-bs-interval="5000">
+                            @endif
+                            <img src="{{ Storage::url($image->filename) }}" class="d-block w-100" height="315">
+                    </div>
+            @endforeach
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#imageSlider" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#imageSlider" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    </div>
+@else
+    <svg class="mb-4" width="560" height="315" xmlns="http://www.w3.org/2000/svg">
+        <rect height="100%" width="100%" fill="#1d1d1d" />
+        <image width="160" height="90" x="200" y="72" href="http://localhost:8000/images/logo.png" />
+        <text x="95" y="190" fill="#aeaeae" font-size="36">No Images are available.</text>
+
+        <text x="5" y="236" fill="#6c6c6c">HTTP ERROR 404: O UO IWM ISOH HZE POP EHSQD HLKZV YJCK RNMP </text>
+        <text x="5" y="256" fill="#6c6c6c">EJEZNB BH AWANV LNZS XWWC FS T CWGCLT PTTJ NZEZOEG OW MCQL JZM </text>
+        <text x="5" y="276" fill="#6c6c6c">NVRZ. Q AMUE JZM KEJJGXB YHTD DOKTGM KGIDWP STU NJE ZM TUEDAJV </text>
+        <text x="5" y="296" fill="#6c6c6c">OM AHKJTSTFM. MNAGF ITMF FTUE YQEEMSQ OAGXP YQMZ.</text>
+    </svg>
+    @endif
     </div>
 
     <hr />

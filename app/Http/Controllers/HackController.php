@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
+use Illuminate\Http\File;
 
 class HackController extends Controller
 {
@@ -212,11 +213,20 @@ class HackController extends Controller
             }
         }
 
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $image) {
+                $hack->images()->create([
+                    'filename' => Storage::putFile("images/$hack->id", new File($image))
+                ]);
+            }
+        }
+
 
         $hack->update([
             'name' => $request->name,
             'description' => $request->description,
-            'megapack' => $request->megapack ?? $hack->megapack
+            'megapack' => $request->megapack ?? $hack->megapack,
+            'videolink' => $request->videolink
         ]);
         return redirect(route('hacks.show', $hack));
     }

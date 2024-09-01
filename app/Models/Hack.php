@@ -21,6 +21,7 @@ class Hack extends Model implements Sitemapable
         'name',
         'slug',
         'description',
+        'videolink',
         'megapack',
         'verified',
         'rejected',

@@ -17,3 +17,5 @@ window.Alpine = Alpine;
 window.bootstrap = bootstrap;
 
 Alpine.start();
+
+console.log('RASEAC', 64, 'ERENEGIV', 'GRAVITY FALLS');

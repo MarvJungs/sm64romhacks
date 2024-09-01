@@ -3,6 +3,7 @@
 
     <form method="POST" action="{{ route('hacks.store') }}" enctype="multipart/form-data" id="hackForm">
         @csrf
+        <h2>General Data about the Hack</h2>
         <div class="row m-3">
             <div class="col">
                 <label for="name">Hackname</label>
@@ -12,12 +13,9 @@
                 <label for="tagname">Tags</label>
                 <input type="text" name="tagname" class="form-control" id="tagname">
             </div>
-            <div class="col">
-                <label for="image[]">Images</label>
-                <input type="file" name="image[]" id="image[]" class="form-control" multiple>
-            </div>
+
             @if (Auth::check() && Auth::user()->hasRole(705528172581486704))
-                <div class="col">
+                <div class="d-flex col align-items-end">
                     <div class="form-check">
                         <label for="megapack" class="form-check-label">Megapack</label>
                         <input type="checkbox" name="megapack" id="megapack" class="form-check-input">
@@ -25,7 +23,14 @@
                 </div>
             @endif
         </div>
+        <div class="row mb-4">
+            <div class="col">
+                <label for="editor-description">Description</label>
+                <div id="editor-description"></div>
+            </div>
+        </div>
 
+        <h2>Version Specific Data</h2>
         <div class="row mb-4">
             <div class="col">
                 <label for="versionname">Versionname</label>
@@ -49,11 +54,22 @@
             </div>
         </div>
 
-        <div class="row mb-4">
+        <div class="row mb-3">
+            <h2>Promotional Media</h2>
             <div class="col">
-                <div id="editor-description"></div>
+                <label for="videolink">Video Link</label>
+                <input type="url" name="videolink" class="form-control" id="videolink">
+            </div>
+            <div class="col">
+                <label for="logo">Logo</label>
+                <input type="file" name="logo" class="form-control" id="logo">
+            </div>
+            <div class="col">
+                <label for="image[]">Images</label>
+                <input type="file" name="image[]" id="image[]" class="form-control" multiple>
             </div>
         </div>
+
 
         <div class="row m-3">
             <div class="col">
