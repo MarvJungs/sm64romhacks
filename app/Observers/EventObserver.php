@@ -36,7 +36,6 @@ class EventObserver
         $event->update([
             'guild_schedule_id' => $response->json()['id'],
         ]);
-
     }
 
     /**

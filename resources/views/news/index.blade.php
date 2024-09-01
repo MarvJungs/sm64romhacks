@@ -8,7 +8,11 @@
             </a>
         @endif
     </div>
-    @foreach ($news as $message)
-        <x-cards.news :message="$message" />
-    @endforeach
+    @if (sizeof($news) > 0)
+        @foreach ($news as $message)
+            <x-cards.news :message="$message" />
+        @endforeach
+    @else
+        <em>No News have been posted yet!</em>
+    @endif
 </x-layout>

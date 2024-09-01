@@ -164,12 +164,14 @@
                                             <div
                                                 style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#FFFFFF;">
                                                 <p>Dear {{ $user->global_name }},</p>
-                                                <p>You successfully registered on our homepage. You may now write
-                                                    comments, manage your hacks (once an author has been assigned to
-                                                    your user) and more.</p>
-                                                <p>On any questions, do not hesitate on asking on our discord server
-                                                    (link on the discord icon below) or send an email to the given
-                                                    email-address.
+                                                <p>You are receiving this email because you agreed on receiving Emails
+                                                    upon updates regarding our Community space!</p>
+                                                <p>Today we are informing you about recent news concerning the Community
+                                                    so it is important that you read them carefully and acknowledge
+                                                    them!</p>
+                                                @foreach (json_decode($news->text) as $item)
+                                                    {!! parseEditorText($item) !!}
+                                                @endforeach
                                             </div>
                                         </td>
                                     </tr>

@@ -102,6 +102,11 @@
             }
         }
     </style>
+    <style type="text/css">
+        a {
+            color: #00bc8c !important;
+        }
+    </style>
 </head>
 
 <body style="background-color:#212529;">
@@ -174,7 +179,8 @@
                                                     </li>
                                                     @if ($event->marathon)
                                                         <li>
-                                                            Location: <a href="http://www.twitch.tv/sm64romhacks" style="color: #00bc8c">The
+                                                            Location: <a href="http://www.twitch.tv/sm64romhacks"
+                                                                style="color: #00bc8c">The
                                                                 sm64romhacks Twitch Channel</a>
                                                         </li>
                                                     @endif
@@ -182,7 +188,8 @@
                                                 <p>Mark the dates down in your calendar now! We look forward to see you
                                                     there.</p>
                                                 <p>You can find the most up-to-date Information always on the <a
-                                                        href="http://www.sm64romhacks.com/events/{{ $event->slug }}" style="color: #00bc8c">corresponding
+                                                        href="http://www.sm64romhacks.com/events/{{ $event->slug }}"
+                                                        style="color: #00bc8c">corresponding
                                                         event page</a></p>
                                             </div>
                                         </td>
@@ -342,8 +349,8 @@
                                             <div
                                                 style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#FFFFFF;">
                                                 <p>With Kind Regards<br>Your sm64romhacks Team</p><a
-                                                    href="mailto:info@sm64romhacks.com" style="color: #00bc8c">info@sm64romhacks.com</a><br><a
-                                                    href="https://www.sm64romhacks.com" style="color: #00bc8c">https://www.sm64romhacks.com</a></a>
+                                                    href="mailto:info@sm64romhacks.com">info@sm64romhacks.com</a><br><a
+                                                    href="https://www.sm64romhacks.com">https://www.sm64romhacks.com</a>
                                             </div>
                                         </td>
                                     </tr>

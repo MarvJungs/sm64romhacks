@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Observers\NewsObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy(NewsObserver::class)]
 class News extends Model implements Sitemapable
 {
     use HasFactory;

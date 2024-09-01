@@ -80,8 +80,7 @@
                                         <span class="fa-solid fa-pen"></span>
                                         Edit Version
                                     </a>
-                                    <form action="{{route('version.destroy', $version)}}"
-                                        method="post">
+                                    <form action="{{ route('version.destroy', [$hack, $version]) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-danger" type="submit">
