@@ -60,10 +60,7 @@
                 <label for="videolink">Video Link</label>
                 <input type="url" name="videolink" class="form-control" id="videolink">
             </div>
-            <div class="col">
-                <label for="logo">Logo</label>
-                <input type="file" name="logo" class="form-control" id="logo">
-            </div>
+
             <div class="col">
                 <label for="image[]">Images</label>
                 <input type="file" name="image[]" id="image[]" class="form-control" multiple>

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('news', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable(false);
+            $table->unsignedBigInteger('user_id')->nullable(true);
             $table->string('title');
             $table->text('text');
             $table->boolean('important');

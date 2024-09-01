@@ -17,7 +17,7 @@ return new class extends Migration
         });
 
         Schema::table('comments', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             $table->foreign('hack_id')->references('id')->on('hacks')->onDelete('cascade')->onUpdate('cascade');
         });
 
@@ -30,7 +30,7 @@ return new class extends Migration
         });
 
         Schema::table('news', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
         });
 
         Schema::table('tags', function (Blueprint $table) {
