@@ -4,10 +4,10 @@
             {{ $hack->name }}
         </span>
         @if (
-            (Auth::check() && Auth::user()->isAuthorOfHack($hack)) ||
+            Auth::check() && (Auth::user()->isAuthorOfHack($hack) ||
                 Auth::user()->isAdmin() ||
                 Auth::user()->isModerator() ||
-                Auth::user()->isSiteHelper())
+                Auth::user()->isSiteHelper()))
             &nbsp;<a href="{{ route('hacks.edit', $hack) }}" class="btn btn-primary">
                 <span class="fa-solid fa-pen"></span> Edit Hack
             </a> &nbsp;
@@ -18,37 +18,10 @@
     </h1>
 
     <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Hack Name</th>
-                <th scope="col">Hack Version</th>
-                <th scope="col">Download Link</th>
-                <th scope="col">Creator</th>
-                <th scope="col">Starcount</th>
-                <th scope="col">Release Date</th>
-            </tr>
-        </thead>
+        <x-table.versions.head />
         <tbody>
             @foreach ($versions as $version)
-                @if ($version->recommened)
-                    <tr class="table-active">
-                    @else
-                    <tr>
-                @endif
-                <td>{{ $hack->name }}</td>
-                <td>{{ $version->name }}</td>
-                <td>
-                    <a href="{{ route('hack.download', $version) }}">Download</a> |
-                    <a href="{{ route('patcher.index', ['id' => $version->id]) }}">Patch File</a> <br />
-                    <span class="text-muted">Downloads: {{ $version->downloadcount }} |
-                        {{ round(Storage::size($version->filename) / 1048576, 2) }}
-                        MB
-                    </span>
-                </td>
-                <td>{{ implode(', ', $version->authors()->pluck('name')->toArray()) }}</td>
-                <td>{{ $version->starcount }}</td>
-                <td>{{ $version->releasedate }}</td>
-                </tr>
+                <x-table.versions.row :version="$version" />
             @endforeach
         </tbody>
     </table>
@@ -154,29 +127,7 @@
         <h2>Comments</h2>
         @if (sizeof($comments) > 0)
             @foreach ($comments as $comment)
-                <div class="card mb-4">
-                    <header class="card-header">
-                        <a href="{{ route('users.show', $comment->user) }}">
-                            @if ($comment->user->country)
-                                <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
-                            @endif
-                            {{ $comment->user->global_name }}
-                            @if ($comment->user->gender)
-                                ({{ $comment->user->gender }})
-                            @endif
-                        </a>
-                    </header>
-                    <div class="card-body">
-                        <h2 class="card-title">{{ $comment->title }}</h2>
-                        <hr />
-                        <p class="card-text">{!! nl2br(htmlspecialchars($comment->text)) !!}</p>
-                    </div>
-                    <footer class="card-footer text-body-secondary">
-                        Created at <span class="time">
-                            {{ $comment->created_at }}
-                        </span>
-                    </footer>
-                </div>
+                <x-cards.hack-comment :comment="$comment" />
             @endforeach
         @else
             <em>No Comments found</em>

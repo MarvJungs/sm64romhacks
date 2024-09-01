@@ -137,7 +137,6 @@ class User extends Authenticatable implements Sitemapable
             try {
                 session()->put('guildMemberRoles', Auth::user()->getGuildMember(703951576162762813)->roles);
             } catch (\Throwable $th) {
-                dd($th);
                 session()->put('guildMemberRoles', null);
             }
         }
