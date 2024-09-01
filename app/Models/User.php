@@ -121,12 +121,23 @@ class User extends Authenticatable implements Sitemapable
         return $this->hasRole(705528172581486704);
     }
 
-    public function getRoles(): array
+    public function isSiteHelper(): bool
+    {
+        return $this->hasRole(705530192839311381);
+    }
+
+    public function isEventManager(): bool
+    {
+        return $this->hasRole(737674135747952660);
+    }
+
+    public function getRoles(): array|null
     {
         if (!session()->exists('guildMemberRoles')) {
             try {
                 session()->put('guildMemberRoles', Auth::user()->getGuildMember(703951576162762813)->roles);
             } catch (\Throwable $th) {
+                dd($th);
                 session()->put('guildMemberRoles', null);
             }
         }

@@ -17,6 +17,7 @@ use App\Http\Controllers\ModerationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/stardisplay', 'https://github.com/aglab2/SM64StarDisplay')->name('stardisplay');
@@ -74,3 +75,5 @@ Route::middleware('checkrole:705528172581486704')->group(function () {
     Route::patch('/hacks', [HackController::class, 'reject'])->name('hacks.reject');
     Route::put('/hacks', [HackController::class, 'accept'])->name('hacks.accept');
 });
+
+Route::delete('/images/{image}', [ImageController::class, 'destroy'])->name('image.destroy');

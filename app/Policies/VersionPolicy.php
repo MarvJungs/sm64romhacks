@@ -27,7 +27,7 @@ class VersionPolicy
                 return true;
             }
         }
-        return $user->isAdmin() || $user->isModerator();
+        return $user->isAdmin() || $user->isModerator() || $user->isSiteHelper();
     }
 
     /**
@@ -35,7 +35,7 @@ class VersionPolicy
      */
     public function delete(User $user, Version $version): bool
     {
-        return $user->isAdmin() || $user->isModerator();
+        return $user->isAdmin() || $user->isModerator() || $user->isSiteHelper();
     }
 
     /**

@@ -29,7 +29,7 @@ class RolesSeeder extends Seeder
             ['id' => 817029758440439829, 'name' => 'Biweekly Participant'],
             ['id' => 847213899412668426, 'name' => 'Server Comp Participant'],
             ['id' => 814935226182008832, 'name' => 'Hardcore Participant'],
-            ['id' => 737674135747952660, 'name' => 'Newcomer'],
+            ['id' => 737674135747952660, 'name' => 'EventManager'],
             ['id' => 742522819321135125, 'name' => 'Timed Out'],
             ['id' => 814591196503998545, 'name' => 'Muted'],
             ['id' => 856976668337504296, 'name' => 'Private VC'],

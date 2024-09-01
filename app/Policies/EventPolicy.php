@@ -13,7 +13,7 @@ class EventPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin() || $user->isModerator();
+        return $user->isAdmin() || $user->isModerator() || $user->isEventManager();
     }
 
     /**
@@ -21,7 +21,7 @@ class EventPolicy
      */
     public function update(User $user, Event $event): bool
     {
-        return $user->isAdmin() || $user->isModerator();
+        return $user->isAdmin() || $user->isModerator() || $user->isEventManager();
     }
 
     /**
@@ -29,7 +29,7 @@ class EventPolicy
      */
     public function delete(User $user, Event $event): bool
     {
-        return $user->isAdmin() || $user->isModerator();
+        return $user->isAdmin() || $user->isModerator() || $user->isEventManager();
     }
 
     /**

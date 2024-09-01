@@ -21,7 +21,7 @@ class HackPolicy
     public function update(User $user, Hack $hack): bool
     {
         return $user->isAuthorOfHack($hack) ||
-            $user->isAdmin() || $user->isModerator();
+            $user->isAdmin() || $user->isModerator() || $user->isSiteHelper();
     }
 
     /**
@@ -29,7 +29,7 @@ class HackPolicy
      */
     public function delete(User $user, Hack $hack): bool
     {
-        return $user->isAdmin() || $user->isModerator();
+        return $user->isAdmin() || $user->isModerator() || $user->isSiteHelper();
     }
 
     /**
