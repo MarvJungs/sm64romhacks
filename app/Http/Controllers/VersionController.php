@@ -72,6 +72,11 @@ class VersionController extends Controller
             'starcount' => $request->starcount,
             'releasedate' => $request->releasedate
         ]);
+
+        $authors = explode(', ', $request->author);
+        foreach ($authors as $author) {
+            $version->authors()->createOrFirst(['name' => $author]);
+        }
         return redirect(route('hacks.show', $hack));
     }
 

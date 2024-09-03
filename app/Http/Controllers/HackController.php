@@ -224,6 +224,7 @@ class HackController extends Controller
 
         $hack->update([
             'name' => $request->name,
+            'slug' => Str::slug($request->name),
             'description' => $request->description,
             'megapack' => $request->megapack ?? $hack->megapack,
             'videolink' => $request->videolink

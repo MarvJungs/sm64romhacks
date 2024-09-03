@@ -3,11 +3,11 @@
         <span class="text-decoration-underline">
             {{ $hack->name }}
         </span>
-        @if (
-            Auth::check() && (Auth::user()->isAuthorOfHack($hack) ||
-                Auth::user()->isAdmin() ||
-                Auth::user()->isModerator() ||
-                Auth::user()->isSiteHelper()))
+        @if (Auth::check() &&
+                (Auth::user()->isAuthorOfHack($hack) ||
+                    Auth::user()->isAdmin() ||
+                    Auth::user()->isModerator() ||
+                    Auth::user()->isSiteHelper()))
             &nbsp;<a href="{{ route('hacks.edit', $hack) }}" class="btn btn-primary">
                 <span class="fa-solid fa-pen"></span> Edit Hack
             </a> &nbsp;
@@ -45,7 +45,7 @@
             @else
                 <svg class="mb-4" width="560" height="315" xmlns="http://www.w3.org/2000/svg">
                     <rect height="100%" width="100%" fill="#1d1d1d" />
-                    <image width="160" height="90" x="200" y="72" href="http://localhost:8000/images/logo.png" />
+                    <image width="160" height="90" x="200" y="72" href="{{ env('APP_URL') }}/images/logo.png" />
                     <text x="95" y="190" fill="#aeaeae" font-size="36">The Video is unavailable.</text>
                     <text x="5" y="236" fill="#6c6c6c">HTTP ERROR 502: PUP KAG DQMXXK FTUZW U IAGXP BGF HMXGQMNXQ</text>
                     <text x="5" y="256" fill="#6c6c6c">UZRADYMFUAZ TQDQ? FTMF IAGXP NQ DQMXXK RGZZK NGF FTUE</text>
@@ -81,7 +81,7 @@
 @else
     <svg class="mb-4" width="560" height="315" xmlns="http://www.w3.org/2000/svg">
         <rect height="100%" width="100%" fill="#1d1d1d" />
-        <image width="160" height="90" x="200" y="72" href="http://localhost:8000/images/logo.png" />
+        <image width="160" height="90" x="200" y="72" href="{{ env('APP_URL') }}/images/logo.png" />
         <text x="95" y="190" fill="#aeaeae" font-size="36">No Images are available.</text>
 
         <text x="5" y="236" fill="#6c6c6c">HTTP ERROR 404: O UO IWM ISOH HZE POP EHSQD HLKZV YJCK RNMP </text>
