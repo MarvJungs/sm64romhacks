@@ -25,6 +25,10 @@ class VersionController extends Controller
      */
     public function store(StoreVersionRequest $request)
     {
+        if ($request->file('patchfile')->getClientOriginalExtension() != 'zip') {
+            return back()->with('error', 'not a zip-file');
+        }
+
         $version = Version::createOrFirst(
             [
                 'hack_id' => $request->hack_id,

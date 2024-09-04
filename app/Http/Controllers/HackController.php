@@ -82,6 +82,10 @@ class HackController extends Controller
      */
     public function store(StoreHackRequest $request)
     {
+        if ($request->file('patchfile')->getClientOriginalExtension() != 'zip') {
+            return back()->with('error', 'not a zip-file');
+        }
+
         $hackData = [
             'name' => $request->name,
             'slug' => Str::slug($request->name),
