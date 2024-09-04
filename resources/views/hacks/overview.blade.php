@@ -1,26 +1,3 @@
-@php
-    function getAuthorsList($hack)
-    {
-        $versions = $hack->versions()->orderBy('releasedate', 'asc')->get();
-        $firstVersion = $versions->first();
-        if ($firstVersion) {
-            $authors = $firstVersion->authors;
-            $authorsList = '';
-            foreach ($authors as $author) {
-                if ($author->user) {
-                    $authorsList .= '<a href="' . route('users.show', $author->user) . '">' . $author->name . '</a>, ';
-                } else {
-                    $authorsList .= $author->name . ', ';
-                }
-            }
-            $authorsList = substr($authorsList, 0, strlen($authorsList) - 2);
-        } else {
-            $authorsList = 'unknown';
-        }
-        return $authorsList;
-    }
-@endphp
-
 <section id="hacksCollection">
     <table class="table table-hover" id="hacksTable">
         <thead>

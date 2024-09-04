@@ -1,26 +1,3 @@
-@php
-    function getAuthorsList($hack)
-    {
-        $versions = $hack->versions()->orderBy('releasedate', 'asc')->get();
-        $firstVersion = $versions->first();
-        if ($firstVersion) {
-            $authors = $firstVersion->authors;
-            $authorsList = '';
-            foreach ($authors as $author) {
-                if ($author->user) {
-                    $authorsList .= '<a href="' . route('users.show', $author->user) . '">' . $author->name . '</a>, ';
-                } else {
-                    $authorsList .= $author->name . ', ';
-                }
-            }
-            $authorsList = substr($authorsList, 0, strlen($authorsList) - 2);
-        } else {
-            $authorsList = 'unknown';
-        }
-        return $authorsList;
-    }
-@endphp
-
 <x-layout>
     <h1 class="text-center">Grand ROM Hack Megapack</h1>
     <p>
@@ -78,13 +55,13 @@
                                 </a>
                             </td>
                             <td>
-                                {!! getAuthorsList($hack) !!}
+                                {!! $hack->getAuthorList() !!}
                             </td>
                             <td>
-                                {{ $hack->versions()->max('starcount') }}
+                                {{ $hack->getStarcount() }}
                             </td>
                             <td>
-                                {{ $hack->versions()->orderBy('releasedate', 'asc')->pluck('releasedate')->first() }}
+                                {{ $hack->getReleaseDate() }}
                             </td>
                             <td>
                                 {{ Str::ucfirst($difficulty) }}
@@ -128,13 +105,13 @@
                             </a>
                         </td>
                         <td>
-                            {!! getAuthorsList($hack) !!}
+                            {!! $hack->getAuthorList() !!}
                         </td>
                         <td>
-                            {{ $hack->versions()->max('starcount') }}
+                            {{ $hack->getStarcount() }}
                         </td>
                         <td>
-                            {{ $hack->versions()->orderBy('releasedate', 'asc')->pluck('releasedate')->first() }}
+                            {{ $hack->getReleaseDate() }}
                         </td>
                         <td>
                             Kaizo

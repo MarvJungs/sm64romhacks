@@ -17,7 +17,7 @@
         MB
     </span>
 </td>
-<td>{{ implode(', ', $version->authors()->pluck('name')->toArray()) }}</td>
+<td>{!! $version->getAuthorList() !!}</td>
 <td>{{ $version->starcount }}</td>
 <td>{{ $version->releasedate }}</td>
 </tr>

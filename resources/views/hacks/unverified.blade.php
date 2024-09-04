@@ -1,36 +1,3 @@
-@php
-    function getAuthorsList($hack)
-    {
-        $versions = $hack->versions()->orderBy('releasedate', 'asc')->get();
-        $firstVersion = $versions->first();
-        if ($firstVersion) {
-            $authors = $firstVersion->authors;
-            $authorsList = '';
-            foreach ($authors as $author) {
-                if ($author->user) {
-                    $authorsList .= '<a href="' . route('users.show', $author->user) . '">' . $author->name . '</a>, ';
-                } else {
-                    $authorsList .= $author->name . ', ';
-                }
-            }
-            $authorsList = substr($authorsList, 0, strlen($authorsList) - 2);
-        } else {
-            $authorsList = 'unknown';
-        }
-        return $authorsList;
-    }
-
-    function getReleaseDate($hack)
-    {
-        return $hack->versions()->orderBy('releasedate', 'asc')->pluck('releasedate')->first();
-    }
-
-    function getStarcount($hack)
-    {
-        return $hack->versions()->max('starcount');
-    }
-@endphp
-
 <x-layout>
     <table class="table table-bordered table-hover">
         <thead>
@@ -49,9 +16,9 @@
                             {{ $hack->name }}
                         </a>
                     </td>
-                    <td>{!! getAuthorsList($hack) !!}</td>
-                    <td>{{ getReleaseDate($hack) }}</td>
-                    <td>{{ getStarcount($hack) }}</td>
+                    <td>{!! $hack->getAuthorList() !!}</td>
+                    <td>{{ $hack->getReleaseDate() }}</td>
+                    <td>{{ $hack->getStarcount() }}</td>
                     <td>
                         <span class="time">
                             {{ $hack->created_at }}

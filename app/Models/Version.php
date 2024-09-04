@@ -34,4 +34,19 @@ class Version extends Model
     {
         return $this->belongsToMany(Author::class);
     }
+
+    public function getAuthorList(): string
+    {
+        $authors = $this->authors;
+        $authorsList = '';
+        foreach ($authors as $author) {
+            if ($author->user) {
+                $authorsList .= '<a href="' . route('users.show', $author->user) . '">' . $author->name . '</a>, ';
+            } else {
+                $authorsList .= $author->name . ', ';
+            }
+        }
+        $authorsList = substr($authorsList, 0, strlen($authorsList) - 2);
+        return $authorsList;
+    }
 }

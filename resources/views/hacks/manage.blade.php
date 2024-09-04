@@ -1,31 +1,9 @@
-@php
-    function getStarcount($hack)
-    {
-        return $hack->versions->max('starcount');
-    }
-
-    function getAuthorsList($version)
-    {
-        $authors = $version->authors;
-        $authorsList = '';
-        foreach ($authors as $author) {
-            if ($author->user) {
-                $authorsList .= '<a href="' . route('users.show', $author->user) . '">' . $author->name . '</a>, ';
-            } else {
-                $authorsList .= $author->name . ', ';
-            }
-        }
-        $authorsList = substr($authorsList, 0, strlen($authorsList) - 2);
-        return $authorsList;
-    }
-@endphp
-
 <x-layout>
     <h1>Manage Hacks</h1>
     @foreach ($hacks as $hack)
         <div class="card mb-5">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h2>{{ $hack->name }} - <span class="fa-regular fa-star"></span> x {{ getStarcount($hack) }} </h2>
+                <h2>{{ $hack->name }} - <span class="fa-regular fa-star"></span> x {{ $hack->getStarcount() }} </h2>
                 <div class="d-flex gap-3">
                     <a href="{{ route('hacks.edit', $hack) }}" class="btn btn-primary">
                         <span class="fa-solid fa-pen"></span>
@@ -72,7 +50,7 @@
                         @foreach ($hack->versions as $version)
                             <tr>
                                 <td>{{ $version->name }}</td>
-                                <td>{!! getAuthorsList($version) !!}</td>
+                                <td>{!! $version->getAuthorList() !!}</td>
                                 <td>{{ $version->starcount }}</td>
                                 <td>{{ $version->releasedate }}</td>
                                 <td class="d-flex flex-row gap-2 justify-content-around">

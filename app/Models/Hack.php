@@ -61,4 +61,24 @@ class Hack extends Model implements Sitemapable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function getStarcount(): int|null
+    {
+        return $this->versions->max('starcount');
+    }
+
+    public function getAuthorList(): string
+    {
+        $versions = $this->versions()->orderBy('releasedate', 'asc')->get();
+        $firstVersion = $versions->first();
+        if ($firstVersion) {
+            return $firstVersion->getAuthorList();
+        }
+        return 'unknown';
+    }
+
+    public function getReleaseDate(): string
+    {
+        return $this->versions()->orderBy('releasedate', 'asc')->pluck('releasedate')->first();
+    }
 }
