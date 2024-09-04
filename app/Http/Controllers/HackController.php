@@ -213,6 +213,14 @@ class HackController extends Controller
             }
         }
 
+        if ($request->has('tagname')) {
+            $tags = explode(', ', $request->tagname);
+            $hack->tags()->detach();
+            foreach ($tags as $tag) {
+                $hack->tags()->createOrFirst(['name' => $tag]);
+            }
+        }
+
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
                 $hack->images()->create([

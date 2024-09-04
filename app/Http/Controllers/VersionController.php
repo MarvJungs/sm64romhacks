@@ -45,6 +45,7 @@ class VersionController extends Controller
         }
 
         $authors = explode(', ', $request->author);
+        $version->authors()->detach();
         foreach ($authors as $author) {
             $version->authors()->createOrFirst(['name' => $author]);
         }
