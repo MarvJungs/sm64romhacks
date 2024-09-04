@@ -229,7 +229,7 @@
                                                                     style="font-size:0;height:20px;vertical-align:middle;width:20px;">
                                                                     <a href="https://discord.gg/BYrpMBG"
                                                                         target="_blank"><img height="20"
-                                                                            src="./icons/discord.svg"
+                                                                            src="https://www.sm64romhacks.com/images/brands/discord.svg"
                                                                             style="border-radius:3px;"
                                                                             width="20"></a>
                                                                 </td>
@@ -250,7 +250,7 @@
                                                                     style="font-size:0;height:20px;vertical-align:middle;width:20px;">
                                                                     <a href="https://twitch.tv/sm64romhacks"
                                                                         target="_blank"><img height="20"
-                                                                            src="./icons/twitch.svg"
+                                                                            src="https://sm64romhacks.com/images/brands/twitch.svg"
                                                                             style="border-radius:3px;"
                                                                             width="20"></a>
                                                                 </td>
@@ -311,9 +311,9 @@
                                                             <tr>
                                                                 <td
                                                                     style="font-size:0;height:20px;vertical-align:middle;width:20px;">
-                                                                    <a href="https://twitch.tv/sm64romhacks"
+                                                                    <a href="https://ko-fi.com/marvjungs"
                                                                         target="_blank"><img height="20"
-                                                                            src="./icons/kofi.png"
+                                                                            src="https://www.sm64romhacks.com/images/brands/kofi.png
                                                                             style="border-radius:3px;"
                                                                             width="20"></a>
                                                                 </td>
