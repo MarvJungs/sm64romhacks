@@ -7,13 +7,16 @@ use App\Models\Version;
 use App\Models\News;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
+use Illuminate\Database\Eloquent\Builder;
 
 class HomeController extends Controller
 {
     public function index()
     {
         $news = News::orderByDesc('created_at')->take(3)->get();
-        $versions = Version::orderByDesc('created_at')->take(10)->get();
+        $versions = Version::whereHas('hack', function (Builder $query) {
+            $query->where('verified', '=', 1);
+        })->orderByDesc('created_at')->take(10)->get();
         $comments = Comment::orderByDesc('created_at')->take(5)->get();
 
         SEOMeta::setTitle('Home');
