@@ -180,7 +180,7 @@ function getTableRowFromHack(hack) {
     const versionData = getVersionsData(hack);
     const authors = versionData.authors;
     const releaseDate = versionData.releaseDate;
-    const tag = (hack.tags).join(', ');
+    const tag = hack.tags.map(tag => tag.name).join(', ');
     const downloads = versionData.downloads;
     const starcount = versionData.starcount
 
