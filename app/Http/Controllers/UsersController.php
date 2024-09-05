@@ -28,10 +28,15 @@ class UsersController extends Controller
         OpenGraph::setTitle($user->global_name);
         OpenGraph::setType('Profile');
 
+        $roles = Role::all()->pluck('name', 'id')->toArray();
+        $guildMemberRoles = $user->getRoles();
+
         return view('users.show', [
             'user' => $user,
             'versions' => $user->author?->versions,
-            'comments' => $user->comments->sortByDesc('created_at')
+            'comments' => $user->comments->sortByDesc('created_at'),
+            'guildMemberRoles' => $guildMemberRoles,
+            'roles' => $roles,
         ]);
     }
 

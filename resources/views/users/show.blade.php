@@ -10,10 +10,19 @@
         @if (isset($user->gender))
             ({{ $user->gender }})
         @endif
-
-        <a class="btn btn-primary btn-floating m-1" href="/profile/edit" role="button"><span
-                class="fa-solid fa-pencil fa-fw"></span></a>
     </h2>
+    <em>
+        Roles:
+        @if (!is_null($guildMemberRoles) && !empty($guildMemberRoles))
+            <ul>
+                @foreach ($guildMemberRoles as $guildMemberRole)
+                    <li>{{ $roles[$guildMemberRole] }}</li>
+                @endforeach
+            </ul>
+        @else
+            None
+        @endif
+    </em>
     <hr class="mb-5" />
     <section class="mb-5">
         <h1>Released Hacks</h1>

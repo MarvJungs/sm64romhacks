@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements Sitemapable
@@ -133,15 +134,13 @@ class User extends Authenticatable implements Sitemapable
 
     public function getRoles(): array|null
     {
-        if (!session()->exists('guildMemberRoles')) {
+        return Cache::remember('roles_' . $this->id, 60 * 60 * 12, function () {
             try {
-                session()->put('guildMemberRoles', Auth::user()->getGuildMember(703951576162762813)->roles);
+                return $this->getGuildMember(703951576162762813)->roles;
             } catch (\Throwable $th) {
-                session()->put('guildMemberRoles', null);
+                return null;
             }
-        }
-        $guildMemberRoles = session()->get('guildMemberRoles');
-        return $guildMemberRoles;
+        });
     }
 
     public function hasRole($role_id): bool

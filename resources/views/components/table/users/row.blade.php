@@ -7,14 +7,14 @@
     </td>
     <td>{{ $user->id }}</td>
     <td>
-        @if (!is_null($user->getRoles()))
+        @if (!is_null($user->getRoles()) && !empty($user->getRoles()))
             <ul>
                 @foreach ($user->getRoles() as $guildMemberRole)
                     <li>{{ $roles[$guildMemberRole] }}</li>
                 @endforeach
             </ul>
         @else
-            Unknown
+            None
         @endif
     </td>
     <td><span class="fi fi-{{ strtolower($user->country) }} w-100 h-auto"></span></td>

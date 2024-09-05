@@ -16,14 +16,14 @@
     </h2>
     <em>
         Roles:
-        @if (!is_null($guildMemberRoles))
+        @if (!is_null($guildMemberRoles) && !empty($guildMemberRoles))
             <ul>
                 @foreach ($guildMemberRoles as $guildMemberRole)
                     <li>{{ $roles[$guildMemberRole] }}</li>
                 @endforeach
             </ul>
         @else
-            unknown
+            None
         @endif
     </em>
     <hr class="mb-5" />

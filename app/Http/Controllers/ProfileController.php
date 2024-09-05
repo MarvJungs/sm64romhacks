@@ -21,14 +21,8 @@ class ProfileController extends Controller
 
         $user = Auth::user();
         $roles = Role::all()->pluck('name', 'id')->toArray();
-        try {
-            if (!session()->exists('guildMemberRoles')) {
-                session()->put('guildMemberRoles', $user->getGuildMember(703951576162762813)->roles);
-            }
-            $guildMemberRoles = session()->get('guildMemberRoles');
-        } catch (Throwable $th) {
-            $guildMemberRoles = null;
-        }
+
+        $guildMemberRoles = $user->getRoles();
 
         return view('profile.index', [
             'user' => $user,
