@@ -55,11 +55,11 @@
                             <td class="text-muted">Downloads: {{ $version->downloadcount }}</td>
                             <td class="d-flex justify-content-around">
                                 <a class="btn btn-primary"
-                                    href="{{ route('version.edit', ['hack' => $version->hack->id, 'version' => $version->id]) }}">
+                                    href="{{ route('version.edit', ['hack' => $version->hack, 'version' => $version]) }}">
                                     <span class="fa-solid fa-pen"></span>
                                 </a>
                                 <form
-                                    action="{{ route('version.destroy', ['hack' => $version->hack->id, 'version' => $version->id]) }}"
+                                    action="{{ route('version.destroy', ['hack' => $version->hack, 'version' => $version]) }}"
                                     method="post">
                                     @csrf
                                     @method('DELETE')

@@ -7,6 +7,12 @@
             @csrf
             @method('PATCH')
 
+            <datalist id="tagnames">
+                @foreach ($tags as $tag)
+                    <option value="{{ $tag }}">{{ $tag }}</option>
+                @endforeach
+            </datalist>
+
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label" for="name">Hackname</label>
                 <div class="col-sm-10">
@@ -15,10 +21,28 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" for="tagname">Tags</label>
-                <div class="col-sm-10">
-                    <input type="text" name="tagname" class="form-control" id="tagname"
-                        value="{{ implode(', ', $hack->tags()->pluck('name')->toArray()) }}">
+                <label class="col-sm-2 col-form-label" for="tagname">Tags<span
+                        class="fa-solid fa-info btn btn-primary rounded-pill ms-2" data-bs-toggle="tooltip"
+                        data-bs-title="Only enter One Tag per Input Field. Press on the + for more Input Fields."></span>
+                    <button class="btn" id="addTag"><span class="fa-solid fa-plus"></span></button></label>
+                <div id="tagsColumn" class="col-sm-10" name="tagname">
+                    @if (sizeof($hack->tags) == 0)
+                        <div class="d-flex justify-content-between">
+                            <input type="text" name="tagname[]" class="form-control mb-2 me-2" list="tagNames">
+                            <button class="btn btn-danger mb-2 removeTag">
+                                <span class="fa-solid fa-minus"></span>
+                            </button>
+                        </div>
+                    @endif
+                    @foreach ($hack->tags as $tag)
+                        <div class="d-flex justify-content-between">
+                            <input type="text" name="tagname[]" class="form-control mb-2 me-2" list="tagNames"
+                                value="{{ $tag->name }}">
+                            <button class="btn btn-danger mb-2 removeTag">
+                                <span class="fa-solid fa-minus"></span>
+                            </button>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
@@ -89,12 +113,14 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>

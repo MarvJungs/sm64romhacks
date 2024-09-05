@@ -6,6 +6,7 @@ use App\Models\Hack;
 use App\Models\Version;
 use App\Http\Requests\StoreHackRequest;
 use App\Http\Requests\UpdateHackRequest;
+use App\Models\Author;
 use App\Models\Download;
 use Illuminate\Http\Request;
 use App\Models\Tag;
@@ -74,7 +75,10 @@ class HackController extends Controller
     public function create()
     {
         Gate::authorize('create', Hack::class);
-        return view('hacks/create');
+        $tags = Tag::all()->pluck('name')->toArray();
+        $authors = Author::all()->sortBy('name')->pluck('name')->toArray();
+
+        return view('hacks/create', compact('tags', 'authors'));
     }
 
     /**
@@ -112,15 +116,13 @@ class HackController extends Controller
             $version->update(['filename' => $request->file('patchfile')->store('patch')]);
         }
 
-        $authors = explode(', ', $request->author);
-        foreach ($authors as $author) {
+        foreach ($request->author as $author) {
             $version->authors()->createOrFirst(['name' => $author]);
         }
 
 
         if ($request->has('tagname')) {
-            $tags = explode(', ', $request->tagname);
-            foreach ($tags as $tag) {
+            foreach ($request->tagname as $tag) {
                 $hack->tags()->createOrFirst(['name' => $tag]);
             }
         }
@@ -183,7 +185,11 @@ class HackController extends Controller
     public function edit(Hack $hack)
     {
         Gate::authorize('update', $hack);
-        return view('hacks/edit', ['hack' => $hack]);
+        $tags = Tag::all()->pluck('name')->toArray();
+        return view('hacks/edit', [
+            'hack' => $hack,
+            'tags' => $tags
+        ]);
     }
 
     /**
@@ -217,9 +223,9 @@ class HackController extends Controller
             }
         }
 
+        $hack->tags()->detach();
         if ($request->has('tagname')) {
-            $tags = explode(', ', $request->tagname);
-            $hack->tags()->detach();
+            $tags = $request->tagname;
             foreach ($tags as $tag) {
                 $hack->tags()->createOrFirst(['name' => $tag]);
             }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Version;
+use App\Models\Author;
 use App\Models\Hack;
 use App\Http\Requests\StoreVersionRequest;
 use App\Http\Requests\UpdateVersionRequest;
@@ -17,13 +18,14 @@ class VersionController extends Controller
     public function create(Hack $hack)
     {
         Gate::authorize('create', Version::class);
-        return view('versions/create', ['hack' => $hack]);
+        $authors = Author::all()->sortBy('name')->pluck('name')->toArray();
+        return view('versions/create', compact('hack', 'authors'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVersionRequest $request)
+    public function store(StoreVersionRequest $request, Hack $hack)
     {
         if ($request->file('patchfile')->getClientOriginalExtension() != 'zip') {
             return back()->with('error', 'not a zip-file');
@@ -31,7 +33,7 @@ class VersionController extends Controller
 
         $version = Version::createOrFirst(
             [
-                'hack_id' => $request->hack_id,
+                'hack_id' => $hack->id,
                 'name' => $request->versionname
             ],
             [
@@ -48,9 +50,8 @@ class VersionController extends Controller
             $version->update(['filename' => $request->file('patchfile')->store('patch')]);
         }
 
-        $authors = explode(', ', $request->author);
         $version->authors()->detach();
-        foreach ($authors as $author) {
+        foreach ($request->author as $author) {
             $version->authors()->createOrFirst(['name' => $author]);
         }
 
@@ -63,7 +64,7 @@ class VersionController extends Controller
     public function edit(Hack $hack, Version $version)
     {
         Gate::authorize('update', $version);
-        $authors = $version->authors()->get()->pluck('name')->implode(', ');
+        $authors = Author::all()->sortBy('name')->pluck('name')->toArray();
         return view('versions/edit', ['hack' => $hack, 'version' => $version, 'authors' => $authors]);
     }
 
@@ -78,8 +79,7 @@ class VersionController extends Controller
             'releasedate' => $request->releasedate
         ]);
 
-        $authors = explode(', ', $request->author);
-        foreach ($authors as $author) {
+        foreach ($request->authors as $author) {
             $version->authors()->createOrFirst(['name' => $author]);
         }
         return redirect(route('hacks.show', $hack));
