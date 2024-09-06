@@ -36,7 +36,7 @@
     @endif
     <div class="row mb-4">
         <div class="col">
-            @if ($hack->videolink)
+            @if ($hack->videolink && !empty($_COOKIE['hasConsent']) && $_COOKIE['hasConsent'] == true)
                 <iframe
                     src="https://www.youtube.com/embed/{{ substr($hack->videolink, strpos($hack->videolink, '?v=') + 3) }}"
                     width="560" height="315" title="YouTube video player" frameborder="0"

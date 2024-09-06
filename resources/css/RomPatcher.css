@@ -1,12 +1,6 @@
 /* Rom Patcher JS template CSS stylesheet */
 /* customize it to your taste! */
 
-
-/* @FONT-FACES */
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300');
-
-
 /* Rom Patcher JS - container */
 #rom-patcher-container {
 	-moz-user-select: none;
