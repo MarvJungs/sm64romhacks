@@ -16,17 +16,18 @@
         </span>
         by
         @if (!is_null($comment->user))
-        <a href="{{ route('users.show', $comment->user) }}">
+            <img src="{{ $comment->user->getAvatar() }}" width="32" height="32" />
+            <a href="{{ route('users.show', $comment->user) }}">
+                {{ $comment->user->global_name }}
+            </a>
             @if ($comment->user->country)
                 <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
             @endif
-            {{ $comment->user->global_name }}
             @if ($comment->user->gender)
-                ({{ $comment->user->gender }})
+                <sup>({{ $comment->user->gender }})</sup>
             @endif
-        </a>
         @else
-        <em>Unknown User</em>
+            <em>Unknown User</em>
         @endif
     </footer>
 </div>

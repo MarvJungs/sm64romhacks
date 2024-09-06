@@ -1,15 +1,16 @@
 <div class="card mb-4">
     <header class="card-header">
         @if (!is_null($comment->user))
+            <img src="{{ $comment->user->getAvatar() }}" width="32" height="32" />
             <a href="{{ route('users.show', $comment->user) }}">
-                @if ($comment->user->country)
-                    <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
-                @endif
                 {{ $comment->user->global_name }}
-                @if ($comment->user->gender)
-                    ({{ $comment->user->gender }})
-                @endif
             </a>
+            @if ($comment->user->country)
+                <span class="fi fi-{{ strtolower($comment->user->country) }}"></span>
+            @endif
+            @if ($comment->user->gender)
+                <sup>({{ $comment->user->gender }})</sup>
+            @endif
         @else
             <em>Unknown User</em>
         @endif
