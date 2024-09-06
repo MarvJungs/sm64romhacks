@@ -6,11 +6,11 @@
         @if (isset($user->country))
             <span class="fi fi-{{ strtolower($user->country) }}"></span>
         @endif
-
-        @if (isset($user->gender))
-            ({{ $user->gender }})
-        @endif
     </h2>
+    @if (isset($user->gender))
+        <sup>({{ $user->gender }})</sup>
+        <br />
+    @endif
     <em>
         Roles:
         @if (!is_null($guildMemberRoles) && !empty($guildMemberRoles))

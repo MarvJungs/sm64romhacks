@@ -7,13 +7,13 @@
             <span class="fi fi-{{ strtolower($user->country) }}"></span>
         @endif
 
-        @if (isset($user->gender))
-            ({{ $user->gender }})
-        @endif
-
         <a class="btn btn-primary btn-floating m-1" href="/profile/edit" role="button"><span
                 class="fa-solid fa-pencil fa-fw"></span></a>
     </h2>
+    @if (isset($user->gender))
+        <sup>({{ $user->gender }})</sup>
+        <br />
+    @endif
     <em>
         Roles:
         @if (!is_null($guildMemberRoles) && !empty($guildMemberRoles))
