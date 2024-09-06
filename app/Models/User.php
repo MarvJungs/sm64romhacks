@@ -45,6 +45,8 @@ class User extends Authenticatable implements Sitemapable
         'public_flags',
         'roles',
         'notify',
+        'country',
+        'gender'
     ];
 
     /**
