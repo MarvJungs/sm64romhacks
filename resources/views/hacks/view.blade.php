@@ -38,7 +38,7 @@
         <div class="col">
             @if ($hack->videolink && !empty($_COOKIE['hasConsent']) && $_COOKIE['hasConsent'] == true)
                 <iframe
-                    src="https://www.youtube.com/embed/{{ substr($hack->videolink, strpos($hack->videolink, '?v=') + 3) }}"
+                    src="https://www.youtube.com/embed/{{ getYoutubeVideoID($hack->videolink) }}"
                     width="560" height="315" title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

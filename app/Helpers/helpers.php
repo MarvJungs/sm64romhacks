@@ -73,3 +73,23 @@ function getOpenGraphText($text)
     }
     return $result;
 }
+
+function getYouTubeVideoID($url)
+{
+    $parsedUrl = parse_url($url);
+
+    // Check if the URL contains a query string
+    if (!empty($parsedUrl['query'])) {
+        parse_str($parsedUrl['query'], $queryVars);
+        if (isset($queryVars['v'])) {
+            return $queryVars['v'];
+        }
+    }
+
+    // Check for shortened URL formats like youtu.be/VIDEO_ID
+    if (isset($parsedUrl['host']) && $parsedUrl['host'] == 'youtu.be') {
+        return trim($parsedUrl['path'], '/');
+    }
+
+    return false; // Return false if no video ID is found
+}
