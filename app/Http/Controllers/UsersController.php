@@ -27,6 +27,7 @@ class UsersController extends Controller
 
         OpenGraph::setTitle($user->global_name);
         OpenGraph::setType('Profile');
+        OpenGraph::addImage($user->getAvatar());
 
         $roles = Role::all()->pluck('name', 'id')->toArray();
         $guildMemberRoles = $user->getRoles();

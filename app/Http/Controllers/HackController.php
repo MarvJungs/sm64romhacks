@@ -147,6 +147,10 @@ class HackController extends Controller
             ->setType('Article')
             ->setDescription(getOpenGraphText($hack->description));
 
+        foreach ($hack->images as $image) {
+            OpenGraph::addImage(env('APP_URL') . '/' . $image->filename);
+        }
+
         SEOMeta::setTitle($hack->name);
 
         $versions = $hack->versions->sort(function ($a, $b) {
