@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CheatController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HackController;
@@ -77,3 +78,5 @@ Route::middleware('checkrole:705528172581486704')->group(function () {
 });
 
 Route::delete('/images/{image}', [ImageController::class, 'destroy'])->name('image.destroy');
+Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('contact', [ContactController::class, 'send'])->name('contact.send');
