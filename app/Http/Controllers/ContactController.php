@@ -22,7 +22,13 @@ class ContactController extends Controller
 
     public function send(Request $request)
     {
+        if (!Auth::check()) {
+            abort(401);
+        }
+
         $user = Auth::user();
         Mail::to('feedback@sm64romhacks.com')->send(new Feedback($request, $user));
+
+        return redirect(route('home.index'))->with('success', 'feedback submitted');
     }
 }
