@@ -43,6 +43,7 @@ async function main() {
 
     const url = '/api/v1/hacks';
     const data = await getData(url);
+    document.getElementById('spinner').remove();
     const hacksTable = getHackTableRows(data);
     hacksTableBody.innerHTML += hacksTable;
 
