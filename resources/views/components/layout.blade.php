@@ -232,9 +232,11 @@
                 &copy;
                 <a href="{{ route('home.index') }}">sm64romhacks.com</a>&nbsp;&#8226;&nbsp;
                 <a href="{{ route('contact.index') }}">Contact Us!</a>&nbsp;&#8226;&nbsp;
+                <a href="https://github.com/MarvJungs/sm64romhacks">Contribute!</a>&nbsp;&#8226;&nbsp;
                 Version: {{ env('APP_VERSION') }}&nbsp;&#8226;&nbsp;
                 <a href="{{ route('tos.index') }}">Terms of Service</a>&nbsp;&#8226;&nbsp;
-                <a href="{{ route('privacy.name') }}">Privacy Policy</a><br />
+                <a href="{{ route('privacy.name') }}">Privacy Policy</a>
+                <br />
                 2019 -
                 <script>
                     document.write(new Date().getFullYear())
