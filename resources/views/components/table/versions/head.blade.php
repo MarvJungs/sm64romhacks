@@ -6,9 +6,10 @@
         <th scope="col">Creator</th>
         <th scope="col">Starcount</th>
         <th scope="col">Release Date</th>
-
-        <th class="text-center">
-            &nbsp;
-        </th>
+        @if (Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isModerator() || Auth::user()->isSiteHelper()))
+            <th scope="col">
+                Actions
+            </th>
+        @endif
     </tr>
 </thead>
