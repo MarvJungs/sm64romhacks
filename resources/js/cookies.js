@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         rejectButton.setAttribute('class', 'btn btn-danger card-link');
         rejectButton.innerText = 'Reject';
         rejectButton.addEventListener('click', () => {
+            setCookie('hasConsent', false, '365');
             card.remove();
         });
         
