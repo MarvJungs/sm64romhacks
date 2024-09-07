@@ -50,9 +50,10 @@ class VersionController extends Controller
             $version->update(['filename' => $request->file('patchfile')->store('patch')]);
         }
 
-        $version->authors()->detach();
         foreach ($request->author as $author) {
-            $version->authors()->createOrFirst(['name' => $author]);
+            if (!is_null($author)) {
+                $version->authors()->createOrFirst(['name' => $author]);
+            }
         }
 
         return redirect(route('hacks.show', $version->hack));
@@ -80,7 +81,9 @@ class VersionController extends Controller
         ]);
         $version->authors()->detach();
         foreach ($request->author as $author) {
-            $version->authors()->createOrFirst(['name' => $author]);
+            if (!is_null($author)) {
+                $version->authors()->createOrFirst(['name' => $author]);
+            }
         }
         return redirect(route('hacks.show', $hack));
     }

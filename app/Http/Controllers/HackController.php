@@ -123,7 +123,9 @@ class HackController extends Controller
 
         if ($request->has('tagname')) {
             foreach ($request->tagname as $tag) {
-                $hack->tags()->createOrFirst(['name' => $tag]);
+                if (!is_null($tag)) {
+                    $hack->tags()->createOrFirst(['name' => $tag]);
+                }
             }
         }
 
