@@ -10,7 +10,14 @@
                 <th scope="col" hidden>Tags</th>
             </tr>
         </thead>
-        <tbody id="hacksTableBody">         
+        <tbody id="hacksTableBody">
+            <tr id="spinner">
+                <td colspan=5 class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </section>
