@@ -41,7 +41,7 @@
             <div id="authorsColumn" class="col-sm-10" name="author">
                 @foreach ($version->authors as $author)
                     <div class="d-flex justify-content-between">
-                        <input type="text" name="author[]" class="form-control mb-2 me-2" list="authornames"
+                        <input type="text" name="author[]" class="form-control mb-2 me-2" list="authors"
                             value="{{ $author->name }}">
                         <button class="btn btn-danger mb-2 removeAuthor">
                             <span class="fa-solid fa-minus"></span>

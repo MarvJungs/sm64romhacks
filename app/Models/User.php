@@ -159,4 +159,12 @@ class User extends Authenticatable implements Sitemapable
             return !is_null($author->user) && $author->user_id == Auth::user()->id;
         });
     }
+
+    public function isAuthorOfVersion(Version $version): bool
+    {
+        $authors = $version->authors;
+        return $authors->contains(function (Author $author) {
+            return !is_null($author->user) && $author->user_id == Auth::user()->id;
+        });
+    }
 }
