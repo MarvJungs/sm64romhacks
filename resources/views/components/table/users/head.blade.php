@@ -1,5 +1,6 @@
 <thead>
     <th>Username</th>
+    <th>Authorname</th>
     <th>ID</th>
     <th>Roles</th>
     <th>Country</th>

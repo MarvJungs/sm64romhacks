@@ -5,6 +5,7 @@
             {{ $user->global_name }}
         </a>
     </td>
+    <td>{{ $user->author?->name }}</td>
     <td>{{ $user->id }}</td>
     <td>
         @if (!is_null($user->getRoles()) && !empty($user->getRoles()))
