@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Gate;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\File;
+use Jaybizzle\LaravelCrawlerDetect\Facades\LaravelCrawlerDetect as Crawler;
 
 class HackController extends Controller
 {
@@ -276,19 +277,22 @@ class HackController extends Controller
 
     public function download(Version $version)
     {
-        $hackname = Hack::all()->where('id', '=', $version->hack_id)->first()->name;
-        $versionname = $version->name;
-        $extension = pathinfo($version->filename, PATHINFO_EXTENSION);
-        $version->increment('downloadcount');
+        if (!Crawler::isCrawler()) {
+            $hackname = Hack::all()->where('id', '=', $version->hack_id)->first()->name;
+            $versionname = $version->name;
+            $extension = pathinfo($version->filename, PATHINFO_EXTENSION);
+            $version->increment('downloadcount');
 
-        Download::create([
-            'version_id' => $version->id,
-            'user_id' => Auth::user()?->id
-        ]);
+            Download::create([
+                'version_id' => $version->id,
+                'user_id' => Auth::user()?->id
+            ]);
 
-        $downloadedFilename = Str::slug(Str::wrap($hackname, '', '-') . $versionname) . '.' . $extension;
-        return Storage::download($version->filename, $downloadedFilename);
+            $downloadedFilename = Str::slug(Str::wrap($hackname, '', '-') . $versionname) . '.' . $extension;
+            return Storage::download($version->filename, $downloadedFilename);
+        }
     }
+
     public function random()
     {
         $hack = Hack::where('verified', '=', '1')->get()->random();
