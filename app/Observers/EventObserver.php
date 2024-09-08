@@ -15,10 +15,10 @@ class EventObserver
      */
     public function created(Event $event): void
     {
-        $notifyable_users = User::where('notify', '=', 1)->get();
-        foreach ($notifyable_users as $notifyable_user) {
-            Mail::to($notifyable_user->email)->send(new EventMail($notifyable_user, $event));
-        }
+        // $notifyable_users = User::where('notify', '=', 1)->get();
+        // foreach ($notifyable_users as $notifyable_user) {
+        //     Mail::to($notifyable_user->email)->send(new EventMail($notifyable_user, $event));
+        // }
 
         $response = Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
             ->post(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events', [
