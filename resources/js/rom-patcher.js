@@ -2,12 +2,32 @@ import RomPatcherWeb from './rom-patcher-js/RomPatcher.webapp';
 
 document.addEventListener('DOMContentLoaded', function () {
     const romPatcherContainer = document.getElementById('rom-patcher-container');
-    if(!romPatcherContainer) return;
-    
+    if (!romPatcherContainer) return;
+
     const myPatcherSettings = {
         language: 'en',
-        requireValidation: false, /* if true, user won't be able to apply patch if the provided ROM is not valid*/
-        allowDropFiles: false /* if true, it adds basic drag and drop support */
+        requireValidation: false,
+        allowDropFiles: false,
+        onpatch: function (romFile) {
+            const uint8Array = romFile._u8array;
+            const titleArray = uint8Array.slice(0x20, 0x20 + 20);
+
+            let title = '';
+            for (let i = 0; i < titleArray.length; i++) {
+                const char = String.fromCharCode(titleArray[i]);
+                if (char !== '\0') {
+                    title += char;
+                }
+            }
+            const stardisplay_url = "https://raw.githubusercontent.com/StarDisplayLayouts/layouts/master/";
+            const url = encodeURI(stardisplay_url + title.trim() + '.jsml');
+            console.log(url);
+            // const a = document.createElement('a');
+            // a.href = url;
+            // document.body.appendChild(a);
+            // a.click();
+            // document.body.removeChild(a);
+        }
     };
     const version_id = new URLSearchParams(window.location.search).get('id');
     if (version_id) {
