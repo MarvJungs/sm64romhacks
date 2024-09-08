@@ -22,4 +22,4 @@ window.bootstrap = bootstrap;
 
 Alpine.start();
 
-console.log('RASEAC', 64, 'ERENEGIV', 'GRAVITY FALLS');
+console.log('RASEAC', 46, 'ERENEGIV', 'SLLAF YTIVARG');
