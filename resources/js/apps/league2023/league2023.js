@@ -19,7 +19,7 @@ let sortedMap;
 */
 
 function main() {
-	const pointsTable = document.getElementById('pojntsTable');
+	const pointsTable = document.getElementById('pointsTable');
 	if(!pointsTable) return;
 	calc();
 }
