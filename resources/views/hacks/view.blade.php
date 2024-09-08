@@ -17,14 +17,8 @@
         @endif
     </h1>
 
-    <table class="table">
-        <x-table.versions.head />
-        <tbody>
-            @foreach ($versions as $version)
-                <x-table.versions.row :version="$version" />
-            @endforeach
-        </tbody>
-    </table>
+    <x-table.versions.table :versions="$versions" />
+    
     @if ($hack->description && $hack->description != '[]')
         <div class="card">
             <div class="card-body">
