@@ -21,17 +21,19 @@
 <td>{{ $version->starcount }}</td>
 <td>{{ $version->releasedate }}</td>
 @if (Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isModerator() || Auth::user()->isSiteHelper()))
-    <td class="d-flex gap-3 justify-content-between">
-        <a href="{{ route('version.edit', [$version->hack, $version]) }}" class="btn btn-primary">
-            <span class="fa-solid fa-pen"></span>
-        </a>
-        <form action="{{ route('version.destroy', [$version->hack, $version]) }}" method="post">
-            @csrf
-            @method('DELETE')
-            <button class="btn btn-danger" type="submit">
-                <span class="fa-solid fa-trash"></span>
-            </button>
-        </form>
+    <td>
+        <div class="d-flex justify-content-center gap-3 pt-1">
+            <a href="{{ route('version.edit', [$version->hack, $version]) }}" class="btn btn-primary">
+                <span class="fa-solid fa-pen"></span>
+            </a>
+            <form action="{{ route('version.destroy', [$version->hack, $version]) }}" method="post">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-danger" type="submit">
+                    <span class="fa-solid fa-trash"></span>
+                </button>
+            </form>
+        </div>
     </td>
 @endif
 </tr>
