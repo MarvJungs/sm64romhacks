@@ -98,7 +98,11 @@
 
             <div class="row mb-4">
                 <div class="col">
-                    <label for="editor.description">Description</label>
+                    <label class="mb-2" for="editor-description">
+                        Description <span class="fa-solid fa-info btn btn-primary rounded-pill ms-2"
+                            data-bs-toggle="tooltip"
+                            data-bs-title="Type '/' in the editor box to call the context menu!"></span>
+                    </label>
                     <div id="editor-description"></div>
                 </div>
             </div>

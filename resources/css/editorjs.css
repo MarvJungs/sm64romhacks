@@ -9,7 +9,6 @@
 
 [id^=editor-] {
     border: var(--bs-border-width) solid var(--bs-border-color);
-    border-radius: 20px;
     width: 100%;
     padding: 1rem;
     padding-left: 2rem;
@@ -17,9 +16,44 @@
     word-wrap: break-word;
     word-break: keep-all;
     height: fit-content;
-} 
+}
 
 .codex-editor__redactor {
     padding: 0 !important;
     min-height: 240px;
+}
+
+.ce-popover--opened>.ce-popover__container {
+    background-color: var(--bs-body-bg);
+    border-color: var(--bs-border-color);
+    margin-left: 2rem;
+}
+
+.ce-popover-item,
+.ce-popover__search,
+.ce-inline-tool-input,
+.ce-inline-tool {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+.ce-popover-item:hover:not(.ce-popover-item--no-hover),
+.ce-inline-tool:hover,
+.ce-toolbar__plus:hover,
+.ce-toolbar__settings-btn:hover,
+.tc-toolbox__toggler:hover,
+.tc-wrap .tc-add-column:hover,
+.tc-wrap .tc-add-row:hover {
+    background-color: rgba(var(--bs-emphasis-color-rgb), .075);
+    color: var(--bs-body-color);
+}
+
+.ce-block--selected .ce-block__content,
+.ce-block__content .cdx-block::selection,
+::selection {
+    background-color: rgba(var(--bs-emphasis-color-rgb), .2);
+}
+
+.codex-editor:last-child {
+    padding-bottom: 10rem;
 }
