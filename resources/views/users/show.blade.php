@@ -6,6 +6,10 @@
         @if (isset($user->country))
             <span class="fi fi-{{ strtolower($user->country) }}"></span>
         @endif
+        @if (Auth::check() && Auth::user()->id == $user->id)
+            <a class="btn btn-primary btn-floating m-1" href="/profile/edit" role="button"><span
+                    class="fa-solid fa-pencil fa-fw"></span></a>
+        @endif
     </h2>
     @if (isset($user->gender))
         <sup>({{ $user->gender }})</sup>

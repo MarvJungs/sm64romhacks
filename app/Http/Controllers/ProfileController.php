@@ -15,24 +15,6 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 
 class ProfileController extends Controller
 {
-    public function index(): View
-    {
-        SEOMeta::setTitle('Profile');
-
-        $user = Auth::user();
-        $roles = Role::all()->pluck('name', 'id')->toArray();
-
-        $guildMemberRoles = $user->getRoles();
-
-        return view('profile.index', [
-            'user' => $user,
-            'versions' => $user->author?->versions,
-            'comments' => $user->comments,
-            'guildMemberRoles' => $guildMemberRoles,
-            'roles' => $roles
-        ]);
-    }
-
     /**
      * Display the user's profile form.
      */
@@ -59,7 +41,7 @@ class ProfileController extends Controller
             'country' => $request->country,
             'notify' => filter_var($request->notify, FILTER_VALIDATE_BOOLEAN)
         ]);
-        return redirect(route('profile.index'));
+        return redirect(route('users.show', $request->user()));
     }
 
     /**

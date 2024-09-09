@@ -83,7 +83,8 @@
                                         <li><a class="dropdown-item" href="/moderation">Moderation</a></li>
                                         <li><a class="dropdown-item" href="/users">Users</a></li>
                                     @endif
-                                    <li><a class="dropdown-item" href="/profile/">Profile</a></li>
+                                    <li><a class="dropdown-item"
+                                            href="/users/{{ Auth::user()->global_name }}">Profile</a></li>
                                     <hr />
                                     <li>
                                         <form action="{{ route('logout') }}" method="POST">
