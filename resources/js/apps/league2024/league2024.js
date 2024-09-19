@@ -32,15 +32,15 @@ async function getAllRunnerData() {
 	var runners = new Map();
 	data.forEach(element => {
 		runners.set(element["speedrun.com name"].toLowerCase(), new Runners(
-			element["DL 150"] === "" ? "359999" : element["DL 150"].replace(",", ""),
-			element["DL ABS"] === "" ? "359999" : element["DL ABS"].replace(",", ""),
-			element["DL 80"] === "" ? "359999" : element["DL 80"].replace(",", ""),
-			element["ZA2 90"] === "" ? "359999" : element["ZA2 90"].replace(",", ""),
-			element["ZA2 Warpless"] === "" ? "359999" : element["ZA2 Warpless"].replace(",", ""),
-			element["ZA2 ANY%"] === "" ? "359999" : element["ZA2 ANY%"].replace(",", ""),
-			element["Eureka 100"] === "" ? "359999" : element["Eureka 100"].replace(",", ""),
-			element["Eureka 60"] === "" ? "359999" : element["Eureka 60"].replace(",", ""),
-			element["Eureka 5"] === "" ? "359999" : element["Eureka 5"].replace(",", ""),
+			element["DL 150"] === "" ? "35999" : element["DL 150"].replace(",", ""),
+			element["DL ABS"] === "" ? "35999" : element["DL ABS"].replace(",", ""),
+			element["DL 80"] === "" ? "35999" : element["DL 80"].replace(",", ""),
+			element["ZA2 90"] === "" ? "35999" : element["ZA2 90"].replace(",", ""),
+			element["ZA2 Warpless"] === "" ? "35999" : element["ZA2 Warpless"].replace(",", ""),
+			element["ZA2 ANY%"] === "" ? "35999" : element["ZA2 ANY%"].replace(",", ""),
+			element["Eureka 100"] === "" ? "35999" : element["Eureka 100"].replace(",", ""),
+			element["Eureka 60"] === "" ? "35999" : element["Eureka 60"].replace(",", ""),
+			element["Eureka 5"] === "" ? "35999" : element["Eureka 5"].replace(",", ""),
 			element["discord name"],
 			element["speedrun.com name"],
 			element["Score"],
@@ -60,8 +60,8 @@ function generateText() {
 			category = rankPointsTable.querySelectorAll("td")[i].getAttribute('name').toLowerCase()
 			sortedMap = new Map([...sortedMap.entries()].sort((a, b) => Number(a[1][category]) - Number(b[1][category])))
 			let name = document.getElementById("runners").value.toLowerCase()
-			let rank = sortedMap.get(name)[category] === "359999" ? sortedMap.size : getRank(document.getElementById("runners").value)
-			let rank0 = sortedMap.get(name)[category] === "359999" ? getRankByTime(getLastNonDefaultTime()) : rank - 1
+			let rank = sortedMap.get(name)[category] === "35999" ? sortedMap.size : getRank(document.getElementById("runners").value)
+			let rank0 = sortedMap.get(name)[category] === "35999" ? getRankByTime(getLastNonDefaultTime()) : rank - 1
 			let selectContent = "<option selected>" + rank0 + "</option>"
 			for (let i = rank0 - 1; i >= 0; i--) {
 				selectContent = selectContent + "<option>" + i + "</option>"
@@ -77,21 +77,21 @@ function generateText() {
 			document.getElementById(category + "_time0").innerHTML = rank0 === 0 ? "None" : getTime(getTimeByRank(rank0))
 			document.getElementById(category + "_rank1").innerHTML = rank
 
-			document.getElementById(category + "_points1").innerHTML = document.getElementById(category + "_time1").innerHTML === "99:59:59" ? 0 : getPoints(rank, category)
-			document.getElementById(category + "_points0").innerHTML = rank0 === 0 ? 0 : document.getElementById(category + "_time1").innerHTML === "99:59:59" ? getPoints(rank0, category) : getPoints(rank0, category) - getPoints(rank, category)
+			document.getElementById(category + "_points1").innerHTML = document.getElementById(category + "_time1").innerHTML === "9:59:59" ? 0 : getPoints(rank, category)
+			document.getElementById(category + "_points0").innerHTML = rank0 === 0 ? 0 : document.getElementById(category + "_time1").innerHTML === "9:59:59" ? getPoints(rank0, category) : getPoints(rank0, category) - getPoints(rank, category)
 
 
 		}
 		document.getElementById("total").innerHTML = getSumPoints(true).toString() + " / " + getTotalPossiblePoints()
 		document.getElementById("total_gain").innerHTML = getSumPoints(false).toString() + " / " + (getTotalPossiblePoints() - getSumPoints(true))
-
+		getTotalTimePoints();
 	}
 }
 
 function getLastNonDefaultTime() {
-	let lastTime = "359999"
+	let lastTime = "35999"
 	for (const x of sortedMap.keys()) {
-		if (sortedMap.get(x)[category] === "359999") {
+		if (sortedMap.get(x)[category] === "35999") {
 			return lastTime
 		}
 		lastTime = sortedMap.get(x)[category]
@@ -158,9 +158,6 @@ function getTime(seconds) {
 	if (Number(minute) < 10) {
 		minute = "0" + minute
 	}
-	if (Number(hour) < 10) {
-		hour = "0" + hour
-	}
 
 	return hour + ":" + minute + ":" + second
 }
@@ -168,7 +165,7 @@ function getTime(seconds) {
 function getBasePoints() {
 	let points = new Map();
 	let point = 1;
-	for (let i = 96; i > 0; i--) {
+	for (let i = 97; i > 0; i--) {
 		points.set(i, point)
 
 		if (i < 7) {
@@ -210,7 +207,7 @@ function changeValues(cat) {
 	let rank = Number(document.getElementById(category + "_rank1").innerHTML)
 	sortedMap = new Map([...sortedMap.entries()].sort((a, b) => Number(a[1][category]) - Number(b[1][category])))
 	document.getElementById(category + "_time0").innerHTML = rank0 === 0 ? "None" : getTime(getTimeByRank(rank0))
-	document.getElementById(category + "_points0").innerHTML = rank0 === 0 ? 0 : document.getElementById(cat + "_time1").innerHTML === "99:59:59" ? getPoints(rank0, category) : getPoints(rank0, category) - getPoints(rank, category)
+	document.getElementById(category + "_points0").innerHTML = rank0 === 0 ? 0 : document.getElementById(cat + "_time1").innerHTML === "9:59:59" ? getPoints(rank0, category) : getPoints(rank0, category) - getPoints(rank, category)
 	document.getElementById("total_gain").innerHTML = getSumPoints(false).toString() + " / " + (getTotalPossiblePoints() - getSumPoints(true))
 }
 
@@ -220,8 +217,8 @@ async function calculateRankPoints() {
 	document.querySelectorAll("[id*='rank0']").forEach((element) => element.addEventListener("change", function () { changeValues(element.attributes["id"].value.replace("_rank0", "")) }))
 
 
-	document.querySelectorAll("[id*='time1']").forEach((element) => element.innerHTML = "99:59:59")
-	document.querySelectorAll("[id*='time0']").forEach((element) => element.innerHTML = "99:59:59")
+	document.querySelectorAll("[id*='time1']").forEach((element) => element.innerHTML = "9:59:59")
+	document.querySelectorAll("[id*='time0']").forEach((element) => element.innerHTML = "9:59:59")
 	document.querySelectorAll("[id*='rank1']").forEach((element) => element.innerHTML = sortedMap.size)
 	document.querySelectorAll("[id*='rank0']").forEach((element) => element.innerHTML = "<option selected>" + (sortedMap.size - 1) + "</option>")
 	document.querySelectorAll("[id*='points1']").forEach((element) => element.innerHTML = "0")
@@ -241,9 +238,9 @@ function calculateTimePoints() {
 			const timeValue = inputEvent.target.value;
 			const seconds = getSeconds(timeValue);
 			if (timeValue.length != 7) return;
-			
 			const timePointsContainer = document.getElementById(categoryName + '_timePoints');
 			timePointsContainer.innerText = getTimePoints(categoryName, seconds);
+			getTotalTimePoints();
 		});
 	});
 }
@@ -252,7 +249,7 @@ function getSeconds(timeString) {
 	const hours = Number(timeString.substring(0, 1));
 	const minutes = Number(timeString.substring(2, 4));
 	const seconds = Number(timeString.substring(5));
-	
+
 	const totalSeconds = hours * 3600 + minutes * 60 + seconds;
 	return totalSeconds;
 }
@@ -266,5 +263,13 @@ function getTimePoints(categoryName, seconds) {
 }
 
 function getTotalTimePoints() {
-
+	const totalTimePointsContainer = document.getElementById('total_timePoints');
+	const timePointsTable = document.getElementById('timePointsTable2024');
+	const pointFields = timePointsTable.querySelectorAll('td.timePoints');
+	let totalPoints = 0;
+	Array.from(pointFields).forEach((pointField) => {
+		const points = Number(pointField.innerText);
+		totalPoints += points;
+	});
+	totalTimePointsContainer.innerText = totalPoints;
 }

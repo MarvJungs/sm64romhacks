@@ -93,8 +93,12 @@
                     <td id="{{ strtolower($category['slug']) }}_barrier" hidden>{{ $category['barrier'] }}</td>
                     <td><input type="text" id="{{ strtolower($category['slug']) }}_desiredTime" class="form-control"
                             value="9:59:59"></td>
-                    <td id="{{ strtolower($category['slug']) }}_timePoints">0</td>
+                    <td class="timePoints" id="{{ strtolower($category['slug']) }}_timePoints">0</td>
                 </tr>
             @endforeach
+            <tr>
+                <td colspan=2>Total</td>
+                <td id="total_timePoints">0</td>
+            </tr>
         </tbody>
     </table>
