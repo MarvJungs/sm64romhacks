@@ -1,4 +1,3 @@
-<x-layout>
     <h1>League 2023 Points Calculator</h1>
     <table class="table table-bordered table-hover" id="pointsTable">
         <thead>
@@ -17,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($categories as $category)
+            @foreach ($data as $category)
                 <tr>
                     <td>{{ $category }}</td>
                     <td id="{{ strtolower($category) }}_rank1"></td>
@@ -37,4 +36,3 @@
             </tr>
         </tbody>
     </table>
-</x-layout>

@@ -19,25 +19,28 @@ let sortedMap;
 */
 
 function main() {
-	const pointsTable = document.getElementById('pointsTable');
-	if(!pointsTable) return;
-	calc();
+	const rankPointsTable = document.getElementById('rankPointsTable2024');
+	const timePointsTable = document.getElementById('timePointsTable2024');
+	if (!rankPointsTable || !timePointsTable) return;
+	calculateRankPoints();
+	calculateTimePoints();
 }
 
 async function getAllRunnerData() {
-	const response = await fetch("https://opensheet.elk.sh/14ja7ooTwjQzVkw-bjO3F8Xf2c21OLA0QU4vtPtfFpKQ/participants");
+	const response = await fetch("https://opensheet.elk.sh/1G8N0nYv4K11PlU2dIhUICQKzcj7MlhF5k0mg78fvqbY/participants");
 	const data = await response.json();
 	var runners = new Map();
 	data.forEach(element => {
 		runners.set(element["speedrun.com name"].toLowerCase(), new Runners(
-			element["GS 1 Star (v3.4)"] === "" ? "359999" : element["GS 1 Star (v3.4)"].replace(",", ""),
-			element["GS 81 Star (v3.4)"] === "" ? "359999" : element["GS 81 Star (v3.4)"].replace(",", ""),
-			element["GS 131 Star (v3.4)"] === "" ? "359999" : element["GS 131 Star (v3.4)"].replace(",", ""),
-			element["MNE 70 Star"] === "" ? "359999" : element["MNE 70 Star"].replace(",", ""),
-			element["MNE 125 Star"] === "" ? "359999" : element["MNE 125 Star"].replace(",", ""),
-			element["ZAR 12 Ztar"] === "" ? "359999" : element["ZAR 12 Ztar"].replace(",", ""),
-			element["ZAR 96 Ztar"] === "" ? "359999" : element["ZAR 96 Ztar"].replace(",", ""),
-			element["ZAR 170 Ztar"] === "" ? "359999" : element["ZAR 170 Ztar"].replace(",", ""),
+			element["DL 150"] === "" ? "359999" : element["DL 150"].replace(",", ""),
+			element["DL ABS"] === "" ? "359999" : element["DL ABS"].replace(",", ""),
+			element["DL 80"] === "" ? "359999" : element["DL 80"].replace(",", ""),
+			element["ZA2 90"] === "" ? "359999" : element["ZA2 90"].replace(",", ""),
+			element["ZA2 Warpless"] === "" ? "359999" : element["ZA2 Warpless"].replace(",", ""),
+			element["ZA2 ANY%"] === "" ? "359999" : element["ZA2 ANY%"].replace(",", ""),
+			element["Eureka 100"] === "" ? "359999" : element["Eureka 100"].replace(",", ""),
+			element["Eureka 60"] === "" ? "359999" : element["Eureka 60"].replace(",", ""),
+			element["Eureka 5"] === "" ? "359999" : element["Eureka 5"].replace(",", ""),
 			element["discord name"],
 			element["speedrun.com name"],
 			element["Score"],
@@ -51,10 +54,10 @@ async function getAllRunnerData() {
 }
 
 function generateText() {
+	const rankPointsTable = document.getElementById('rankPointsTable2024');
 	if (document.getElementById("runners").value != "Please Select A Runner") {
-		for (let i = 0; i < 56; i += 7) {
-			const pointsTable = document.getElementById('pointsTable');
-			category = pointsTable.querySelectorAll("td")[i].innerHTML.toLowerCase()
+		for (let i = 0; i < 7 * 9; i += 7) {
+			category = rankPointsTable.querySelectorAll("td")[i].getAttribute('name').toLowerCase()
 			sortedMap = new Map([...sortedMap.entries()].sort((a, b) => Number(a[1][category]) - Number(b[1][category])))
 			let name = document.getElementById("runners").value.toLowerCase()
 			let rank = sortedMap.get(name)[category] === "359999" ? sortedMap.size : getRank(document.getElementById("runners").value)
@@ -65,7 +68,12 @@ function generateText() {
 			}
 			document.getElementById(category + "_rank0").innerHTML = selectContent
 			rank0 = Number(document.getElementById(category + "_rank0").value)
-			document.getElementById(category + "_time1").innerHTML = getTime(sortedMap.get(name)[category])
+			document.getElementById(category + "_time1").innerHTML = getTime(sortedMap.get(name)[category]);
+			document.getElementById(category + '_desiredTime').value = getTime(sortedMap.get(name)[category]);
+			document.getElementById(category + '_timePoints').innerText = getTimePoints(category, sortedMap.get(name)[category]);
+			const timePointsContainer = document.getElementById(category + '_timePoints');
+			const seconds = sortedMap.get(name)[category];
+			timePointsContainer.innerText = getTimePoints(category, seconds);
 			document.getElementById(category + "_time0").innerHTML = rank0 === 0 ? "None" : getTime(getTimeByRank(rank0))
 			document.getElementById(category + "_rank1").innerHTML = rank
 
@@ -158,9 +166,9 @@ function getTime(seconds) {
 }
 
 function getBasePoints() {
-	let points = new Map()
-	let point = 1
-	for (let i = sortedMap.size; i > 0; i--) {
+	let points = new Map();
+	let point = 1;
+	for (let i = 96; i > 0; i--) {
 		points.set(i, point)
 
 		if (i < 7) {
@@ -177,22 +185,23 @@ function getBasePoints() {
 }
 
 function getBonusPoints(category) {
-	if (category === "gs1") return 0;
-	if (category === "gs81") return 5;
-	if (category === "gs131") return 15;
-	if (category === "mne70") return 5;
-	if (category === "mne125") return 10;
-	if (category === "zar12") return 0;
-	if (category === "zar96") return 5;
-	if (category === "zar170") return 15;
+	if (category === "eureka5") return 2;
+	if (category === "eureka60") return 8;
+	if (category === "eureka100") return 15;
+	if (category === "dl80") return 10;
+	if (category === "dlabs") return 10;
+	if (category == "dl150") return 20;
+	if (category === "za2any5") return 2;
+	if (category === "za2warpless") return 5;
+	if (category === "za290") return 10;
 }
 
 function getPoints(rank, category) {
-	return getBasePoints().get(rank) + getBonusPoints(category)
+	return getBasePoints().get(rank) + getBonusPoints(category);
 }
 
 function getTotalPossiblePoints() {
-	return getPoints(1, "gs1") + getPoints(1, "gs81") + getPoints(1, "gs131") + getPoints(1, "mne70") + getPoints(1, "mne125") + getPoints(1, "zar12") + getPoints(1, "zar96") + getPoints(1, "zar170")
+	return getPoints(1, "eureka5") + getPoints(1, "eureka60") + getPoints(1, "eureka100") + getPoints(1, "dl80") + getPoints(1, "dlabs") + getPoints(1, "dl150") + getPoints(1, "za2any5") + getPoints(1, "za2warpless") + getPoints(1, "za290")
 }
 
 function changeValues(cat) {
@@ -203,11 +212,9 @@ function changeValues(cat) {
 	document.getElementById(category + "_time0").innerHTML = rank0 === 0 ? "None" : getTime(getTimeByRank(rank0))
 	document.getElementById(category + "_points0").innerHTML = rank0 === 0 ? 0 : document.getElementById(cat + "_time1").innerHTML === "99:59:59" ? getPoints(rank0, category) : getPoints(rank0, category) - getPoints(rank, category)
 	document.getElementById("total_gain").innerHTML = getSumPoints(false).toString() + " / " + (getTotalPossiblePoints() - getSumPoints(true))
-
-
 }
 
-async function calc() {
+async function calculateRankPoints() {
 	document.getElementById("runners").addEventListener("change", generateText)
 	sortedMap = await getAllRunnerData()
 	document.querySelectorAll("[id*='rank0']").forEach((element) => element.addEventListener("change", function () { changeValues(element.attributes["id"].value.replace("_rank0", "")) }))
@@ -215,10 +222,49 @@ async function calc() {
 
 	document.querySelectorAll("[id*='time1']").forEach((element) => element.innerHTML = "99:59:59")
 	document.querySelectorAll("[id*='time0']").forEach((element) => element.innerHTML = "99:59:59")
-	document.querySelectorAll("[id*='rank1']").forEach((element) => element.innerHTML = "104")
-	document.querySelectorAll("[id*='rank0']").forEach((element) => element.innerHTML = "<option selected>103</option>")
+	document.querySelectorAll("[id*='rank1']").forEach((element) => element.innerHTML = sortedMap.size)
+	document.querySelectorAll("[id*='rank0']").forEach((element) => element.innerHTML = "<option selected>" + (sortedMap.size - 1) + "</option>")
 	document.querySelectorAll("[id*='points1']").forEach((element) => element.innerHTML = "0")
 	document.querySelectorAll("[id*='points0']").forEach((element) => element.innerHTML = "0")
 	document.getElementById("total").innerHTML = "0 / " + getTotalPossiblePoints()
 	document.getElementById("total_gain").innerHTML = "0 / " + getTotalPossiblePoints()
+}
+
+function calculateTimePoints() {
+	const timePointsTable = document.getElementById('timePointsTable2024');
+	const tableRows = timePointsTable.querySelectorAll('tr');
+	Array.from(tableRows).forEach((tableRow) => {
+		const categoryName = tableRow.getAttribute('name');
+		if (!categoryName) return;
+		const inputField = document.getElementById(categoryName + '_desiredTime');
+		inputField.addEventListener('input', (event) => {
+			
+			if (event.target.value.length != 7) return;
+			if (seconds >= cutoff) return;
+			const seconds = getSeconds(event.target.value);
+			const timePointsContainer = document.getElementById(categoryName + '_timePoints');
+			timePointsContainer.innerText = getTimePoints(categoryName, seconds);
+		});
+	});
+}
+
+function getSeconds(timeString) {
+	const hours = Number(timeString.substring(0, 1));
+	const minutes = Number(timeString.substring(2, 4));
+	const seconds = Number(timeString.substring(5));
+	
+	const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+	return totalSeconds;
+}
+
+function getTimePoints(categoryName, seconds) {
+	const cutoff = Number(document.getElementById(categoryName + '_cutoff').innerText);
+	const barrier = Number(document.getElementById(categoryName + '_barrier').innerText);
+	const points = Number((cutoff - seconds) / barrier);
+	if (seconds > cutoff) return 0;
+	return Math.ceil(points);
+}
+
+function getTotalTimePoints() {
+
 }

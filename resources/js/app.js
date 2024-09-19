@@ -13,9 +13,11 @@ import './megapack.js';
 import './newsModal.js';
 import './apps/league2022/league2022.js'
 import './apps/league2023/league2023.js';
+import './apps/league2024/league2024.js';
 import './rom-patcher.js';
 import './hackForm.js';
 import './cookies.js';
+import './eventForm.js';
 
 window.Alpine = Alpine;
 window.bootstrap = bootstrap;

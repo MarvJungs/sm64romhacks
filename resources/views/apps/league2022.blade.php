@@ -1,4 +1,3 @@
-<x-layout>
     <h1>League 2022 Points Calculator</h1>
     <p>
         This is the official League 2022 Points calculator. This should help you to determine which time you need to
@@ -10,7 +9,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    @foreach ($games as $game => $categories)
+                    @foreach ($data as $game => $categories)
                         <th colspan="{{ sizeof($categories) }}">{{ $game }}</th>
                     @endforeach
                     <th>Totals</th>
@@ -19,7 +18,7 @@
             <tbody>
                 <tr>
                     <td></td>
-                    @foreach ($games as $categories)
+                    @foreach ($data as $categories)
                         @foreach ($categories as $category)
                             <td>{{ $category }}</td>
                         @endforeach
@@ -28,7 +27,7 @@
                 </tr>
                 <tr>
                     <td>Starting PB</td>
-                    @foreach ($games as $categories)
+                    @foreach ($data as $categories)
                         @foreach ($categories as $category)
                             <td>
                                 <input class="form-control w-auto" type="text" size="7" maxlength="7" value="9:59:59">
@@ -39,7 +38,7 @@
                 </tr>
                 <tr>
                     <td>Ending PB</td>
-                    @foreach ($games as $categories)
+                    @foreach ($data as $categories)
                         @foreach ($categories as $category)
                             <td>
                                 <input class="form-control w-auto" type="text" size="7" max="7" value="9:59:59">
@@ -50,7 +49,7 @@
                 </tr>
                 <tr>
                     <td>Points</td>
-                    @foreach ($games as $categories)
+                    @foreach ($data as $categories)
                         @foreach ($categories as $category)
                             <td>
                                 0
@@ -61,7 +60,7 @@
                 </tr>
                 <tr>
                     <td>Bonus</td>
-                    @foreach ($games as $categories)
+                    @foreach ($data as $categories)
                         @foreach ($categories as $category)
                             <td>
                                 0
@@ -72,7 +71,7 @@
                 </tr>
                 <tr>
                     <td>Total</td>
-                    @foreach ($games as $categories)
+                    @foreach ($data as $categories)
                         @foreach ($categories as $category)
                             <td>
                                 0
@@ -84,4 +83,3 @@
             </tbody>
         </table>
     </div>
-</x-layout>
