@@ -237,11 +237,11 @@ function calculateTimePoints() {
 		const categoryName = tableRow.getAttribute('name');
 		if (!categoryName) return;
 		const inputField = document.getElementById(categoryName + '_desiredTime');
-		inputField.addEventListener('input', (event) => {
+		inputField.addEventListener('input', (inputEvent) => {
+			const timeValue = inputEvent.target.value;
+			const seconds = getSeconds(timeValue);
+			if (timeValue.length != 7) return;
 			
-			if (event.target.value.length != 7) return;
-			if (seconds >= cutoff) return;
-			const seconds = getSeconds(event.target.value);
 			const timePointsContainer = document.getElementById(categoryName + '_timePoints');
 			timePointsContainer.innerText = getTimePoints(categoryName, seconds);
 		});

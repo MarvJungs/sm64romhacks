@@ -19,6 +19,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\LeagueCategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/stardisplay', 'https://github.com/aglab2/SM64StarDisplay')->name('stardisplay');
@@ -38,8 +39,7 @@ Route::get('patcher', [PatchController::class, 'index'])->name('patcher.index');
 Route::get('/streams', [StreamController::class, 'index'])->name('streams.index');
 Route::get('/tos', [TermsOfServiceController::class, 'index'])->name('tos.index');
 Route::get('/privacy-policy', [PrivacyPolicyController::class, 'index'])->name('privacy.name');
-Route::get('apps/league2022', [AppController::class, 'league2022'])->name('apps.league2022');
-Route::get('apps/league2023', [AppController::class, 'league2023'])->name('apps.league2023');
+
 Route::get('users/{user}', [UsersController::class, 'show'])->name('users.show');
 
 Route::resource('/events', EventController::class)->except(['show', 'index'])
@@ -79,3 +79,5 @@ Route::middleware('checkrole:705528172581486704')->group(function () {
 Route::delete('/images/{image}', [ImageController::class, 'destroy'])->name('image.destroy');
 Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('contact', [ContactController::class, 'send'])->name('contact.send');
+
+Route::get('events/{event}/leaderboards/{leagueCategory}', [LeagueCategoryController::class, 'show'])->name('leagueCategory.show');
