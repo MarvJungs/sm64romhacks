@@ -1,5 +1,8 @@
 <x-layout>
     <div class="streams">
+        @if (sizeof($streams) == 0)
+            <p>Nobody is currently streaming!</p>
+        @endif
         @foreach ($streams as $stream)
             <div class="stream-container">
                 <a href="https://www.twitch.tv/{{$stream->user_login}}" target="_blank">

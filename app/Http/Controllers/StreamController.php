@@ -7,7 +7,7 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 
 class StreamController extends Controller
 {
-    private array $whitelist_titles = ['romhack', 'rom hack'];
+    private array $whitelist_titles = ['romhack', 'rom hack', 'hack'];
     private array $whitelist_tags = ['romhack', 'rom hack', 'hack', 'modded', 'mod'];
     public function index()
     {
@@ -70,25 +70,38 @@ class StreamController extends Controller
         curl_close($ch);
 
         // Decode
-        $data =  json_decode($res);
+        $data = json_decode($res);
 
         return $data->data;
     }
 
-    private function filterStreams($streams)
+    private function filterStreams($streams): array
     {
         return array_filter($streams, function ($stream) {
-            return in_array(strtolower($stream->title), $this->whitelist_titles) || $this->validateTags($stream->tags);
+            return $this->validateTitle($stream->title) || $this->validateTags($stream->tags);
         });
     }
 
-    private function validateTags($tags)
+    private function validateTags($tags): bool
     {
         $flag = false;
 
-        $tags = array_map(fn ($value): string => strtolower($value), $tags);
+        $tags = array_map(fn($value): string => strtolower($value), $tags);
         foreach ($this->whitelist_tags as $whiteElement) {
             if (in_array($whiteElement, $tags)) {
+                $flag = true;
+            }
+        }
+        return $flag;
+    }
+
+    private function validateTitle($title): bool
+    {
+        $flag = false;
+
+        $streamTitle = strtolower($title);
+        foreach ($this->whitelist_titles as $whitelist_title) {
+            if (str_contains($streamTitle, $whitelist_title)) {
                 $flag = true;
             }
         }
