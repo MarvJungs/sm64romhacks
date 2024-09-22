@@ -75,15 +75,15 @@ function generateText() {
 			const possibleTimePointsContainer = document.getElementById(category + '_possibleTimePoints');
 			const seconds = sortedMap.get(name)[category];
 			timePointsContainer.innerText = getTimePoints(category, seconds);
-			possibleTimePointsContainer.innerText = getTimePoints(category, getSeconds(getTime(getTimeByRank(rank0)))) - Number(timePointsContainer.innerText);
+			possibleTimePointsContainer.innerText = rank0 === 0 ? 0 :  getTimePoints(category, getSeconds(getTime(getTimeByRank(rank0)))) - Number(timePointsContainer.innerText);
 			
-			document.getElementById(category + "_desiredTime").value = rank0 === 0 ? "0:00:00" : getTime(getTimeByRank(rank0))
+			document.getElementById(category + "_desiredTime").value = rank0 === 0 ? getTime(sortedMap.get(name)[category]) : getTime(getTimeByRank(rank0))
 			document.getElementById(category + "_rank1").innerHTML = rank
 			
 			document.getElementById(category + "_points1").innerHTML = document.getElementById(category + "_time1").innerHTML === "9:59:59" ? 0 : getPoints(rank, category)
 			document.getElementById(category + "_possibleRankPoints").innerHTML = rank0 === 0 ? 0 : document.getElementById(category + "_time1").innerHTML === "9:59:59" ? getPoints(rank0, category) : getPoints(rank0, category) - getPoints(rank, category)
 			
-			document.getElementById(category + '_desiredTime').value = rank0 === 0 ? "0:00:00" : getTime(getTimeByRank(rank0))
+			// document.getElementById(category + '_desiredTime').value = rank0 === 0 ? "0:00:00" : getTime(getTimeByRank(rank0))
 		});
 
 		document.getElementById("total_rankPoints").innerHTML = getSumPoints(true).toString() + " / " + getTotalPossiblePoints()
