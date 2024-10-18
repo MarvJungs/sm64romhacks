@@ -219,6 +219,10 @@
                             <a href="http://kuribo64.net/" target="_blank"> <img
                                     src="{{ asset('images/affiliates/kuribo64.jpg') }}" alt="Kuribo64"></a>
                         </div>
+                        <div class="col">
+                            <a href="https://neoromhacking.net/" target="_blank"> <img
+                                    src="{{ asset('images/affiliates/neoromhacking.png') }}" alt="NeoRomhacking"></a>
+                        </div>
                     </div>
                     <!--Grid row-->
                 </section>
