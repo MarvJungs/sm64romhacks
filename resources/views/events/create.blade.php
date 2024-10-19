@@ -13,18 +13,23 @@
                 <input íd="title" class="form-control" name="title" required>
             </div>
         </div>
-        <div class="hstack gap-3 mb-4">
-            <div class="p-2">
+        <div class="row gap-3 mb-4">
+            <div class="col">
                 <label for="start_utc">Start Time (in UTC)</label>
                 <input type="datetime-local" id="start_utc" class="form-control w-auto" name="start_utc">
             </div>
-            <div class="p-2">
+            <div class="col">
                 <label for="end_utc">End Time (in UTC)</label>
                 <input type="datetime-local" id="end_utc" class="form-control w-auto" name="end_utc">
             </div>
-            <div class="p-2">
-                <label for="marathon">Marathon Or Special Event?</label>
-                <input type="checkbox" name="marathon" id="marathon" @checked(false)>
+            <div class="col">
+                <label for="event_type">Event Type</label>
+                <select class="form-select" name="event_type" id="event_type">
+                    <option @selected(true)>Select An Event Type</option>
+                    @foreach ($event_types as $id => $type)
+                        <option value="{{ $id }}">{{ $type }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
         <div class="row mb-4">

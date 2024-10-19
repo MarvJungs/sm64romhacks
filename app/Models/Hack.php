@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Hack extends Model implements Sitemapable
 {
@@ -60,6 +62,11 @@ class Hack extends Model implements Sitemapable
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function leagueCategory(): HasOne
+    {
+        return $this->hasOne(LeagueCategory::class);
     }
 
     public function getStarcount(): int|null

@@ -10,6 +10,8 @@ use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
 use App\Observers\EventObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[ObservedBy([EventObserver::class])]
 class Event extends Model implements Sitemapable
@@ -23,7 +25,7 @@ class Event extends Model implements Sitemapable
         'start_utc',
         'end_utc',
         'description',
-        'marathon'
+        'event_type_id'
     ];
 
     public function toSitemapTag(): array|string|Url
@@ -42,5 +44,15 @@ class Event extends Model implements Sitemapable
     public function disruptions(): HasMany
     {
         return $this->hasMany(Disruption::class);
+    }
+
+    public function eventType(): BelongsTo
+    {
+        return $this->belongsTo(EventType::class);
+    }
+
+    public function league(): HasOne
+    {
+        return $this->hasOne(League::class);
     }
 }

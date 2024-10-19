@@ -28,7 +28,6 @@
     @endif
 
     <h2>Categories</h2>
-
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -46,8 +45,8 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ $leagueCategory->category_url }}">
-                            {{ $leagueCategory->category_name }}
+                        <a href="{{ cache($leagueCategory->src_category_id)->weblink }}">
+                            {{ cache($leagueCategory->src_category_id)->name }}
                         </a>
                     </td>
                     <td>

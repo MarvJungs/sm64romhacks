@@ -109,7 +109,7 @@
                     </ul>
                 </div>
             </nav>
-            <p class='text-end' id='currentTime'></p>
+            <p class='text-end' id='currentTime'>&nbsp;</p>
         </header>
 
         <main>

@@ -25,64 +25,26 @@
             this threshold, you receive 1 point.</li>
         <li>There are no bonus time points to be gotten</li>
     </ul>
-    <h2>Rank Points Calculator</h2>
-    <table class="table table-bordered table-hover" id="rankPointsTable2024">
+    <table class="table table-bordered table-hover" id="pointsTable2024">
         <thead>
             <tr>
                 <th>
                     <select class="form-select" name="runners" id="runners">
-                        <option id="none" @selected(true)>Please Select A Runner</option>
+                        <option value="none" @selected(true)>Select A Runner</option>
                     </select>
                 </th>
+                <th hidden>Cutoff</th>
+                <th hidden>Threshold</th>
                 <th>Your Rank</th>
                 <th>Your Time</th>
-                <th>Your Points</th>
+                <th hidden>Your Leaderboard Points</th>
+                <th hidden>Your Time Points</th>
+                <th>Total Points</th>
                 <th>Rank To Beat</th>
-                <th>Time To Beat</th>
-                <th>Points To Gain</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $category)
-                <tr>
-                    <td name="{{ strtolower($category['slug']) }}">{{ $category['name'] }}</td>
-                    <td id="{{ strtolower($category['slug']) }}_rank1"></td>
-                    <td id="{{ strtolower($category['slug']) }}_time1"></td>
-                    <td id="{{ strtolower($category['slug']) }}_points1"></td>
-                    <td> <select class="form-select" id="{{ strtolower($category['slug']) }}_rank0"></select></td>
-                    <td id="{{ strtolower($category['slug']) }}_time0"></td>
-                    <td id="{{ strtolower($category['slug']) }}_points0"></td>
-                </tr>
-            @endforeach
-            <tr>
-                <td>Total</td>
-                <td colspan="2"></td>
-                <td id="total"></td>
-                <td colspan="2"></td>
-                <td id="total_gain"></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2> Time Points Calculator </h2>
-    <table class="table table-hover table-bordered" id="timePointsTable2024">
-        <thead>
-            <tr>
-                <th>
-                    Category
-                </th>
-                <th hidden>
-                    Cutoff Time
-                </th>
-                <th hidden>
-                    Seconds per Point
-                </th>
-                <th>
-                    Desired Final Time
-                </th>
-                <th>
-                    Points
-                </th>
+                <th>Desired Endtime</th>
+                <th hidden>Possible Leaderboard Points</th>
+                <th hidden>Possible Time Points</th>
+                <th>Total Points To Gain</th>
             </tr>
         </thead>
         <tbody>
@@ -91,14 +53,32 @@
                     <td>{{ $category['name'] }}</td>
                     <td id="{{ strtolower($category['slug']) }}_cutoff" hidden>{{ $category['cutoff'] }}</td>
                     <td id="{{ strtolower($category['slug']) }}_barrier" hidden>{{ $category['barrier'] }}</td>
-                    <td><input type="text" id="{{ strtolower($category['slug']) }}_desiredTime" class="form-control"
-                            value="9:59:59"></td>
-                    <td class="timePoints" id="{{ strtolower($category['slug']) }}_timePoints">0</td>
+                    <td id="{{ strtolower($category['slug']) }}_rank1"></td>
+                    <td id="{{ strtolower($category['slug']) }}_time1"></td>
+                    <td class="rankPoints" id="{{ strtolower($category['slug']) }}_points1" hidden></td>
+                    <td class="timePoints" id="{{ strtolower($category['slug']) }}_timePoints" hidden>0</td>
+                    <td class="totalPoints" id="{{ strtolower($category['slug']) }}__totalPoints">0</td>
+                    <td> <select class="form-select" id="{{ strtolower($category['slug']) }}_rank0"></select></td>
+                    <td>
+                        <input id="{{ strtolower($category['slug']) }}_desiredTime" class="form-control" type="text"
+                            value="9:59:59">
+                    </td>
+                    <td class="possibleRankPoints" id="{{ strtolower($category['slug']) }}_possibleRankPoints" hidden>0</td>
+                    <td class="possibleTimePoints" id="{{ strtolower($category['slug']) }}_possibleTimePoints" hidden>0</td>
+                    <td class="possibleTotalPoints" id="{{ strtolower($category['slug']) }}_possibleTotalPoints">0</td>
                 </tr>
             @endforeach
             <tr>
-                <td colspan=2>Total</td>
-                <td id="total_timePoints">0</td>
+                <td class="text-bg-info text-dark">Total</td>
+                <td colspan="2" class="text-bg-info text-dark" hidden></td>
+                <td colspan="2" class="text-bg-info text-dark"></td>
+                <td id="total_rankPoints" class="text-bg-info text-dark" hidden>0</td>
+                <td id="total_timePoints" class="text-bg-info text-dark" hidden>0</td>
+                <td id="total_points" class="text-bg-info text-dark">0</td>
+                <td colspan="2" class="text-bg-info text-dark"></td>
+                <td id="total_gain" class="text-bg-info text-dark" hidden></td>
+                <td id="total_possibleTimePoints" class="text-bg-info text-dark" hidden>0</td>
+                <td id="total_possiblePoints" class="text-bg-info text-dark">0</td>
             </tr>
         </tbody>
     </table>
