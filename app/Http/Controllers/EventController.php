@@ -12,13 +12,13 @@ use App\Models\Hack;
 use App\Models\LeagueCategory;
 use App\Models\LeagueParticipant;
 use App\Models\LeaguePointsSystem;
-use App\Models\LeaguePointsTable;
+use App\Models\RaceParticipant;
+use App\Models\RaceResult;
 use Illuminate\Support\Facades\Gate;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
@@ -173,6 +173,22 @@ class EventController extends Controller
                 ]
             };
             return view('events.league', compact('event', 'leagueParticipants', 'data'));
+        } elseif ($event->eventType->type == "Race") {
+            $raceParticipants = RaceParticipant::where('event_id', '=', $event->id)->get()->sortBy(function (RaceParticipant $raceParticipant, int $key) {
+                $totalEstimate = $raceParticipant->sr1PB + $raceParticipant->sr2PB + $raceParticipant->sr3PB + $raceParticipant->sr4PB + $raceParticipant->sr5PB + $raceParticipant->sr6PB + $raceParticipant->sr7PB + $raceParticipant->sr8PB;
+                return $totalEstimate;
+            });
+            $raceResults = RaceResult::where('event_id', '=', $event->id)->get()->sortBy(function (RaceResult $raceResult, int $key) {
+                $totalEstimate = $raceResult->sr1PB + $raceResult->sr2PB + $raceResult->sr3PB + $raceResult->sr4PB + $raceResult->sr5PB + $raceResult->sr6PB + $raceResult->sr7PB + $raceResult->sr8PB;
+                return $totalEstimate;
+            });
+            $registered = $raceParticipants->firstWhere('user_id', '=', Auth::user()->id) != null;
+            return view('races.index', [
+                'raceParticipants' => $raceParticipants,
+                'raceResults' => $raceResults,
+                'event' => $event,
+                'registered' => $registered
+            ]);
         } else {
             return view('events.special', ['event' => $event]);
         }

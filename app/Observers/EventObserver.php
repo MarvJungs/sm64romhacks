@@ -20,22 +20,25 @@ class EventObserver
         //     Mail::to($notifyable_user->email)->send(new EventMail($notifyable_user, $event));
         // }
 
-        $response = Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
-            ->post(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events', [
-                'entity_metadata' => [
-                    'location' => 'https://www.twitch.tv/sm64romhacks'
-                ],
-                'name' => $event->name,
-                'privacy_level' => 2,
-                'scheduled_start_time' => $event->start_utc,
-                'scheduled_end_time' => $event->end_utc,
-                'description' => getDiscordEmbedText($event->description),
-                'entity_type' => 3,
-            ]);
+        // if ($event->eventType->type == "Race") {
+        //     return;
+        // }
+        // $response = Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
+        //     ->post(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events', [
+        //         'entity_metadata' => [
+        //             'location' => 'https://www.twitch.tv/sm64romhacks'
+        //         ],
+        //         'name' => $event->name,
+        //         'privacy_level' => 2,
+        //         'scheduled_start_time' => $event->start_utc,
+        //         'scheduled_end_time' => $event->end_utc,
+        //         'description' => getDiscordEmbedText($event->description),
+        //         'entity_type' => 3,
+        //     ]);
 
-        $event->update([
-            'guild_schedule_id' => $response->json()['id'],
-        ]);
+        // $event->update([
+        //     'guild_schedule_id' => $response->json()['id'],
+        // ]);
     }
 
     /**
@@ -43,22 +46,22 @@ class EventObserver
      */
     public function updated(Event $event): void
     {
-        if ($event->wasRecentlyCreated) {
-            return;
-        }
+        // if ($event->wasRecentlyCreated) {
+        //     return;
+        // }
 
-        $response = Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
-            ->patch(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events/' . $event->guild_schedule_id, [
-                'entity_metadata' => [
-                    'location' => 'https://www.twitch.tv/sm64romhacks'
-                ],
-                'name' => $event->name,
-                'privacy_level' => 2,
-                'scheduled_start_time' => $event->start_utc,
-                'scheduled_end_time' => $event->end_utc,
-                'description' => getDiscordEmbedText($event->description),
-                'entity_type' => 3,
-            ]);
+        // $response = Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
+        //     ->patch(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events/' . $event->guild_schedule_id, [
+        //         'entity_metadata' => [
+        //             'location' => 'https://www.twitch.tv/sm64romhacks'
+        //         ],
+        //         'name' => $event->name,
+        //         'privacy_level' => 2,
+        //         'scheduled_start_time' => $event->start_utc,
+        //         'scheduled_end_time' => $event->end_utc,
+        //         'description' => getDiscordEmbedText($event->description),
+        //         'entity_type' => 3,
+        //     ]);
     }
 
     /**
@@ -66,10 +69,10 @@ class EventObserver
      */
     public function deleted(Event $event): void
     {
-        if (!is_null($event->guild_schedule_id)) {
-            Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
-                ->delete(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events/' . $event->guild_schedule_id);
-        }
+        // if (!is_null($event->guild_schedule_id)) {
+        //     Http::withToken(env('DISCORD_BOT_TOKEN'), 'Bot')
+        //         ->delete(env('DISCORD_API_URL') . 'guilds/' . env('DISCORD_GUILD_ID') . '/scheduled-events/' . $event->guild_schedule_id);
+        // }
     }
 
     /**

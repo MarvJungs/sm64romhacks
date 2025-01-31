@@ -20,6 +20,7 @@ use App\Http\Controllers\AppController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LeagueCategoryController;
+use App\Http\Controllers\RacesController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/stardisplay', 'https://github.com/aglab2/SM64StarDisplay')->name('stardisplay');
@@ -81,3 +82,8 @@ Route::get('contact', [ContactController::class, 'index'])->name('contact.index'
 Route::post('contact', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('events/{event}/leaderboards/{leagueCategory}', [LeagueCategoryController::class, 'show'])->name('leagueCategory.show');
+Route::get('/events/{event}/register', [RacesController::class, 'register'])->name('races.register');
+Route::post('/events/{event}/register', [RacesController::class, 'register'])->name('races.register');
+Route::post('/events/{event}/unregister', [RacesController::class, 'unregister'])->name('races.unregister');
+Route::get('events/{event}/results', [RacesController::class, 'results'])->name('races.results');
+Route::post('events/{event}/results', [RacesController::class, 'results'])->name('races.results');

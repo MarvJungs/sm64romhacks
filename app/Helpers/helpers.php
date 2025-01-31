@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\CarbonInterval;
+
 function parseEditorText($prop)
 {
     switch ($prop->type) {
@@ -92,4 +94,19 @@ function getYouTubeVideoID($url)
     }
 
     return false; // Return false if no video ID is found
+}
+
+function convertDurationToSeconds($duration): int
+{
+    try {
+        [$hours, $minutes, $seconds] = explode(":", $duration);
+        return $hours * 3600 + $minutes * 60 + $seconds;
+    } catch (\Throwable $th) {
+        return $duration;
+    }
+}
+
+function convertSecondsToDuration($seconds): string
+{
+    return CarbonInterval::seconds($seconds)->cascade()->format('%H:%I:%S');
 }

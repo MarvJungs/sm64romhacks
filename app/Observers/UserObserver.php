@@ -15,21 +15,21 @@ class UserObserver implements ShouldHandleEventsAfterCommit
      */
     public function created(User $user): void
     {
-        $connections = $user->getConnections();
-        if ($connections->isNotEmpty()) {
-            $twitch_connection = $connections->filter(function ($value, $key) {
-                return $value->type == 'twitch';
-            })->first();
-            if ($twitch_connection->verified) {
-                $twitch_name = $twitch_connection->name;
-                $author = Author::where(['name' => $twitch_name])->get()->first();
-                $author->update([
-                    'user_id' => $user->id
-                ]);
-            }
-        }
+        // $connections = $user->getConnections();
+        // if ($connections->isNotEmpty()) {
+        //     $twitch_connection = $connections->filter(function ($value, $key) {
+        //         return $value->type == 'twitch';
+        //     })->first();
+        //     if ($twitch_connection->verified) {
+        //         $twitch_name = $twitch_connection->name;
+        //         $author = Author::where(['name' => $twitch_name])->get()->first();
+        //         $author->update([
+        //             'user_id' => $user->id
+        //         ]);
+        //     }
+        // }
 
-        Mail::to($user)->send(new RegisteredMail($user));
+        // Mail::to($user)->send(new RegisteredMail($user));
     }
 
     /**

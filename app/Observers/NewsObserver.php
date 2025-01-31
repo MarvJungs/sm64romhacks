@@ -59,11 +59,11 @@ class NewsObserver
             ],
         ]);
 
-        $notifyable_users = User::where(['notify' => 1])->get();
+        // $notifyable_users = User::where(['notify' => 1])->get();
 
-        foreach ($notifyable_users as $notifyable_user) {
-            Mail::to($notifyable_user->email)->send(new NewsMail($notifyable_user, $news));
-        }
+        // foreach ($notifyable_users as $notifyable_user) {
+        //     Mail::to($notifyable_user->email)->send(new NewsMail($notifyable_user, $news));
+        // }
     }
 
     /**
