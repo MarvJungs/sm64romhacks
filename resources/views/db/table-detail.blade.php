@@ -25,10 +25,10 @@
                     @endforeach
                     <td>
                         <a class="btn btn-warning" href="{{url()->current()}}/edit/{{$row->id}}">
-                            <img src="/icons/edit.svg" />    
+                            <img src={{ asset('icons/edit.svg') }} />    
                         </a> 
                         <a class="btn btn-danger" href="{{url()->current()}}/delete/{{$row->id}}">
-                            <img src="/icons/delete.svg" />    
+                            <img src={{ asset('icons/delete.svg') }} />    
                         </a>
                     </td>
                 </tr>

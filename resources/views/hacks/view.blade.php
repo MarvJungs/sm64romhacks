@@ -3,11 +3,11 @@
         {{ $hack->name }}
         @if (Auth::check() && Auth::user()->hasRole('Admin'))
             <a href="{{ route('version.create', ['hack' => $hack]) }}" class="btn btn-info">
-                <img src="/icons/plus.svg" />
+                <img src={{ asset('icons/plus.svg') }} />
                 Create Version
             </a>
             <a href="{{ route('hack.manage', ['hack' => $hack]) }}" class="btn btn-secondary">
-                <img src="/icons/edit.svg" />
+                <img src={{ asset('icons/edit.svg') }} />
                 Edit Hack
             </a>
         @endif
@@ -54,9 +54,9 @@
                         <td>
                             <div class="d-flex justify-content-between">
                                 <a href="{{ route('version.edit', ['hack' => $hack, 'version' => $version]) }}"
-                                    class="btn btn-info"><img src="/icons/edit.svg" /></a>
+                                    class="btn btn-info"><img src={{ asset('icons/edit.svg') }} /></a>
                                 <a href="{{ route('version.delete', ['hack' => $hack, 'version' => $version]) }}"
-                                    class="btn btn-danger"><img src="/icons/delete.svg" /></a>
+                                    class="btn btn-danger"><img src={{ asset('icons/delete.svg') }} /></a>
                             </div>
                         </td>
                     @endif
@@ -91,7 +91,7 @@
                                 <div>
                                     @if (Auth::user()->isAuthorOf($comment))
                                         <a href="{{ route('comment.delete', ['comment' => $comment]) }}" class="btn btn-danger">
-                                            <img src="/icons/delete.svg" />
+                                            <img src={{ asset('icons/delete.svg') }} />
                                         </a>
                                     @endif
                                     <form class="d-inline" method="post"
@@ -99,9 +99,9 @@
                                         @csrf
                                         <button class="btn btn-success" type="submit">
                                             @if (Auth::user()->hasLikedComment($comment))
-                                                <img src="/icons/hand-thumbs-up-fill.svg" />
+                                                '<img src={{ asset('icons/hand-thumbs-up-fill.svg') }} />
                                             @else
-                                                <img src="/icons/hand-thumbs-up.svg" />
+                                                <img src={{ asset('icons/hand-thumbs-up.svg') }} />
                                             @endif
                                             {{ $comment->ratings->where('rating', 1)->count() }}
                                         </button>
@@ -111,9 +111,9 @@
                                         @csrf
                                         <button class="btn btn-danger" type="submit">
                                             @if (Auth::user()->hasDislikedComment($comment))
-                                                <img src="/icons/hand-thumbs-down-fill.svg" />
+                                                <img src={{ {{ asset('icons/hand-thumbs-down-fill.svg') }} }} />
                                             @else
-                                                <img src="/icons/hand-thumbs-down.svg" />
+                                                <img src={{ asset('icons/hand-thumbs-down.svg') }} />
                                             @endif
                                             {{ $comment->ratings->where('rating', -1)->count() }}
                                         </button>

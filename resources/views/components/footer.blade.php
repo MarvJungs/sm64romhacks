@@ -5,27 +5,27 @@
          <section class="mb-4">
              <!-- Email -->
              <a class="btn btn-outline-light btn-floating m-1" href="mailto:info@sm64romhacks.com" role="button"><img
-                     src="/icons/envelope.svg" /></a>
+                     src={{ asset('icons/envelope.svg') }} /></a>
 
              <!-- Discord -->
              <a class="btn btn-outline-light btn-floating m-1" href="http://discord.sm64romhacks.com" role="button"><img
-                     src="/icons/discord.svg" /></a>
+                     src={{ asset('icons/discord.svg') }} /></a>
 
              <!-- Twitch -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://www.twitch.tv/sm64romhacks"
-                 role="button"><img src="/icons/twitch.svg" /></span></a>
+                 role="button"><img src={{ asset('icons/twitch.svg') }} /></span></a>
 
              <!-- YouTube -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://www.youtube.com/@sm64romhacks28"
-                 role="button"><img src="/icons/youtube.svg" /></a>
+                 role="button"><img src={{ asset('icons/youtube.svg') }} /></a>
 
              <!-- Twitter -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/sm64romhacks"
-                 role="button"><img src="/icons/twitter-x.svg" /></span></a>
+                 role="button"><img src={{ asset('icons/twitter-x.svg') }} /></span></a>
 
              <!--PayPal -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://ko-fi.com/marvjungs" role="button"><img
-                     src="/icons/kofi.svg" width="20" height="20"/></a>
+                     src={{ asset('/icons/kofi.svg') }} width="20" height="20" /></a>
 
          </section>
          <!-- Section: Social media -->
@@ -41,37 +41,37 @@
              <!--Grid row-->
              <div class="row">
                  <div class="col">
-                     <a href="https://www.smwcentral.net/" target="_blank"><img src="/images/affiliates/smwc.gif"
-                             alt="SMW Central"></a>
+                     <a href="https://www.smwcentral.net/" target="_blank"><img
+                             src={{ asset('images/affiliates/smwc.gif') }} alt="SMW Central"></a>
                  </div>
                  <div class="col">
-                     <a href="http://www.mfgg.net/" target="_blank"><img src="/images/affiliates/mfgg.png"
+                     <a href="http://www.mfgg.net/" target="_blank"><img src={{ asset('images/affiliates/mfgg.png') }}
                              alt="Mario Fan Games Galaxy"></a>
                  </div>
                  <div class="col">
                      <a href="http://www.superluigibros.com/" target="_blank"><img
-                             src="/images/affiliates/luigibros.png"
+                             src={{ asset('images/affiliates/luigibros.png') }}
                              alt="Super Luigi Bros - Mario & Luigi Mega Fan Site"></a>
                  </div>
                  <div class="col">
                      <a href="https://www.youtube.com/user/SimpleFlips" target="_blank"><img
-                             src="/images/affiliates/simpleflips.png" alt="SimpleFlips"></a>
+                             src={{ asset('images/affiliates/simpleflips.png') }} alt="SimpleFlips"></a>
                  </div>
                  <div class="col">
-                     <a href="http://smmdb.ddns.net/" target="_blank"><img src="/images/affiliates/smmdb.png"
+                     <a href="http://smmdb.ddns.net/" target="_blank"><img src={{ asset('images/affiliates/smmdb.png') }}
                              alt="Super Mario Maker Database"></a>
                  </div>
                  <div class="col">
-                     <a href="https://64dd.org/" target="_blank"> <img src="/images/affiliates/64DD_logo.png"
+                     <a href="https://64dd.org/" target="_blank"> <img src={{ asset('images/affiliates/64DD_logo.png') }}
                              alt="64DD"></a>
                  </div>
                  <div class="col">
-                     <a href="http://kuribo64.net/" target="_blank"> <img src="/images/affiliates/kuribo64.jpg"
+                     <a href="http://kuribo64.net/" target="_blank"> <img src={{ asset('images/affiliates/kuribo64.jpg') }}
                              alt="Kuribo64"></a>
                  </div>
                  <div class="col">
                      <a href="https://neoromhacking.net/" target="_blank"> <img
-                             src="/images/affiliates/neoromhacking.png" alt="NeoRomhacking"></a>
+                             src={{ asset('images/affiliates/neoromhacking.png') }}" alt="NeoRomhacking"></a>
                  </div>
              </div>
              <!--Grid row-->

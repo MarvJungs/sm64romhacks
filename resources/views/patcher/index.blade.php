@@ -12,7 +12,7 @@
             <li>Your patched ROM upon successful patching will be automatically be downloaded.</li>
         </ol>
         <p>You can skip steps 3 & 4 if you're using the <code>Patch File</code> option on the ROM Hack subpage (see below), the patchfile will be loaded automatically in that case.</p>
-        <img src="/images/help/patch_file.png" />
+        <img src={{ asset('images/help/patch_file.png') }} />
     </section>
     <div id="rom-patcher-container">
         <div class="rom-patcher-row margin-bottom" id="rom-patcher-row-file-rom">

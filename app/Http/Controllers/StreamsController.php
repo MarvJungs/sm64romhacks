@@ -21,7 +21,7 @@ class StreamsController extends Controller
     
     private function getTwitchAuthorization()
     {
-        $tokenEndpointParams = "client_id=" . env("TWITCH_CLIENT_ID") . "&client_secret=" . env("TWITCH_CLIENT_SECRET") . "&grant_type=client_credentials";
+        $tokenEndpointParams = "client_id=" . config('services.twitch.client_id') . "&client_secret=" . env('services.twitch.client_secret') . "&grant_type=client_credentials";
         $tokenEndpoint = "https://id.twitch.tv/oauth2/token?$tokenEndpointParams";
         return Http::post($tokenEndpoint)->object();
     }
@@ -36,7 +36,7 @@ class StreamsController extends Controller
         $authorizationObject = $this->getTwitchAuthorization();
         $token_type = Str::ucfirst($authorizationObject->token_type);
         $authorization = $token_type . " " . $authorizationObject->access_token;
-        $headers = ["Authorization" => $authorization, 'Client-Id' => env('TWITCH_CLIENT_ID')];
+        $headers = ["Authorization" => $authorization, 'Client-Id' => config('services.twitch.client_id')];
         $data = Http::withHeaders($headers)->get($streamsEndpoint, $streamsEndpointParams);
         if ($data->successful()) {
             $streamsUnfiltered = $data->object();

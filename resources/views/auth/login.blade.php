@@ -48,11 +48,11 @@
                     <hr />
                     <div class="d-flex flex-column gap-2">
                         <a class="btn btn-discord" href="/auth/redirect/discord">
-                            <img src='/icons/discord.svg' />
+                            <img src={{ asset('icons/discord.svg') }} />
                             Login with Discord!
                         </a>
                         <a class="btn btn-twitch" href="/auth/redirect/twitch">
-                            <img src='/icons/twitch.svg' />
+                            <img src={{ asset('icons/twitch.svg') }} />
                             Login with Twitch!
                         </a>
                     </div>

@@ -229,7 +229,7 @@ Route::post(
         }
         
         $request->user()->update($r);
-        dd($request->user()->password);
+        return redirect(route('hack.index'));
     }
 );
 
