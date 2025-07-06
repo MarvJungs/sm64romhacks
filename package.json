@@ -1,0 +1,30 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.0.0",
+        "axios": "^1.8.2",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^1.2.0",
+        "sass-embedded": "^1.89.0",
+        "tailwindcss": "^4.0.0",
+        "vite": "^6.2.4"
+    },
+    "dependencies": {
+        "@editorjs/checklist": "^1.6.0",
+        "@editorjs/editorjs": "^2.30.8",
+        "@editorjs/embed": "^2.7.6",
+        "@editorjs/header": "^2.8.8",
+        "@editorjs/image": "^2.10.2",
+        "@editorjs/link": "^2.6.2",
+        "@editorjs/list": "^2.0.8",
+        "@editorjs/quote": "^2.7.6",
+        "@editorjs/simple-image": "^1.6.0",
+        "@popperjs/core": "^2.11.8",
+        "bootstrap": "^5.3.3"
+    }
+}

@@ -1,0 +1,54 @@
+@import '/node_modules/bootstrap/scss/bootstrap.scss';
+@import './editor.css';
+@import './patcher.css';
+@import './streams.css';
+
+.btn-twitch {
+    background-color: #8342e8;
+}
+
+.btn-twitch:hover {
+    background-color: #8b4af3;
+}
+
+.btn-discord {
+    background-color: #505ddc;
+}
+
+.btn-discord:hover {
+    background-color: #5563df;
+}
+
+body {
+    font-family: "Comic Sans MS";
+}
+
+a, .nav-link {
+    color: #00bc8c;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #007053;
+    text-decoration: underline;
+}
+
+.move.ltr {
+    transition: right 5s;
+    right: 100%;
+}
+
+.movingImage {
+    position: absolute;
+    right: 0;
+}
+
+
+#hacksTable {
+    position: relative;
+}
+
+.button-pill {
+    background-color: transparent;
+    border: none;
+}
