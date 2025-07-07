@@ -38,7 +38,7 @@
             <label class="col-sm-2 col-form-label" for="authors">
                 Authors<span data-bs-toggle="tooltip"
                     data-bs-title="Only enter One Author per Input Field. Press on the + for more Input Fields.">
-                    <img src={{ asset('icons/info-circle.svg') }} />
+                    <img src={{ asset('images/icons/info-circle.svg') }} />
                 </span>
             </label>
             <div>

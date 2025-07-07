@@ -13,7 +13,7 @@
                     <li class="nav-item">
                         @if ($navbar_item->external)
                             <a class="nav-link" href="{{ $navbar_item->link }}" target="_blank">
-                                <img src={{ asset('icons/popout.svg') }} />
+                                <img src={{ asset('images/icons/popout.svg') }} />
                                 {{ $navbar_item->label }}
                             </a>
                         @elseif ($navbar_item->disabled)
@@ -22,7 +22,7 @@
                             </a>
                         @elseif ($navbar_item->external && $navbar_item->disabled)
                             <a class="nav-link disabled" href="{{ $navbar_item->link }}" target="_blank">
-                                <img src={{ asset('icons/popout.svg') }} />
+                                <img src={{ asset('images/icons/popout.svg') }} />
                                 {{ $navbar_item->label }}
                             </a>
                         @else
@@ -42,8 +42,8 @@
                             {{ Auth::user()->name }}
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/profile"><img src={{ asset('icons/profile.svg') }} /> Profile</a></li>
-                            <li><a class="dropdown-item" href="/settings/account"><img src={{ asset('icons/settings.svg') }} /> Settings</a></li>
+                            <li><a class="dropdown-item" href="/profile"><img src={{ asset('images/icons/profile.svg') }} /> Profile</a></li>
+                            <li><a class="dropdown-item" href="/settings/account"><img src={{ asset('images/icons/settings.svg') }} /> Settings</a></li>
                             <li>
                                 <form method="post" action="/auth/logout">
                                     @csrf

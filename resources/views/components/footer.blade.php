@@ -5,23 +5,23 @@
          <section class="mb-4">
              <!-- Email -->
              <a class="btn btn-outline-light btn-floating m-1" href="mailto:info@sm64romhacks.com" role="button"><img
-                     src={{ asset('icons/envelope.svg') }} /></a>
+                     src={{ asset('images/icons/envelope.svg') }} /></a>
 
              <!-- Discord -->
              <a class="btn btn-outline-light btn-floating m-1" href="http://discord.sm64romhacks.com" role="button"><img
-                     src={{ asset('icons/discord.svg') }} /></a>
+                     src={{ asset('images/icons/discord.svg') }} /></a>
 
              <!-- Twitch -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://www.twitch.tv/sm64romhacks"
-                 role="button"><img src={{ asset('icons/twitch.svg') }} /></span></a>
+                 role="button"><img src={{ asset('images/icons/twitch.svg') }} /></span></a>
 
              <!-- YouTube -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://www.youtube.com/@sm64romhacks28"
-                 role="button"><img src={{ asset('icons/youtube.svg') }} /></a>
+                 role="button"><img src={{ asset('images/icons/youtube.svg') }} /></a>
 
              <!-- Twitter -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/sm64romhacks"
-                 role="button"><img src={{ asset('icons/twitter-x.svg') }} /></span></a>
+                 role="button"><img src={{ asset('images/icons/twitter-x.svg') }} /></span></a>
 
              <!--PayPal -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://ko-fi.com/marvjungs" role="button"><img
