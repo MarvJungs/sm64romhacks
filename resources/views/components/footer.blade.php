@@ -25,7 +25,7 @@
 
              <!--PayPal -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://ko-fi.com/marvjungs" role="button"><img
-                     src={{ asset('/icons/kofi.svg') }} width="20" height="20" /></a>
+                     src={{ asset('images/icons/kofi.svg') }} width="20" height="20" /></a>
 
          </section>
          <!-- Section: Social media -->
