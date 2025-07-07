@@ -71,7 +71,7 @@
                  </div>
                  <div class="col">
                      <a href="https://neoromhacking.net/" target="_blank"> <img
-                             src={{ asset('images/affiliates/neoromhacking.png') }}" alt="NeoRomhacking"></a>
+                             src={{ asset('images/affiliates/neoromhacking.png') }} alt="NeoRomhacking"></a>
                  </div>
              </div>
              <!--Grid row-->
