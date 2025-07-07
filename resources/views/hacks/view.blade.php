@@ -111,7 +111,7 @@
                                         @csrf
                                         <button class="btn btn-danger" type="submit">
                                             @if (Auth::user()->hasDislikedComment($comment))
-                                                <img src={{ {{ asset('images/icons/hand-thumbs-down-fill.svg') }} }} />
+                                                <img src={{ asset('images/icons/hand-thumbs-down-fill.svg') }} />
                                             @else
                                                 <img src={{ asset('images/icons/hand-thumbs-down.svg') }} />
                                             @endif
