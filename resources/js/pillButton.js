@@ -55,7 +55,7 @@ export default class PillButton
             input.remove();
         });
 
-        image.src = '/icons/x-circle.svg';
+        image.src = '/images/icons/x-circle.svg';
 
         button.appendChild(image);
         span.appendChild(button);
