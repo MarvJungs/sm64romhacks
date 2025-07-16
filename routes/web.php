@@ -20,9 +20,9 @@ require 'moderation.php';
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('home', [HomeController::class, 'index'])->name('home.index');
-Route::redirect('/faq', 'https://docs.google.com/document/d/10m5ViLktz-d6SwhHtSeb7gVzDUldOqIBlJte_kr4U14/edit?usp=sharing');
-Route::redirect('discord', 'https://discord.gg/BYrpMBG');
-Route::redirect('support', 'https://ko-fi.com/marvjungs');
+Route::redirect('/faq', 'https://docs.google.com/document/d/10m5ViLktz-d6SwhHtSeb7gVzDUldOqIBlJte_kr4U14/edit?usp=sharing')->name('faq');
+Route::redirect('discord', 'https://discord.gg/BYrpMBG')->name('discord');
+Route::redirect('support', 'https://ko-fi.com/marvjungs')->name('support');
 
 Route::get(
     'fetchurl',
@@ -92,6 +92,8 @@ Route::get('hacks/comments/{comment}', [RomhackCommentsController::class, 'delet
 Route::delete('hacks/comments/{comment}', [RomhackCommentsController::class, 'destroy'])->name('comment.destroy');
 
 Route::get('megapack', [MegapackController::class, 'index'])->name('megapack.index');
+Route::get('megapack/download', [MegapackController::class, 'download'])->name('megapack.download');
+
 Route::get('patcher', [PatcherController::class, 'index'])->name('patcher.index');
 Route::get('streams', [StreamsController::class, 'index'])->name('streams.index');
 
