@@ -149,7 +149,8 @@
                             </li>
                             <li>
                                 <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal"
-                                    data-bs-target="#modal-confirm" data-bs-route="{{ route('auth.delete') }}" data-bs-method="DELETE"><x-bi-person-fill-slash />
+                                    data-bs-target="#modal-confirm"
+                                    data-bs-route="{{ route('auth.delete') }}"><x-bi-person-fill-slash />
                                     Delete Account</button>
                             </li>
                         </ul>
@@ -157,24 +158,31 @@
                     <li class="nav-item">
                         <button type="button" class="btn nav-link" data-bs-toggle="modal"
                             data-bs-target="#loginModal">Login</button>
-                        <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                            tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirm Action</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Are you sure you want to proceed?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+                        @push('modals')
+                            <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                                tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">Choose your Login!</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <a class="btn btn-discord d-block mb-3"
+                                                href="{{ route('socialite.redirect', ['driver' => 'discord']) }}"><x-bi-discord />
+                                                Login with Discord!</a>
+                                            <a class="btn btn-twitch d-block mb-3"
+                                                href="{{ route('socialite.redirect', ['driver' => 'twitch']) }}"><x-bi-twitch />
+                                                Login with Twitch!</a>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endpush
                     @endauth
                 </li>
             </ul>

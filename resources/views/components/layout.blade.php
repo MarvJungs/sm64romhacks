@@ -27,8 +27,8 @@
     <x-footer />
 
     <!--MODAL-->
-    <div class="modal fade" id="modal-confirm" tabindex="-1" aria-labelledby="#confirmModalLabel"
-        aria-hidden="true">
+    @stack('modals')
+    <div class="modal fade" id="modal-confirm" tabindex="-1" aria-labelledby="#confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
