@@ -20,6 +20,7 @@ class RomhackResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'starcount' => $this->versions->max('starcount'),
+            'megapack' => $this->megapack,
             'downloads' => $this->versions->sum('downloadcount'),
             'releasedate' => $this->versions->where('demo', 0)->min('releasedate'),
             'versions' => VersionResource::collection($this->whenLoaded('versions')),

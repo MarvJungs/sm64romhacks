@@ -15,10 +15,8 @@ return new class extends Migration
             'authors', function (Blueprint $table) {
                 $table->id();
                 $table->string('name')->unique();
-                $table->unsignedBigInteger('user_id')->nullable();
+                $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
                 $table->timestamps();
-
-                $table->foreign('user_id')->references('id')->on('users');
             }
         );
     }

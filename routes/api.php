@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Resources\RomhackResource;
 use App\Http\Resources\VersionResource;
 use App\Models\Romhack;
 use App\Models\Version;
@@ -10,7 +9,7 @@ Route::prefix('v1')->group(
     function () {
         Route::get(
             'hacks', function () {
-                return Romhack::with(['versions.authors', 'romhacktags'])->orderBy('name')->get()->toResourceCollection();
+                return Romhack::with(['versions.authors', 'romhacktags'])->where('verified', '=', 1)->orderBy('name')->get()->toResourceCollection();
             }
         );
 

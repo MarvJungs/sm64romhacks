@@ -21,10 +21,11 @@ return new class extends Migration
                 $table->integer('difficulty')->nullable(false)->default(0);
                 $table->integer('peak')->nullable(false)->default(0);
                 $table->string('videolink')->nullable(true);
-                $table->boolean('verified')->nullable(false)->default(true);
+                $table->boolean('verified')->nullable(false)->default(false);
                 $table->boolean('rejected')->nullable(false)->default(false);
                 $table->boolean('archived')->nullable(false)->default(false);
                 $table->boolean('megapack')->nullable(false)->default(false);
+                $table->integer('views')->default(0);
                 $table->timestamps();
             }
         );

@@ -1,15 +1,17 @@
 import './bootstrap';
 import '@popperjs/core';
-// import '/node_modules/bootstrap/dist/js/bootstrap.min.js';
-// import { Dropdown } from 'bootstrap';
 import Tooltips from './Tooltips';
 import Editor from './Editor';
 import Time from './time';
 import HacksTable from './hacksTable';
 import RomPatcher from './rompatcher';
 import PillButton from './pillButton';
-import FuckYou from './FuckYou';
 import MegapackFilter from './MegapackFilter';
+import Schedule from './Schedule';
+import CheatcodesClipboardManager from './CheatcodesClipboardManager';
+import CurrentTimeService from './CurrentTimeService';
+import CarouselManager from './CarouselManager';
+import ModalsManager from './ModalsManager';
 
 const hiddenButtons = document.querySelectorAll('button[type=hidden]');
 hiddenButtons.forEach(button => {
@@ -26,28 +28,32 @@ hiddenButtons.forEach(button => {
 });
 
 const newsEditor = new Editor('newsEditor', 'newsposts', 'createNewspost', 'text');
-const newsPostsSubmitButton = document.getElementById('submissionButton');
+const eventsEditor = new Editor('eventsEditor', 'events', 'manageEvent', 'description');
+const carouselManager = new CarouselManager();
+const modalsManager = new ModalsManager();
+
+const newsPostsSubmitButton = document.getElementById('newsSubmitButton');
+const eventSubmitButton = document.getElementById('eventSubmitButton');
 if (newsPostsSubmitButton) {
-    newsPostsSubmitButton.addEventListener('click', function () {
-        newsEditor.save();
-    });
+    newsPostsSubmitButton.addEventListener('click', () => newsEditor.save());
+}
+
+if (eventSubmitButton) {
+    eventSubmitButton.addEventListener('click', () => eventsEditor.save());
 }
 
 const hacksdescriptionEditor = new Editor('editor', 'hacks', 'manageRomhack', 'romhack.description');
-console.log(hacksdescriptionEditor);
 const hackSubmissionButton = document.getElementById('submissionButton');
 if (hackSubmissionButton) {
-    hackSubmissionButton.addEventListener('click', () => {
-        hacksdescriptionEditor.save();
-    });
+    hackSubmissionButton.addEventListener('click', () => hacksdescriptionEditor.save());
 }
 
 const time = new Time();
 time.run();
 
-// document.addEventListener('mousemove', function (e) {
-//     console.log(e.clientX, e.clientY);
-// })
+const schedule = new Schedule();
+const cheatcodesClipboardManager = new CheatcodesClipboardManager();
+const currentTimeService = new CurrentTimeService();
 
 const hacksTable = new HacksTable();
 hacksTable.main();
@@ -58,13 +64,15 @@ patcher.main();
 const tooltipsmanager = new Tooltips();
 tooltipsmanager.main();
 
-const tagButtons = new PillButton({id: 'manageRomhack', inputid: 'romhack[tag]'});
+const tagButtons = new PillButton({id: 'manageRomhack', inputid: 'romhack[tag][name]'});
 const authorButtons = new PillButton({id: 'manageRomhack', inputid: 'romhack[version][author][name]'});
-const vauthorButtons = new PillButton({id: 'manageVersion', inputid: 'version[author][name]'})
+const vauthorButtons = new PillButton({id: 'manageVersion', inputid: 'version[author][name]'});
+const roleButtons = new PillButton({id: 'manageRoles', inputid: 'roles'});
 
 tagButtons.main();
 authorButtons.main();
 vauthorButtons.main();
+roleButtons.main();
 
 const megapackFilter = new MegapackFilter();
 megapackFilter.main();

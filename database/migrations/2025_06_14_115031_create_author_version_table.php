@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create(
             'author_version', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('author_id');
-                $table->uuid('version_id');
+                $table->foreignId('author_id')->constrained()->cascadeOnDelete();
+                $table->foreignUuid('version_id')->constrained()->cascadeOnDelete();
                 $table->timestamps();
-
-                $table->foreign('author_id')->references('id')->on('authors')->cascadeOnDelete();
-                $table->foreign('version_id')->references('id')->on('versions')->cascadeOnDelete();
             }
         );
     }

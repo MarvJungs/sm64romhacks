@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreNewspostRequest;
+use App\Http\Requests\UpdateNewspostRequest;
 use App\Models\Newspost;
 use Illuminate\Http\Request;
 
@@ -12,44 +14,33 @@ class NewspostsController extends Controller
      */
     public function index()
     {
-        $newsposts = Newspost::all();
+        $newsposts = Newspost::all()->sortByDesc('created_at');
         return view('news.index')->with('newsposts', $newsposts);
     }
 
-    /**
-     * Show the form for creating/editing a new resource.
-     */
-    public function manage(Request $request, ?Newspost $newspost)
+    public function create()
     {
-        if (!$request->user()?->isAuthorOf($newspost)) {
-            abort(403);
-        }
-        return view('moderation.newsposts.manage')->with('newspost', $newspost);
+        return view('news.create');
+    }
+
+    public function edit(Newspost $newspost)
+    {
+        return view('news.edit', ['newspost' => $newspost]);
     }
 
     /**
      * Store or Update a newly created/updated resource in storage.
      */
-    public function store(Request $request, ?Newspost $newspost = null)
+    public function store(StoreNewspostRequest $request, ?Newspost $newspost = null)
     {
-        $request['text'] = json_decode($request['text'], true);
-        $r = $request->validate(
-            [
-                'title' => 'required|string|max:100',
-                'text' => 'required|array',
-                'text.blocks' => 'required|min:1',
-                'text.time' => 'required|numeric',
-                'text.version' => 'required|string'
-            ]
-        );
-
-        if (!is_null($newspost)) {
-            $newspost->update($r);
-        } else {
-            $newspost = $request->user()->newsposts()->create($r);
-        }
+        $request->user()->newsposts()->create($request->validated());
         return redirect(route('newspost.index'));
+    }
 
+    public function update(UpdateNewspostRequest $request, Newspost $newspost)
+    {
+        $newspost->update($request->validated());
+        return redirect(route('newspost.index'));
     }
 
     /**
@@ -57,7 +48,7 @@ class NewspostsController extends Controller
      */
     public function show(Newspost $newspost)
     {
-        return view('news.view')->with('newspost', $newspost);
+        return view('news.view', ['newspost' => $newspost]);
     }
 
     /**
@@ -72,7 +63,7 @@ class NewspostsController extends Controller
         if (!$request->user()?->isAuthorOf($newspost)) {
             abort(403);
         }
-        return view('moderation.newsposts.delete')->with('newspost', $newspost);
+        return view('news.delete', ['newspost' => $newspost]);
     }
 
     /**

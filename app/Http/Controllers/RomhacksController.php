@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRomhackRequest;
+use App\Http\Requests\UpdateRomhackRequest;
 use App\Models\Author;
+use App\Models\Image;
 use App\Models\Romhack;
 use App\Models\Romhacktag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class RomhacksController extends Controller
 {
@@ -28,19 +32,30 @@ class RomhacksController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating or editing a resource.
-     */
-    public function manage(Request $request, ?Romhack $hack)
+    public function create()
     {
-        if (!$request->user()?->hasRole('admin')) {
-            abort(403);
-        }
         $tags = Romhacktag::all()->sortBy('name');
         $authors = Author::all()->sortBy('name');
 
         return view(
-            'hacks.manage',
+            'hacks.create',
+            [
+                'authors' => $authors,
+                'tags' => $tags
+            ]
+        );
+    }
+
+    /**
+     * Show the form for creating or editing a resource.
+     */
+    public function edit(Romhack $hack)
+    {
+        $tags = Romhacktag::all()->sortBy('name');
+        $authors = Author::all()->sortBy('name');
+
+        return view(
+            'hacks.edit',
             [
                 'authors' => $authors,
                 'hack' => $hack,
@@ -49,56 +64,50 @@ class RomhacksController extends Controller
         );
     }
 
+    public function store(StoreRomhackRequest $request)
+    {
+        $data = $request->safe()->collect()->get('romhack');
+        $romhack = Romhack::firstOrCreate(
+            ['name' => $data['name']],
+            collect($data)->except('name')->toArray()
+        );
+        
+        $data['version']['filename'] = $request->file('romhack.version.patchfile')->store('patch', 'public');
+        $version = $romhack->versions()->create($data['version']);
+        foreach ($data['version']['author']['name'] as $name) {
+            $author = Author::firstOrCreate(['name' => $name]);
+            $version->authors()->save($author);
+        }
+
+        if (Arr::has($data, 'tag')) {
+            foreach ($data['tag']['name'] as $tag) {
+                $romhacktag = Romhacktag::firstOrCreate(['name' => $tag]);
+                $romhack->romhacktags()->attach($romhacktag);
+            }
+        }
+
+        return redirect(route('hack.show', ['hack' => $romhack]));
+    }
+
     /**
      * Store a newly created or updated resource in storage.
      */
-    public function store(Request $request, ?Romhack $hack)
+    public function update(UpdateRomhackRequest $request, Romhack $hack)
     {
-        if (!$hack->exists) {
-            $r = $request->validate(
-                [
-                    // 'romhack' => 'array:name,description,videolink:version:image',
-                    'romhack.name' => 'required|string',
-                    'romhack.description' => 'required|json',
-                    'romhack.videolink' => 'url|nullable',
-                    'romhack.version.name' => 'required|string',
-                    'romhack.version.releasedate' => 'required|date',
-                    'romhack.version.starcount' => 'required|integer|numeric|gte:0',
-                    'romhack.version.patchfile' => 'required|file|filled|extensions:zip',
-                    'romhack.version.author.name' => 'required|array|min:1',
-                    'romhack.version.author.name.*' => 'required|string|distinct:strict|distinct:ignore_case',
-                    'romhack.megapack' => 'boolean'
-                    // 'romhack.image' => 'required|array|distinct|min:4',
-                    // 'romhack.image.*' => 'required|image'
-                ]
-            );
-            $path = $request->file('romhack.version.patchfile')->store('patch', 'public');
-            Arr::set($r, 'romhack.version.filename', $path);
-        } else {
-            $r = $request->validate(
-                [
-                    'romhack.name' => 'required|string',
-                    'romhack.description' => 'required|json',
-                    'romhack.videolink' => 'url|nullable',
-                    'romhack.megapack' => 'boolean'
-                    // 'romhack.image' => 'required|array|distinct|min:4',
-                    // 'romhack.image.*' => 'required|image'
-                ]
-            );
+        $images = $request->file('romhack.image');
+        foreach ($images as $image) {
+            $hack->images()->create(['filename' => $image->store("images/hacks/{$hack->id}", 'public')]);
         }
-        Arr::set($r, 'romhack.slug', Str::slug(Arr::get($r, 'romhack.name')));
-        if ($hack->exists) {
-            $hack->update((Arr::get($r, 'romhack')));
-        } else {
-            $verify = $request->user()->hasRole('admin');
-            Arr::set($r, 'romhack.verify', $verify);
-            $hack = Romhack::create((Arr::get($r, 'romhack')));
-            $version = $hack->versions()->create((Arr::get($r, 'romhack.version')));
-            $version->authors()->detach();
-        }
-        foreach (Arr::get($r, 'romhack.version.author.name') as $name) {
-            $author = Author::firstOrCreate(['name' => $name], ['name' => $name]);
-            $version->authors()->attach($author);
+        $data = $request->safe()->collect()->get('romhack');
+        $hack->update($data);
+        $hack->romhacktags()->detach();
+
+
+        if (Arr::has($data, 'tag')) {
+            foreach ($data['tag']['name'] as $tag) {
+                $romhacktag = Romhacktag::firstOrCreate(['name' => $tag]);
+                $hack->romhacktags()->attach($romhacktag);
+            }
         }
         return redirect(route('hack.show', ['hack' => $hack]));
     }
@@ -108,6 +117,10 @@ class RomhacksController extends Controller
      */
     public function show(Romhack $hack)
     {
+        $CrawlerDetect = new CrawlerDetect();
+        if (!$CrawlerDetect->isCrawler()) {
+            $hack->increment('views');
+        }
         return view('hacks.view')->with('hack', $hack);
     }
 
@@ -120,20 +133,46 @@ class RomhacksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(Romhack $hack)
-    {
-        return view('hacks.delete', ['hack' => $hack]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Romhack $hack)
-    {
+    public function destroy(Request $request, Romhack $hack)
+    {   
         foreach ($hack->versions as $version) {
             Storage::disk('public')->delete($version->filename);
         }
+
+        foreach ($hack->images as $image) {
+            Storage::delete($image->filename);
+            $image->delete();
+        }
+        
         $hack->delete();
-        dd($hack);
+        return redirect(route('hack.index'));
+    }
+
+    public function modhub()
+    {
+        $pendingHacks = Romhack::with(['versions.authors.user', 'romhacktags'])->where('verified', '=', 0, 'and', 'rejected', '=', 0)->orderBy('name')->get();
+        return view('hacks.modhub', ['hacks' => $pendingHacks]);
+    }
+
+    public function verify(Romhack $hack)
+    {
+        $hack->update(
+            [
+            'verified' => 1,
+            'rejected' => 0
+            ]
+        );
+        return redirect(route('modhub.hacks.index'))->with('info', 'The Romhack has successfully been verified');
+    }
+
+    public function reject(Romhack $hack)
+    {
+        $hack->update(
+            [
+                'verified' => 0,
+                'rejected' => 1
+            ]
+        );
+        return redirect(route('modhub.hacks.index'))->with('info', 'The Romhack has successfully been rejected!');
     }
 }

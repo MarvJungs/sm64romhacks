@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create(
             'versions', function (Blueprint $table) {
                 $table->uuid('id')->primary(true)->nullable(false)->unique();
-                $table->foreignUuid('hack_id')->references('id')->on('romhacks')->cascadeOnDelete();
+                $table->foreignUuid('romhack_id')->constrained()->cascadeOnDelete();
                 $table->string('name')->nullable(false);
                 $table->integer('starcount')->nullable(false)->default(0);
                 $table->date('releasedate')->nullable(false)->default(now());

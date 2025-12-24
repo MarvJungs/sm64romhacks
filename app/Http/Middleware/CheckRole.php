@@ -11,14 +11,15 @@ class CheckRole
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        if (!$request->user()->hasRole($role)) {
-            abort(403);
-        } else {
-            return $next($request);
+        foreach ($roles as $role) {
+            if ($request->user()?->hasRole($role)) {
+                return $next($request);
+            }
         }
+        abort(403);
     }
 }

@@ -20,6 +20,8 @@ export default class Time
     {
         this.timeElements.forEach(element => {
             const time = element.innerText;
+            if (!time) return;
+            console.log(time);
             const utc = new Date(time + " UTC");
             element.innerText = new Intl.DateTimeFormat('sv', this.options).format(utc);
         });

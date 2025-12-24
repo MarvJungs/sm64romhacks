@@ -17,7 +17,7 @@ class UsersSeeder extends Seeder
     {
         include 'data/users.php';
         foreach ($users as $user) {
-            DB::table('users')->insert(
+            User::insert(
                 [
                     'name' => $user['username'],
                     'email' => $user['email'],

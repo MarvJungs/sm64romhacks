@@ -5,15 +5,15 @@ import List from "@editorjs/list";
 
 export default class Editor {
     editor;
-    constructor(id, path, formid, attr) {
-        this.token = document.querySelector(`#${id} input[name=_token]`);
-        if (!this.token) return;
+    constructor(holderid, path, formid, attr) {
+        if (!document.getElementById(holderid)) return;
+        this.token = document.querySelector(`input[name=_token]`);
         const dataElement = document.getElementById(attr);
         this.token = this.token.getAttribute('value');
         this.attr = attr;
         this.formid = formid;
         this.editor = new EditorJS({
-            holder: id,
+            holder: holderid,
             inlineToolbar: true,
             tools: {
                 header: Header,

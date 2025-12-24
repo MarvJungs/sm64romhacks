@@ -1,0 +1,68 @@
+<x-layout>
+    <h1 class="text-center">Create Event</h1>
+
+
+    <form class="row g-3" method="post" id="manageEvent">
+        @csrf
+        <div class="col-12">
+            <label for="name" class="form-label">Eventname</label>
+            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
+                value="{{ old('name') }}">
+            @error('name')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="col-12">
+            <label for="slug" class="form-label">Slug</label>
+            <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug"
+                value="{{ old('slug') }}">
+            @error('slug')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="col-12">
+            <label for="description" class="form-label">Description</label>
+            <div class="form-control" id="eventsEditor"></div>
+            @error('description')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="col-12">
+            <label for="start_utc" class="form-label">Starttime</label>
+            <input type="datetime-local" class="form-control @error('start_utc') is-invalid @enderror" name="start_utc"
+                value="{{ old('start_utc') }}">
+            @error('start_utc')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="col-12">
+            <label for="end_utc" class="form-label">Endtime</label>
+            <input type="datetime-local" class="form-control @error('end_utc') is-invalid @enderror" name="end_utc"
+                value="{{ old('end_utc') }}">
+            @error('end_utc')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input" type="hidden" name="external" value="0">
+                <input class="form-check-input" type="checkbox" name="external" value="1">
+                <label class="form-check-label" for="external">
+                    External
+                </label>
+            </div>
+        </div>
+        <div class="col-12">
+            <label for="" class="form-label">Link</label>
+            <input type="url" class="form-control @error('external_url') is-invalid @enderror" name="external_url"
+                value="{{ old('external_url') }}">
+            @error('external_url')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <input type="hidden" id="description" name="description" value="{{ old('description') ?? '{}' }}" />
+        <div class="col-12">
+            <button id="eventSubmitButton" type="submit" class="btn btn-primary">Create Event</button>
+        </div>
+    </form>
+</x-layout>

@@ -44,6 +44,11 @@ class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
         'remember_token',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'name';
+    }
+
     /**
      * Get the attributes that should be cast.
      *

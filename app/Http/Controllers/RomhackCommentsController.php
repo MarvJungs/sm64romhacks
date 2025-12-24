@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class RomhackCommentsController extends Controller
 {
+    public function index()
+    {
+        $comments = Comment::orderByDesc('created_at')->paginate(100);
+        return view('admin.comments.index', ['comments' => $comments]);
+    }
+
     /**
      * Summary of create
      * 
@@ -71,24 +77,21 @@ class RomhackCommentsController extends Controller
         if ($request->user()->hasLikedComment($comment) || $request->user()->hasDislikedComment($comment)) {
             $rating = $comment->ratings->where('user_id', $request->user()->id)->first();
             $rating->delete();
-        } else {
-            $rating = Commentrating::createOrFirst(
-                [
-                    'user_id' => $request->user()->id,
-                    'comment_id' => $comment->id,
-                    'rating' => $value
-                ]
-            );
-        }
-        return redirect(route('hack.show', ['hack' => $comment->romhack, "#$comment->id"]));
-    }
 
-    public function delete(Request $request, Comment $comment)
-    {
-        if (!$request->user()?->isAuthorOf($comment)) {
-            abort(403);
+            if ($rating->rating == $value) {
+                return redirect(route('hack.show', ['hack' => $comment->romhack, "#$comment->id"]));
+            }
         }
-        return view('comments.delete', ['comment' => $comment]);
+
+        $rating = Commentrating::createOrFirst(
+            [
+                'user_id' => $request->user()->id,
+                'comment_id' => $comment->id,
+                'rating' => $value
+            ]
+        );
+
+        return redirect(route('hack.show', ['hack' => $comment->romhack, "#$comment->id"]));
     }
 
     public function destroy(Request $request, Comment $comment)
@@ -96,7 +99,8 @@ class RomhackCommentsController extends Controller
         if (!$request->user()?->isAuthorOf($comment)) {
             abort(403);
         }
+        $url = $request->session()->pull('ref');
         $comment->delete();
-        return redirect(route('hack.show', ['hack' => $comment->romhack, "#comments"]));
+        return redirect($url);
     }
 }

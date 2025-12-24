@@ -21,7 +21,7 @@ class StreamsController extends Controller
     
     private function getTwitchAuthorization()
     {
-        $tokenEndpointParams = "client_id=" . config('services.twitch.client_id') . "&client_secret=" . env('services.twitch.client_secret') . "&grant_type=client_credentials";
+        $tokenEndpointParams = "client_id=" . config('services.twitch.client_id') . "&client_secret=" . config('services.twitch.client_secret') . "&grant_type=client_credentials";
         $tokenEndpoint = "https://id.twitch.tv/oauth2/token?$tokenEndpointParams";
         return Http::post($tokenEndpoint)->object();
     }

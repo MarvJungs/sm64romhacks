@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignUuid('romhack_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignUuid('romhack_id')->constrained()->cascadeOnDelete();
             $table->text('text');
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('romhack_comments');
+        Schema::dropIfExists('comments');
     }
 };

@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('romhack_romhacktag', function (Blueprint $table) {
             $table->id();
-            $table->uuid('romhack_id');
-            $table->unsignedBigInteger('romhacktag_id');
+            $table->foreignUuid('romhack_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('romhacktag_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('romhack_id')->references('id')->on('romhacks')->cascadeOnDelete();
-            $table->foreign('romhacktag_id')->references('id')->on('romhacktags')->cascadeOnDelete();
         });
     }
 

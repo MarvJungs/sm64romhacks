@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('commentratings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('comment_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('comment_id')->constrained()->cascadeOnDelete();
             $table->smallInteger('rating');
             $table->unique(['user_id', 'comment_id']);
             $table->timestamps();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments_rating');
+        Schema::dropIfExists('commentratings');
     }
 };

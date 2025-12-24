@@ -4,28 +4,28 @@
          <!-- Section: Social media -->
          <section class="mb-4">
              <!-- Email -->
-             <a class="btn btn-outline-light btn-floating m-1" href="mailto:info@sm64romhacks.com" role="button"><img
-                     src={{ asset('images/icons/envelope.svg') }} /></a>
+             <a class="btn btn-outline-light btn-floating m-1" href="mailto:info@sm64romhacks.com"
+                 role="button"><x-bi-envelope title="Mail" /></a>
 
              <!-- Discord -->
-             <a class="btn btn-outline-light btn-floating m-1" href="http://discord.sm64romhacks.com" role="button"><img
-                     src={{ asset('images/icons/discord.svg') }} /></a>
+             <a class="btn btn-outline-light btn-floating m-1" href="http://discord.sm64romhacks.com"
+                 role="button"><x-bi-discord title="Discord" /></a>
 
              <!-- Twitch -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://www.twitch.tv/sm64romhacks"
-                 role="button"><img src={{ asset('images/icons/twitch.svg') }} /></span></a>
+                 role="button"><x-bi-twitch title="Twitch" /></a>
 
              <!-- YouTube -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://www.youtube.com/@sm64romhacks28"
-                 role="button"><img src={{ asset('images/icons/youtube.svg') }} /></a>
+                 role="button"><x-bi-youtube title="YouTube" /></a>
 
              <!-- Twitter -->
              <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/sm64romhacks"
-                 role="button"><img src={{ asset('images/icons/twitter-x.svg') }} /></span></a>
+                 role="button"><x-bi-twitter-x title="X (formerly Twitter)" /></a>
 
              <!--PayPal -->
-             <a class="btn btn-outline-light btn-floating m-1" href="https://ko-fi.com/marvjungs" role="button"><img
-                     src={{ asset('images/icons/kofi.svg') }} width="20" height="20" /></a>
+             <a class="btn btn-outline-light btn-floating m-1" href="https://ko-fi.com/marvjungs"
+                 role="button"><x-bi-cup-hot title="Ko-Fi" /></a>
 
          </section>
          <!-- Section: Social media -->
@@ -58,16 +58,16 @@
                              src={{ asset('images/affiliates/simpleflips.png') }} alt="SimpleFlips"></a>
                  </div>
                  <div class="col">
-                     <a href="http://smmdb.ddns.net/" target="_blank"><img src={{ asset('images/affiliates/smmdb.png') }}
-                             alt="Super Mario Maker Database"></a>
+                     <a href="http://smmdb.ddns.net/" target="_blank"><img
+                             src={{ asset('images/affiliates/smmdb.png') }} alt="Super Mario Maker Database"></a>
                  </div>
                  <div class="col">
-                     <a href="https://64dd.org/" target="_blank"> <img src={{ asset('images/affiliates/64DD_logo.png') }}
-                             alt="64DD"></a>
+                     <a href="https://64dd.org/" target="_blank"> <img
+                             src={{ asset('images/affiliates/64DD_logo.png') }} alt="64DD"></a>
                  </div>
                  <div class="col">
-                     <a href="http://kuribo64.net/" target="_blank"> <img src={{ asset('images/affiliates/kuribo64.jpg') }}
-                             alt="Kuribo64"></a>
+                     <a href="http://kuribo64.net/" target="_blank"> <img
+                             src={{ asset('images/affiliates/kuribo64.jpg') }} alt="Kuribo64"></a>
                  </div>
                  <div class="col">
                      <a href="https://neoromhacking.net/" target="_blank"> <img
@@ -85,12 +85,12 @@
      <!-- Copyright -->
      <div class="text-center p-3">
          &copy;
-         <a href="https://www.sm64romhacks.com">sm64romhacks.com</a>&nbsp;&#8226;&nbsp;
+         <a href="{{ route('home.index') }}">sm64romhacks.com</a>&nbsp;&#8226;&nbsp;
          <a href="https://www.sm64romhacks.com/contact">Contact Us!</a>&nbsp;&#8226;&nbsp;
          <a href="https://github.com/MarvJungs/sm64romhacks">Contribute!</a>&nbsp;&#8226;&nbsp;
          Version: 2.1&nbsp;&#8226;&nbsp;
-         <a href="https://www.sm64romhacks.com/tos">Terms of Service</a>&nbsp;&#8226;&nbsp;
-         <a href="https://www.sm64romhacks.com/privacy-policy">Privacy Policy</a>
+         <a href="{{ route('tos') }}">Terms of Service</a>&nbsp;&#8226;&nbsp;
+         <a href="{{ route('privacy-policy') }}">Privacy Policy</a>
          <br />
          2019 -
          <script>

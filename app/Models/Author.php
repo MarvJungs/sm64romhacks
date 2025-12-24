@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Author extends Model
 {
 
     protected $fillable = [
-        'name'
+        'name',
+        'user_id'
     ];
 
     /**
@@ -26,5 +28,10 @@ class Author extends Model
     public function versions(): BelongsToMany
     {
         return $this->belongsToMany(Version::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

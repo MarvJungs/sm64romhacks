@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class Romhack extends Model
 {
@@ -48,7 +49,9 @@ class Romhack extends Model
     {
         return [
             'description' => 'json',
-            'megapack' => 'boolean'
+            'megapack' => 'boolean',
+            'verified' => 'boolean',
+            'rejected' => 'boolean'
         ];
     }
 
@@ -60,6 +63,11 @@ class Romhack extends Model
     public function versions(): HasMany
     {
         return $this->hasMany(Version::class);
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(Image::class);
     }
 
     /**
@@ -80,5 +88,20 @@ class Romhack extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    protected static function booted()
+    {
+        static::creating(
+            function (Romhack $romhack) {
+                $romhack->slug = Str::slug($romhack->name);
+            }
+        );
+
+        static::updating(
+            function (Romhack $romhack) {
+                $romhack->slug = Str::slug($romhack->name);
+            }
+        );
     }
 }

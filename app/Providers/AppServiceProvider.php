@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\NavbarLink;
+use App\Models\Romhack;
+use App\Models\Romhackevent;
+use Illuminate\Support\Facades\View;
+
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Pagination\Paginator;
@@ -20,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-    
+
     /**
      * Bootstrap any application services.
      * 
@@ -29,7 +32,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         try {
-            view()->share('navbar_links', NavbarLink::all());
+            Paginator::useBootstrapFive();
+            View::composer(
+                'components.navbar', function ($view) {
+                    $events = RomHackevent::orderBy('start_utc', 'desc')->get();
+                    $amountPending = Romhack::where('verified', '=', 0, 'and', 'rejected', '=', 0)->get()->count();
+                    $view->with('events', $events);
+                    $view->with('amountPending', $amountPending);
+                }
+            );
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -39,7 +50,5 @@ class AppServiceProvider extends ServiceProvider
                 $event->extendSocialite('twitch', \SocialiteProviders\Twitch\Provider::class);
             }
         );
-
-        Paginator::useBootstrapFour();
     }
 }

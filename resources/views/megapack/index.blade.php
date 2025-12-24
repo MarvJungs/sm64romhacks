@@ -10,8 +10,8 @@
                 class='time'>{{ date('Y-m-d H:i:s', Storage::disk('public')->lastModified('megapack/Grand ROM Hack Megapack 2025 (Summer Edition).zip')) }}</span></em>
     </p>
     <div class="btn-group-lg megapackButtons" role="group">
-        <a class="btn btn-primary" href="/megapack/download?type=normal">Download Megapack</a>
-        <a class="btn btn-danger" href="/megapack/download?type=kaizo">Download KAIZO Megapack</a>
+        <a class="btn btn-primary" href="{{ asset('storage/megapack/Grand ROM Hack Megapack 2025 (Summer Edition).zip') }}">Download Megapack</a>
+        <a class="btn btn-danger" href="{{ asset('storage/megapack/Grand SM64 Kaizo Megapack 2025 (Summer Edition).zip') }}">Download KAIZO Megapack</a>
     </div>
 
     <div class="d-flex justify-content-center">

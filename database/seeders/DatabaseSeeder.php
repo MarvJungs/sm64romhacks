@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        (new NavLinksSeeder())->run();
         (new RolesSeeder())->run();
         (new AuthorsSeeder())->run();
         (new HacksSeeder())->run();
@@ -21,5 +20,7 @@ class DatabaseSeeder extends Seeder
         (new VersionsSeeder())->run();
         (new AuthorsVersionsSeeder())->run();
         (new RomhackRomhacktagsSeeder())->run();
+        (new RomhackeventsSeeder())->run();
+        (new CheatcodesSeeder())->run();
     }
 }
