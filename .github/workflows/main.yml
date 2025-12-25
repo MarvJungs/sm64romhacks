@@ -19,6 +19,8 @@ jobs:
         run: | 
           npm install
           npm run build
+      - name: Setup and run composer
+        uses: php-actions/composer@v6
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
