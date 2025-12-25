@@ -1,0 +1,88 @@
+@import url('editor.link.css');
+@import url('editor.checkbox.css');
+
+/* .cdx-block, */
+.ce-header,
+.inlineToolButton,
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn,
+.ce-popover__search,
+.ce-popover__container {
+  background-color: #2b2b2b;
+  color: white;
+  border: 1px solid var(--bs-border-color) !important;
+}
+
+.cdx-block::selection,
+.cdx-block *::selection,
+.ce-block.ce-block--selected,
+.cdx-input::selection,
+.ce-header::selection,
+.cdx-list__item-content::selection
+{
+  background-color: var(--bs-highlight-bg) !important;
+}
+
+.ce-toolbar__plus:hover,
+.ce-toolbar__settings-btn:hover,
+.cdx-loader,
+.cdx-button,
+.ce-inline-tool-input {
+  color: white;
+  background-color: #262626;
+}
+
+.cdx-button:hover {
+  background-color: #2f2f2f;
+}
+
+/* .ce-popover,
+.ce-popover-item__icon, */
+.ce-inline-tool,
+.ce-popover-item
+/* .ce-popover-item-html:hover,
+.ce-popover-items,
+.ce-popover-item:hover */ {
+  --color-background-item-hover: #2f2f2f;
+  background-color: #262626;
+  color: white;
+  border: none;
+}
+
+.ce-inline-tool:hover,
+.ce-popover-item:hover {
+  background-color: #2f2f2f;
+}
+
+.cdx-notifies {
+  background-color: #2b2b2b;
+  color: white;
+  border: 1px solid var(--bs-border-color) !important;
+}
+
+.cdx-notify__cross {
+  padding-right: 1rem !important;
+}
+
+.cdx-notify--error {
+  color: var(--bs-form-invalid-color);
+
+}
+
+/* .codex-editor {
+  background-color: var(--bs-tertiary-bg);
+} */
+
+.codex-editor__redactor {
+  padding-bottom: 3rem !important;
+}
+
+.ce-block__content {
+  max-width: none;
+  padding-left: 5rem;
+  padding-right: .5rem;
+}
+
+.ce-toolbar__actions {
+  right: 125%;
+}

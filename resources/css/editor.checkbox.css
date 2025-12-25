@@ -1,0 +1,3 @@
+.cdx-list__checkbox:not(.cdx-list__checkbox--checked) > .cdx-list__checkbox-check {
+    background-color: var(--bs-body-bg);
+}
