@@ -6,14 +6,28 @@ jobs:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v4
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{secrets.ftp_server}}
-        username: ${{secrets.ftp_username}}
-        password: ${{ secrets.ftp_password }}
-        server-dir: ${{secrets.ftp_server_dir}}
-        log-level: verbose
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v5
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{secrets.ftp_server}}
+          username: ${{secrets.ftp_username}}
+          password: ${{ secrets.ftp_password }}
+          server-dir: ${{secrets.server_dir}}
+          log-level: verbose
+
+  build:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+          node-version-file: package.json
+          check-latest: true
+          cache-dependency-path: packeage-lock.json
+      - run: npm install
+      - run: npm run build
