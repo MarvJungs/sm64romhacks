@@ -1,12 +1,12 @@
 on: push
 name: 🚀 Deploy website on push
 jobs:
-  build:
-    environment: staging
-    name: Install Dependencies
+  web-deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
+    environment: staging
     steps:
-      - name: Get latest code
+      - name: 🚚 Get latest code
         uses: actions/checkout@v5
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -15,16 +15,10 @@ jobs:
           node-version-file: package.json
           check-latest: true
           cache-dependency-path: package-lock.json
-      - run: npm install
-      - run: npm run build
-
-  web-deploy:
-    environment: staging
-    name: 🎉 Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v5
+      - name: Build Project
+        run: | 
+          npm install
+          npm run build
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
