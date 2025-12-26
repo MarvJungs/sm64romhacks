@@ -1,66 +1,46 @@
 import EditorJS from "@editorjs/editorjs";
-import Header from '@editorjs/header';
+import Header from "@editorjs/header";
+import Image from "@editorjs/image";
 import List from "@editorjs/list";
-import Embed from "@editorjs/embed";
-import Table from '@editorjs/table';
 
 export default class Editor {
-    constructor(form_id, editor_container_id, datafield_id) {
-        this.form = document.getElementById(form_id);
-
-        if(!this.form) return;
-        
-
-        this.dataField = document.getElementById(datafield_id);
-        this.data = !this.dataField.value ? null : JSON.parse(this.dataField.value);
+    editor;
+    constructor(holderid, path, formid, attr) {
+        if (!document.getElementById(holderid)) return;
+        this.token = document.querySelector(`input[name=_token]`);
+        const dataElement = document.getElementById(attr);
+        this.token = this.token.getAttribute('value');
+        this.attr = attr;
+        this.formid = formid;
         this.editor = new EditorJS({
-            holder: editor_container_id,
+            holder: holderid,
+            inlineToolbar: true,
             tools: {
-                header: {
-                    class: Header,
-                    inlineToolbar: ["link"]
-                },
-                list: {
-                    class: List,
-                    inlineToolbar: true
-                },
-                embed: {
-                    class: Embed,
-                    inlineToolbar: false,
+                header: Header,
+                image: {
+                    class: Image,
                     config: {
-                        services: {
-                            youtube: true,
-                            coub: true
+                        additionalRequestHeaders: {
+                            "X-CSRF-TOKEN": this.token
+                        },
+                        endpoints: {
+                            byFile: `/${path}/images/upload`,
+                            byUrl: `${path}/images/fetchUrl`
                         }
                     }
                 },
-                table: {
-                    class: Table,
-                    inlineToolbar: true
-                }
+                list: List,
             },
-            data: {
-                blocks: this.data
-            }
+            data: JSON.parse(dataElement.getAttribute('value'))
         });
-
-        this.setSubmitEventListener();
     }
 
-    setSubmitEventListener() {
-        this.form.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            this.editor.save()
-            .then((outputData) => {
-                this.dataField.value = JSON.stringify(outputData.blocks);
-            })
-            .then(() => {
-                this.form.submit();
-            })
-            .catch((error) => {
-                console.error('Saving failed: ', error);
-            });
+    save() {
+        this.editor.save().then((data) => {
+            const form = document.getElementById(this.formid);
+            const textElement = document.getElementById(this.attr);
+            textElement.setAttribute('value', JSON.stringify(data));
+            form.submit();
         });
     }
 }

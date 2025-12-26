@@ -1,40 +1,31 @@
 <x-layout>
-    <div class="row mb-3">
-        <div class="col">
-            <input name="hacknameFilter" id="hacknameFilter" class="form-control" type="text"
-                placeholder="Search for Hacknames...">
+    <div class="d-flex justify-content-between gap-3">
+        <input type="text" class="form-control" id="hacknameFilter" placeholder="Search for Hacknames..." />
+        <input type="text" class="form-control" id="authornameFilter" placeholder="Search for Authornames..." />
+        <input type="text" class="form-control" id="releasedateFilter" placeholder="Search for Releasedate..." />
+        <div class="form-check align-items-center">
+            <input type="checkbox" class="form-check-input" id="megapackFilter" /><label class="form-check-label"
+                for="megapackFilter">Megapack</label>
         </div>
-        <div class="col">
-            <input name="authornameFilter" id="authornameFilter" class="form-control" type="text"
-                placeholder="Search for Authornames...">
-        </div>
-        <div class="col">
-            <input name="releasedateFilter" id="releasedateFilter" class="form-control" type="text"
-                placeholder="Search for Release Dates...">
-        </div>
-        <div class="col">
-            <select name="tagFilter" id="tagFilter" class="form-select">
-                <option value="">Select A Category</option>
-                @foreach ($tags as $tag)
-                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col">
-            <a class="btn btn-primary" href="/hacks/random">
-                <span class="fa-solid fa-shuffle"></span>
-                Random Hack
-            </a>
-        </div>
-        @if (Auth::check())
-            <div class="col">
-                <a class="btn btn-success" href="/hacks/create">
-                    <span class="fa-solid fa-plus"></span>
-                    Add Hack
-                </a>
-            </div>
-        @endif
+        <select class="form-select" id="tagsFilter">
+            <option value="">Select A Tag to Filter!</option>
+            @foreach ($tags as $tag)
+                <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+            @endforeach
+        </select>
+        <a class="btn btn-primary text-nowrap" href="{{ route('hack.random') }}"> <x-bi-shuffle /> Random Hack </a>
+        @can('create', \App\Models\Romhack::class)
+            <a class="btn btn-success text-nowrap" href="{{ route('hack.create') }}"><x-bi-plus-circle /> Add Hack</a>
+        @endcan
     </div>
     <hr />
-    @include('hacks.overview', ['hacks' => $hacks])
+    <section id="hacksTable">
+        <div class="d-flex justify-content-center" id="spinner">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <p>Found <span id="counter">0</span> Entrances
+        <p>
+    </section>
 </x-layout>

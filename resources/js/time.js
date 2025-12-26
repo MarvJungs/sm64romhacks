@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const currentTimeContainer = document.getElementById('currentTime');
-    const timeElements = Array.from(document.getElementsByClassName('time'));
-    const options = {
+export default class Time 
+{
+    timeElements;
+    options = {
         year: 'numeric',
         month: 'numeric',
         day: 'numeric',
@@ -11,15 +11,19 @@ document.addEventListener('DOMContentLoaded', function () {
         hour12: false
     };
 
-    setInterval(() => {
-        let time = new Date();
-        time = new Intl.DateTimeFormat('sv', options).format(time);
-        currentTimeContainer.innerHTML = time;
-    }, 1000);
+    constructor()
+    {
+        this.timeElements = Array.from(document.getElementsByClassName('time'));
+    }
 
-    timeElements.forEach((timeElement) => {
-        let date = new Date(timeElement.innerText + " UTC");
-        date = new Intl.DateTimeFormat('sv', options).format(date);
-        timeElement.innerText = date;
-    });
-});
+    run()
+    {
+        this.timeElements.forEach(element => {
+            const time = element.innerText;
+            if (!time) return;
+            console.log(time);
+            const utc = new Date(time + " UTC");
+            element.innerText = new Intl.DateTimeFormat('sv', this.options).format(utc);
+        });
+    }
+}

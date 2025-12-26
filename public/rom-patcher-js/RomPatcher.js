@@ -219,6 +219,8 @@ const RomPatcher = (function () {
 
 			if (options.outputSuffix) {
 				patchedRom.fileName = romFile.fileName.replace(/\.([^\.]*?)$/, ' (patched).$1');
+				if(patchedRom.unpatched)
+					patchedRom.fileName = patchedRom.fileName.replace(' (patched)', ' (unpatched)');
 			} else if (patch._originalPatchFile) {
 				patchedRom.fileName = patch._originalPatchFile.fileName.replace(/\.\w+$/i, (/\.\w+$/i.test(romFile.fileName) ? romFile.fileName.match(/\.\w+$/i)[0] : ''));
 			} else {
@@ -228,7 +230,7 @@ const RomPatcher = (function () {
 			return patchedRom;
 		},
 
-		createPatch: function (originalFile, modifiedFile, format) {
+		createPatch: function (originalFile, modifiedFile, format, metadata) {
 			if (!(originalFile instanceof BinFile))
 				throw new Error('Original ROM file is not an instance of BinFile');
 			else if (!(modifiedFile instanceof BinFile))
@@ -251,7 +253,10 @@ const RomPatcher = (function () {
 			} else if (format === 'aps') {
 				patch = APS.buildFromRoms(originalFile, modifiedFile);
 			} else if (format === 'rup') {
-				patch = RUP.buildFromRoms(originalFile, modifiedFile);
+				if(metadata)
+				patch = RUP.buildFromRoms(originalFile, modifiedFile, metadata && metadata.Description? metadata.Description : null);
+			}  else if (format === 'ebp') {
+				patch = IPS.buildFromRoms(originalFile, modifiedFile, metadata);
 			} else {
 				throw new Error('Invalid patch format');
 			}

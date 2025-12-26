@@ -1,6 +1,19 @@
 <x-layout>
     <h1 class="text-center">Online Patcher</h1>
-    {{-- <iframe id="patcher" src="https://www.marcrobledo.com/RomPatcher.js/"></iframe> --}}
+    <section id="help">
+        <h2>How it works</h2>
+        <p class="text-danger">Before you proceed, please make sure you have the right ROM to patch with. Any other ROM will NOT work with this.</p>
+        <ol>
+            <li>Click on <code>Browse...</code> near the field that says <code>ROM file</code></li>
+            <li>Select your Original US Super Mario 64 ROM</li>
+            <li>Click on <code>Browse...</code> near the field that says <code>Patch file</code></li>
+            <li>Select your Patchfile to patch the ROM with. This must be in the <code>.bps</code> File format, alternatively you may also select a <code>.zip</code>-File which contains your patchfile.</li>
+            <li>Press <code>Apply Patch</code></li>
+            <li>Your patched ROM upon successful patching will be automatically be downloaded.</li>
+        </ol>
+        <p>You can skip steps 3 & 4 if you're using the <code>Patch File</code> option on the ROM Hack subpage (see below), the patchfile will be loaded automatically in that case.</p>
+        <img src={{ asset('images/help/patch_file.png') }} />
+    </section>
     <div id="rom-patcher-container">
         <div class="rom-patcher-row margin-bottom" id="rom-patcher-row-file-rom">
             <div class="text-end"><label for="rom-patcher-input-file-rom" data-localize="yes">ROM file:</label></div>

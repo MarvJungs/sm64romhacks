@@ -1,14 +1,22 @@
 <?php
 
-use App\Http\Controllers\APIHacksController;
-use App\Http\Controllers\APIVersionController;
+use App\Http\Resources\VersionResource;
+use App\Models\Romhack;
+use App\Models\Version;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('v1')->group(function () {
-    Route::apiResource('/hacks', APIHacksController::class)->only(['index', 'show'])
-        ->name('index', 'api.hacks.index')
-        ->name('show', 'api.hacks.show');
+Route::prefix('v1')->group(
+    function () {
+        Route::get(
+            'hacks', function () {
+                return Romhack::with(['versions.authors', 'romhacktags'])->where('verified', '=', 1)->orderBy('name')->get()->toResourceCollection();
+            }
+        );
 
-    Route::apiResource('/version', APIVersionController::class)->only('show')
-        ->name('show', 'api.version.show');
-})->middleware('auth:sanctum');
+        Route::get(
+            'version/{version}', function (Version $version) {
+                return new VersionResource($version);
+            }
+        );
+    }
+);

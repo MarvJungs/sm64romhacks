@@ -1,55 +1,68 @@
 <x-layout>
-    <h1 class="text-center text-decoration-underline">Event Creation Form</h1>
-    <form method="POST" action="{{ route('events.store') }}" id="eventForm">
+    <h1 class="text-center">Create Event</h1>
+
+
+    <form class="row g-3" method="post" id="manageEvent">
         @csrf
-
-        <div class="row mb-4">
-            <div class="col">
-                <label for="slug">Slug</label>
-                <input id="slug" class="form-control" name="slug" required>
-            </div>
-            <div class="col">
-                <label for="title">Event Title</label>
-                <input íd="title" class="form-control" name="title" required>
-            </div>
+        <div class="col-12">
+            <label for="name" class="form-label">Eventname</label>
+            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
+                value="{{ old('name') }}">
+            @error('name')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
         </div>
-        <div class="row gap-3 mb-4">
-            <div class="col">
-                <label for="start_utc">Start Time (in UTC)</label>
-                <input type="datetime-local" id="start_utc" class="form-control w-auto" name="start_utc">
-            </div>
-            <div class="col">
-                <label for="end_utc">End Time (in UTC)</label>
-                <input type="datetime-local" id="end_utc" class="form-control w-auto" name="end_utc">
-            </div>
-            <div class="col">
-                <label for="event_type">Event Type</label>
-                <select class="form-select" name="event_type" id="event_type">
-                    <option @selected(true)>Select An Event Type</option>
-                    @foreach ($event_types as $id => $type)
-                        <option value="{{ $id }}">{{ $type }}</option>
-                    @endforeach
-                </select>
-            </div>
+        <div class="col-12">
+            <label for="slug" class="form-label">Slug</label>
+            <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug"
+                value="{{ old('slug') }}">
+            @error('slug')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
         </div>
-        <div class="row mb-4">
-            <div class="col">
-                <label class="mb-2" for="editor-description">
-                    Description <span class="fa-solid fa-info btn btn-primary rounded-pill ms-2"
-                        data-bs-toggle="tooltip"
-                        data-bs-title="Type '/' in the editor box to call the context menu!"></span>
+        <div class="col-12">
+            <label for="description" class="form-label">Description</label>
+            <div class="form-control" id="eventsEditor"></div>
+            @error('description')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="col-12">
+            <label for="start_utc" class="form-label">Starttime</label>
+            <input type="datetime-local" class="form-control @error('start_utc') is-invalid @enderror" name="start_utc"
+                value="{{ old('start_utc') }}">
+            @error('start_utc')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="col-12">
+            <label for="end_utc" class="form-label">Endtime</label>
+            <input type="datetime-local" class="form-control @error('end_utc') is-invalid @enderror" name="end_utc"
+                value="{{ old('end_utc') }}">
+            @error('end_utc')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input" type="hidden" name="external" value="0">
+                <input class="form-check-input" type="checkbox" name="external" value="1">
+                <label class="form-check-label" for="external">
+                    External
                 </label>
-                <div id="editor-description"></div>
             </div>
         </div>
-
-        <div class="d-flex justify-content-center">
-            <div class="row w-25">
-                <div class="col">
-                    <button class="form-control btn btn-primary" type="submit">Add Event!</button>
-                </div>
-            </div>
+        <div class="col-12">
+            <label for="" class="form-label">Link</label>
+            <input type="url" class="form-control @error('external_url') is-invalid @enderror" name="external_url"
+                value="{{ old('external_url') }}">
+            @error('external_url')
+                <p class="text-danger">{{ $message }}</p>
+            @enderror
         </div>
-        <input type="hidden" name="description" id="description">
+        <input type="hidden" id="description" name="description" value="{{ old('description') ?? '{}' }}" />
+        <div class="col-12">
+            <button id="eventSubmitButton" type="submit" class="btn btn-primary">Create Event</button>
+        </div>
     </form>
 </x-layout>

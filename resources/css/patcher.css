@@ -1,5 +1,343 @@
-#patcher {
-    height: 732px;
-    width: 100%;
-    overflow: hidden;
+/* Rom Patcher JS template CSS stylesheet */
+/* customize it to your taste! */
+
+/* Rom Patcher JS - container */
+#rom-patcher-container {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	line-height: 1.8;
+
+	background-color: var(--bs-body-bg);
+	padding: 30px 15px;
+	border-radius: 3px;
+	color: var(--bs-body-color);
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+/* Rom Pacher JS - text classes */
+#rom-patcher-container .text-mono {
+	font-family: 'Roboto Mono', monospace;
+	font-size: 12px;
+}
+
+#rom-patcher-container .text-selectable {
+	-moz-user-select: text;
+	-webkit-user-select: text;
+	-ms-user-select: text;
+	-o-user-select: text;
+	user-select: text;
+	cursor: text;
+}
+
+/* Rom Patcher JS - rows */
+#rom-patcher-container .rom-patcher-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between
+}
+
+#rom-patcher-container .rom-patcher-row>div:first-child {
+	width: 25%
+}
+
+#rom-patcher-container .rom-patcher-row>div:last-child {
+	width: 73%
+}
+
+#rom-patcher-container .margin-bottom {
+	margin-bottom: 8px
+}
+
+
+
+#rom-patcher-container #rom-patcher-row-info-rom,
+#rom-patcher-container #rom-patcher-row-alter-header,
+#rom-patcher-container #rom-patcher-row-patch-description,
+#rom-patcher-container #rom-patcher-row-patch-requirements,
+#rom-patcher-container #rom-patcher-row-error-message {
+	display: none
+}
+
+#rom-patcher-container #rom-patcher-row-info-rom.show,
+#rom-patcher-container #rom-patcher-row-alter-header.show,
+#rom-patcher-container #rom-patcher-row-patch-description.show,
+#rom-patcher-container #rom-patcher-row-patch-requirements.show {
+	display: flex
+}
+
+#rom-patcher-container #rom-patcher-row-error-message.show {
+	display: block
+}
+
+#rom-patcher-patch-description {
+	font-size: 85%;
+}
+
+#rom-patcher-row-apply {
+	margin-top: 12px;
+}
+
+
+#rom-patcher-span-crc32 span.clickable {
+	text-decoration: underline
+}
+
+#rom-patcher-span-crc32 span.clickable:hover {
+	cursor: pointer;
+	color: black
+}
+
+#rom-patcher-error-message {
+	color: var(--bs-danger-text-emphasis);
+	padding-left: 20px;
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+#rom-patcher-error-message.warning {
+	color: #ff7800;
+}
+
+#rom-patcher-container input[type=file].empty,
+#rom-patcher-container input[type=file]:not(:disabled):not(.empty):hover {
+	padding-left: 32px;
+	background-repeat: no-repeat;
+	background-position: 8px center;
+	background-size: 16px;
+}
+
+#rom-patcher-container input[type=file].valid {
+	background-color: var(--bs-success);
+	padding-right: 28px;
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	background-size: 16px;
+}
+
+#rom-patcher-container input[type=file].valid:not(:disabled):not(.empty):hover {
+	background-color: #adf795;
+	background-position: 8px center, right 12px center;
+	background-size: 16px, 16px;
+}
+
+#rom-patcher-container input[type=file].invalid {
+	background-color: var(--bs-danger);
+	padding-right: 28px;
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	background-size: 16px;
+}
+
+#rom-patcher-container input[type=file].invalid:not(:disabled):not(.empty):hover {
+	background-color: var(--bs-danger);
+	background-position: 8px center, right 12px center;
+	background-size: 16px, 16px;
+}
+
+#rom-patcher-container input[type=file].icon-upload {
+	padding-left: 32px;
+	background-repeat: no-repeat;
+	background-position: 8px center;
+}
+
+/* buttons */
+#rom-patcher-container button {
+	font-family: inherit;
+	font-size: 100%;
+	min-width: 120px;
+	border-radius: 3px;
+	border: 0;
+	outline: none;
+
+	padding: 10px 20px;
+	margin: 0 5px;
+
+	background-color: var(--bs-primary);
+	color: white;
+
+	transition: background-color .15s;
+
+	box-sizing: border-box
+}
+
+#rom-patcher-container button:not(:disabled) {
+	cursor: pointer;
+}
+
+#rom-patcher-container button:disabled {
+	opacity: .35 !important;
+	cursor: not-allowed
+}
+
+#rom-patcher-container button:not(:disabled):hover {
+	background-color: #3aacb5;
+}
+
+#rom-patcher-container button:not(:disabled):active {
+	background-color: #297b81;
+	transform: translateY(1px)
+}
+
+
+
+/* loading spinner */
+@keyframes spin {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.rom-patcher-spinner {
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	position: relative;
+	animation: spin 1s ease-in-out infinite;
+	vertical-align: middle;
+}
+
+.rom-patcher-spinner:before {
+	width: 6px;
+	height: 6px;
+	background-color: #41bdc7;
+	border-radius: 3px;
+	display: inline-block;
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -3px;
+}
+
+#patch-builder-button-create .rom-patcher-spinner:before,
+#rom-patcher-button-apply .rom-patcher-spinner:before {
+	background-color: #fff;
+}
+
+
+
+
+
+
+#rom-patcher-container .rom-patcher-container-input {
+	position: relative
+}
+
+#rom-patcher-container .rom-patcher-container-input input.loading,
+#rom-patcher-container .rom-patcher-container-input select.loading {
+	padding-left: 32px;
+}
+
+#rom-patcher-container .rom-patcher-container-input input.loading+.rom-patcher-spinner,
+#rom-patcher-container .rom-patcher-container-input select.loading+.rom-patcher-spinner {
+	position: absolute;
+	top: 50%;
+	margin-top: -10px;
+	left: 8px;
+}
+
+/* ZIP dialog */
+#rom-patcher-dialog-zip::backdrop,
+#rom-patcher-dialog-zip-backdrop {
+	background-color: rgba(0, 0, 0, .75);
+	backdrop-filter: blur(3px);
+}
+#rom-patcher-dialog-zip-backdrop {
+	/* fallback for browsers not compatible with <dialog> */
+	justify-content: center;
+	align-items: center;
+}
+
+#rom-patcher-dialog-zip {
+	min-width: 420px;
+	vertical-align: middle;
+	margin: auto;
+	background-color: white;
+	color: #999;
+	box-sizing: border-box;
+	box-shadow: rgba(0, 0, 0, .7) 0 0 24px;
+	padding: 20px;
+	border-radius: 3px;
+	border: none;
+}
+
+#rom-patcher-dialog-zip-message {
+	text-align: center
+}
+
+#rom-patcher-dialog-zip-file-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+#rom-patcher-dialog-zip-file-list li {
+	color: #3c3c3c;
+	padding: 4px 8px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis
+}
+
+#rom-patcher-dialog-zip-file-list li:hover {
+	background-color: #eee;
+	cursor: pointer;
+	color: black;
+	border-radius: 3px;
+}
+
+
+
+
+
+/* responsive */
+@media only screen and (max-width:641px) {
+	#rom-patcher-container {
+		font-size: 14px
+	}
+
+	#rom-patcher-rom-info {
+		font-size: 11px
+	}
+
+	#rom-patcher-dialog-zip {
+		min-width: auto;
+	}
+}
+
+
+
+
+
+
+
+
+#rom-patcher-powered {
+	margin-top: 16px;
+	font-size: 11px;
+	text-align: center;
+}
+
+#rom-patcher-powered a {
+	color: #cce;
+	padding: 4px 8px;
+	text-decoration: none;
+	opacity: .25;
+}
+
+#rom-patcher-powered a>img {
+	display: inline-block;
+	height: 16px;
+	vertical-align: middle;
+	margin-right: 4px;
+}
+
+#rom-patcher-powered a:hover {
+	text-decoration: underline;
+	opacity: 1;
 }

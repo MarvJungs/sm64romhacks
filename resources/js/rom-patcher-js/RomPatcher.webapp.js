@@ -7,7 +7,7 @@
 *
 * MIT License
 * 
-* Copyright (c) 2016-2024 Marc Robledo
+* Copyright (c) 2016-2025 Marc Robledo
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@
 
 const ROM_PATCHER_JS_PATH = '/rom-patcher-js/';
 
-var RomPatcherWeb = (function () {
+const RomPatcherWeb = (function () {
 	const SCRIPT_DEPENDENCIES = [
 		'modules/BinFile.js',
 		'modules/HashCalculator.js',
@@ -71,6 +71,8 @@ var RomPatcherWeb = (function () {
 	};
 	var romFile, patch;
 
+	const isBrowserSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent); /* Safari userAgent does not include word Chrome, Chrome includes both! */
+	const isBrowserMobile = /Mobile(\/\S+)? /.test(navigator.userAgent);
 
 	/* embeded patches */
 	var currentEmbededPatches = null;
@@ -103,25 +105,54 @@ var RomPatcherWeb = (function () {
 			parsedPatch.outputExtension = embededPatchInfo.outputExtension;
 		}
 
-		if (typeof embededPatchInfo.inputCrc32 !== 'undefined') {
-			if (!Array.isArray(embededPatchInfo.inputCrc32))
-				embededPatchInfo.inputCrc32 = [embededPatchInfo.inputCrc32];
+		if (typeof embededPatchInfo.inputMd5 !== 'undefined') {
+			if (!Array.isArray(embededPatchInfo.inputMd5))
+				embededPatchInfo.inputMd5 = [embededPatchInfo.inputMd5];
 
-			const validCrcs = embededPatchInfo.inputCrc32.map(function (crc32) {
-				if (typeof crc32 === 'string' && /^(0x)?[0-9a-fA-F]{8}$/i.test(crc32.trim())) {
-					return parseInt(crc32.replace('0x', ''), 16);
-				} else if (typeof crc32 === 'number') {
-					return crc32 >>> 0;
+			const validMd5s = embededPatchInfo.inputMd5.reduce(function (acc, md5) {
+				if (typeof md5 === 'string' && /^(0x)?[0-9a-fA-F]{32}$/i.test(md5.trim())) {
+					acc.push(md5.trim().toLowerCase());
 				} else {
-					return null;
+					console.warn('Rom Patcher JS: inputMd5 must be a string (32 characters long, characters allowed: 0-9, a-f)');
 				}
-			}).filter(function (crc32) {
-				return typeof crc32 === 'number';
-			});
-			if (validCrcs.length) {
-				parsedPatch.inputCrc32 = validCrcs;
+				return acc;
+			}, []);
+
+			if (validMd5s.length) {
+				parsedPatch.inputValidation = {
+					'type': 'MD5',
+					'value': validMd5s
+				};
 			} else {
-				console.warn('Invalid inputCrc32 for embeded patch', embededPatchInfo);
+				console.warn('Rom Patcher JS: invalid inputMd5 for embeded patch', embededPatchInfo.inputMd5);
+			}
+		}
+		if (typeof embededPatchInfo.inputCrc32 !== 'undefined') {
+			if (!parsedPatch.inputValidation) {
+				if (!Array.isArray(embededPatchInfo.inputCrc32))
+					embededPatchInfo.inputCrc32 = [embededPatchInfo.inputCrc32];
+
+				const validCrcs = embededPatchInfo.inputCrc32.reduce(function (acc, crc32) {
+					if (typeof crc32 === 'string' && /^(0x)?[0-9a-fA-F]{8}$/i.test(crc32.trim())) {
+						acc.push(parseInt(crc32.trim().replace('0x', ''), 16));
+					} else if (typeof crc32 === 'number') {
+						acc.push((crc32 >>> 0) & 0xffffffff);
+					} else {
+						console.warn('Rom Patcher JS: invalid inputCrc32 value');
+					}
+					return acc;
+				}, []);
+
+				if (validCrcs.length) {
+					parsedPatch.inputValidation = {
+						'type': 'CRC32',
+						'value': validCrcs
+					};
+				} else {
+					console.warn('Rom Patcher JS: invalid inputCrc32 for embeded patch', embededPatchInfo.inputCrc32);
+				}
+			} else {
+				console.warn('Rom Patcher JS: a valid inputMd5 was provided, inputCrc32 will be ignored', embededPatchInfo);
 			}
 		}
 
@@ -318,7 +349,7 @@ var RomPatcherWeb = (function () {
 			return fallback || 0;
 		},
 		setFakeFile: function (id, fileName) {
-			if (document.getElementById('rom-patcher-input-file-' + id)) {
+			if (!isBrowserSafari && document.getElementById('rom-patcher-input-file-' + id)) { /* safari does not show fake file name: https://pqina.nl/blog/set-value-to-file-input/#but-safari */
 				try {
 					/* add a fake file to the input file, so it shows the chosen file name */
 					const fakeFile = new File(new Uint8Array(0), fileName);
@@ -436,7 +467,7 @@ var RomPatcherWeb = (function () {
 			htmlElements.addClass('row-info-rom', 'show');
 		}
 
-		const validRom = RomPatcherWeb.validateCurrentRom(event.data.checksumStartOffset);
+		let validRom = RomPatcherWeb.validateCurrentRom(event.data.checksumStartOffset);
 		_setElementsStatus(true, validRom);
 	};
 	webWorkerCrc.onerror = event => { // listen for events from the worker
@@ -520,6 +551,9 @@ var RomPatcherWeb = (function () {
 	const _initialize = function (newSettings, embededPatchInfo) {
 		/* embeded patches */
 		var validEmbededPatch = _checkEmbededPatchParameter(embededPatchInfo);
+		if (newSettings && typeof newSettings.file === 'string') {
+			console.warn('Rom Patcher JS: embeded patch info was provided in settings and will be ignored, must be passed as second parameter');
+		}
 
 
 
@@ -542,9 +576,19 @@ var RomPatcherWeb = (function () {
 		const htmlInputFileRom = htmlElements.get('input-file-rom');
 		if (htmlInputFileRom && htmlInputFileRom.tagName === 'INPUT' && htmlInputFileRom.type === 'file') {
 			htmlInputFileRom.addEventListener('change', function (evt) {
-				htmlElements.disableAll();
-				new BinFile(this, RomPatcherWeb.provideRomFile);
+				if (this.files && this.files.length) {
+					htmlElements.disableAll();
+					new BinFile(this, RomPatcherWeb.provideRomFile);
+				} else if (romFile) {
+					/* Webkit browsers trigger the change event when user cancels file selection and resets the input file value */
+					/* since we keep a cached copy of ROM file as a BinFile, we do not lose data but the input text, so we try to set it back */
+					/* Firefox keeps the previously selected file and does not trigger the change event */
+					htmlElements.setFakeFile('rom', romFile.fileName);
+				}
 			});
+
+			if (!isBrowserSafari)
+				htmlInputFileRom.classList.add('no-file-selector-button');
 		} else {
 			console.error('Rom Patcher JS: input#rom-patcher-input-file-rom[type=file] not found');
 			throw new Error('Rom Patcher JS: input#rom-patcher-input-file-rom[type=file] not found');
@@ -572,12 +616,28 @@ var RomPatcherWeb = (function () {
 			const htmlInputFilePatch = htmlElements.get('input-file-patch');
 			if (htmlInputFilePatch && htmlInputFilePatch.tagName === 'INPUT' && htmlInputFilePatch.type === 'file') {
 				htmlInputFilePatch.addEventListener('change', function (evt) {
-					htmlElements.disableAll();
-					new BinFile(this, RomPatcherWeb.providePatchFile);
+					if (this.files && this.files.length) {
+						htmlElements.disableAll();
+						new BinFile(this, RomPatcherWeb.providePatchFile);
+					} else if (patch && patch._originalPatchFile) {
+						/* Webkit browsers trigger the change event when user cancels file selection and resets the input file value */
+						/* since we keep a cached copy of patch file as a BinFile, we do not lose data but the input text, so we try to set it back */
+						/* Firefox keeps the previously selected file and does not trigger the change event */
+						htmlElements.setFakeFile('patch', patch._originalPatchFile.fileName);
+					}
 				});
+
+				if (!isBrowserSafari)
+					htmlInputFilePatch.classList.add('no-file-selector-button');
 			} else {
 				console.error('Rom Patcher JS: input#rom-patcher-input-file-patch[type=file] not found');
 				throw new Error('Rom Patcher JS: input#rom-patcher-input-file-patch[type=file] not found');
+			}
+
+			/* dirty fix for iOS Safari, which only supports mimetypes in <input> accept attribute */
+			/* accept attribute compatibility: https://caniuse.com/input-file-accept */
+			if (isBrowserSafari && isBrowserMobile) {
+				htmlInputFilePatch.accept = 'application/zip, application/octet-stream, application/x-zip-compressed, multipart/x-zip';
 			}
 		}
 		const htmlButtonApply = htmlElements.get('button-apply');
@@ -736,106 +796,119 @@ var RomPatcherWeb = (function () {
 				if (ZIPManager.isZipFile(binFile)) {
 					ZIPManager.unzipPatches(binFile._u8array.buffer);
 				} else {
-					const parsedPatch = RomPatcher.parsePatchFile(binFile);
-					if (parsedPatch) {
-						patch = parsedPatch;
-						_setPatchInputSpinner(false);
+					try {
+						const parsedPatch = RomPatcher.parsePatchFile(binFile);
+						if (parsedPatch) {
+							patch = parsedPatch;
+							_setPatchInputSpinner(false);
 
-						const embededPatchInfo = _getEmbededPatchInfo(binFile.fileName);
-						if (embededPatchInfo) {
-							/* custom crc32s validation */
-							if (embededPatchInfo.inputCrc32) {
-								patch.validateSource = function (romFile, headerSize) {
-									for (var i = 0; i < embededPatchInfo.inputCrc32.length; i++) {
-										if (embededPatchInfo.inputCrc32[i] === romFile.hashCRC32(headerSize))
-											return true;
+							const embededPatchInfo = _getEmbededPatchInfo(binFile.fileName);
+							if (embededPatchInfo) {
+								/* custom input validation */
+								if (embededPatchInfo.inputValidation) {
+									if (embededPatchInfo.inputValidation.type === 'CRC32') {
+										patch.validateSource = function (romFile, headerSize) {
+											for (var i = 0; i < embededPatchInfo.inputValidation.value.length; i++) {
+												if (embededPatchInfo.inputValidation.value[i] === romFile.hashCRC32(headerSize))
+													return true;
+											}
+											return false;
+										}
+									} else if (embededPatchInfo.inputValidation.type === 'MD5') {
+										patch.validateSource = function (romFile, headerSize) {
+											for (var i = 0; i < embededPatchInfo.inputValidation.value.length; i++) {
+												if (embededPatchInfo.inputValidation.value[i] === romFile.hashMD5(headerSize))
+													return true;
+											}
+											return false;
+										}
+									} else {
+										throw new Error('Rom Patcher JS: Invalid inputValidation type');
 									}
-									return false;
+									patch.getValidationInfo = function () {
+										return embededPatchInfo.inputValidation
+									};
 								}
-								patch.getValidationInfo = function () {
-									return {
-										'type': 'CRC32',
-										'value': embededPatchInfo.inputCrc32
+
+								/* custom description */
+								if (embededPatchInfo.description) {
+									patch.getDescription = function () {
+										return embededPatchInfo.description;
 									}
-								};
+								}
 							}
 
-							/* custom description */
-							if (embededPatchInfo.description) {
-								patch.getDescription = function () {
-									return embededPatchInfo.description;
-								}
-							}
-						}
-
-						/* toggle ROM requirements */
-						if (htmlElements.get('row-patch-requirements') && htmlElements.get('patch-requirements-value')) {
-							if (typeof patch.getValidationInfo === 'function' && patch.getValidationInfo()) {
-								var validationInfo = patch.getValidationInfo();
-								if (Array.isArray(validationInfo) || !validationInfo.type) {
-									validationInfo = {
-										type: 'ROM',
-										value: validationInfo
-									}
-								}
-								htmlElements.setText('patch-requirements-value', '');
-
-								htmlElements.setText('patch-requirements-type', validationInfo.type === 'ROM' ? _('Required ROM:') : _('Required %s:').replace('%s', validationInfo.type));
-
-								if (!Array.isArray(validationInfo.value))
-									validationInfo.value = [validationInfo.value];
-
-								validationInfo.value.forEach(function (value) {
-									var line = document.createElement('div');
-									if (typeof value !== 'string') {
-										if (validationInfo.type === 'CRC32') {
-											value = value.toString(16);
-											while (value.length < 8)
-												value = '0' + value;
-										} else {
-											value = value.toString();
+							/* toggle ROM requirements */
+							if (htmlElements.get('row-patch-requirements') && htmlElements.get('patch-requirements-value')) {
+								if (typeof patch.getValidationInfo === 'function' && patch.getValidationInfo()) {
+									var validationInfo = patch.getValidationInfo();
+									if (Array.isArray(validationInfo) || !validationInfo.type) {
+										validationInfo = {
+											type: 'ROM',
+											value: validationInfo
 										}
 									}
-									/*
-									var a=document.createElement('a');
-									a.href='https://www.google.com/search?q=%22'+value+'%22';
-									a.target='_blank';
-									a.className='clickable';
-									a.innerHTML=value;
-									line.appendChild(a);
-									*/
-									line.innerHTML = value;
-									htmlElements.get('patch-requirements-value').appendChild(line);
-								});
-								htmlElements.addClass('row-patch-requirements', 'show');
-							} else {
-								htmlElements.setText('patch-requirements-value', '');
-								htmlElements.removeClass('row-patch-requirements', 'show');
+									htmlElements.setText('patch-requirements-value', '');
+
+									htmlElements.setText('patch-requirements-type', validationInfo.type === 'ROM' ? _('Required ROM:') : _('Required %s:').replace('%s', validationInfo.type));
+
+									if (!Array.isArray(validationInfo.value))
+										validationInfo.value = [validationInfo.value];
+
+									validationInfo.value.forEach(function (value) {
+										var line = document.createElement('div');
+										if (typeof value !== 'string') {
+											if (validationInfo.type === 'CRC32') {
+												value = value.toString(16);
+												while (value.length < 8)
+													value = '0' + value;
+											} else {
+												value = value.toString();
+											}
+										}
+										/*
+										var a=document.createElement('a');
+										a.href='https://www.google.com/search?q=%22'+value+'%22';
+										a.target='_blank';
+										a.className='clickable';
+										a.innerHTML=value;
+										line.appendChild(a);
+										*/
+										line.innerHTML = value;
+										htmlElements.get('patch-requirements-value').appendChild(line);
+									});
+									htmlElements.addClass('row-patch-requirements', 'show');
+								} else {
+									htmlElements.setText('patch-requirements-value', '');
+									htmlElements.removeClass('row-patch-requirements', 'show');
+								}
 							}
-						}
 
-						/* toggle patch description */
-						if (typeof patch.getDescription === 'function' && patch.getDescription()) {
-							htmlElements.setText('patch-description', patch.getDescription()/* .replace(/\n/g, '<br/>') */);
-							//htmlElements.setTitle('patch-description', patch.getDescription());
-							htmlElements.addClass('row-patch-description', 'show');
+							/* toggle patch description */
+							if (typeof patch.getDescription === 'function' && patch.getDescription()) {
+								htmlElements.setText('patch-description', patch.getDescription()/* .replace(/\n/g, '<br/>') */);
+								//htmlElements.setTitle('patch-description', patch.getDescription());
+								htmlElements.addClass('row-patch-description', 'show');
+							} else {
+								htmlElements.setText('patch-description', '');
+								//htmlElements.setTitle('patch-description', '');
+								htmlElements.removeClass('row-patch-description', 'show');
+							}
+
+							RomPatcherWeb.validateCurrentRom(_getChecksumStartOffset());
+
+							if (typeof settings.onloadpatch === 'function') {
+								settings.onloadpatch(binFile, embededPatchInfo, parsedPatch);
+							}
+
+							if (transferFakeFile) {
+								htmlElements.setFakeFile('patch', binFile.fileName);
+							}
 						} else {
-							htmlElements.setText('patch-description', '');
-							//htmlElements.setTitle('patch-description', '');
-							htmlElements.removeClass('row-patch-description', 'show');
+							_setToastError(_('Invalid patch file'));
 						}
-
-						RomPatcherWeb.validateCurrentRom(_getChecksumStartOffset());
-
-						if (typeof settings.onloadpatch === 'function') {
-							settings.onloadpatch(binFile, embededPatchInfo, parsedPatch);
-						}
-
-						if (transferFakeFile) {
-							htmlElements.setFakeFile('patch', binFile.fileName);
-						}
-					} else {
-						_setToastError(_('Invalid patch file'));
+					} catch (ex) {
+						_setToastError(ex.message);
 					}
 				}
 			}
@@ -1102,7 +1175,7 @@ const ZIPManager = (function (romPatcherWeb) {
 
 	const ZIP_MAGIC = '\x50\x4b\x03\x04';
 
-	const FILTER_PATCHES = /\.(ips|ups|bps|aps|rup|ppf|mod|xdelta|vcdiff)$/i;
+	const FILTER_PATCHES = /\.(ips|ups|bps|aps|rup|ppf|mod|ebp|xdelta|vcdiff)$/i;
 	//const FILTER_ROMS=/(?<!\.(txt|diz|rtf|docx?|xlsx?|html?|pdf|jpe?g|gif|png|bmp|webp|zip|rar|7z))$/i; //negative lookbehind is not compatible with Safari https://stackoverflow.com/a/51568859
 	const FILTER_NON_ROMS = /(\.(txt|diz|rtf|docx?|xlsx?|html?|pdf|jpe?g|gif|png|bmp|webp|zip|rar|7z))$/i;
 
@@ -1435,6 +1508,8 @@ const ZIPManager = (function (romPatcherWeb) {
 const PatchBuilderWeb = (function (romPatcherWeb) {
 	var originalRom, modifiedRom;
 
+	const isBrowserSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent); /* Safari userAgent does not include word Chrome, Chrome includes both! */
+
 	/* localization */
 	const _ = function (str) {
 		const language = romPatcherWeb.getCurrentLanguage();
@@ -1484,26 +1559,24 @@ const PatchBuilderWeb = (function (romPatcherWeb) {
 		}
 	};
 
-	const webWorkerCreate = new Worker(ROM_PATCHER_JS_PATH + 'RomPatcher.webworker.create.js');
-	webWorkerCreate.onmessage = event => { // listen for events from the worker
-		//retrieve arraybuffers back from webworker
-		originalRom._u8array = event.data.originalRomU8Array;
-		modifiedRom._u8array = event.data.modifiedRomU8Array;
-
-		_setElementsStatus(true);
-		_setCreateButtonSpinner(false);
-
-		const patchFile = new BinFile(event.data.patchFileU8Array.buffer);
-		patchFile.fileName = modifiedRom.getName() + '.' + document.getElementById('patch-builder-select-patch-type').value;
-		patchFile.save();
-
-		_setToastError();
+	const _getMetadataFields = function (patchFormat) {
+		if (patchFormat === 'rup') {
+			return ['Description'];
+		} else if (patchFormat === 'ebp') {
+			return ['Author', 'Title', 'Description'];
+		}
+		return [];
 	};
-	webWorkerCreate.onerror = event => { // listen for events from the worker
-		_setElementsStatus(true);
-		_setCreateButtonSpinner(false);
-		_setToastError('webWorkerCreate error: ' + event.message);
+	const _buildMetadataObject = function (patchFormat) {
+		return _getMetadataFields(patchFormat).reduce((metadata, field) => {
+			const input = document.getElementById('patch-builder-input-metadata-' + field.toLowerCase().replace(/\s+/g, '-'));
+			if (input && input.value.trim())
+				metadata[field] = input.value.trim();
+			return metadata;
+		}, {});
 	};
+
+	var webWorkerCreate;
 
 	var initialized = false;
 	return {
@@ -1517,19 +1590,64 @@ const PatchBuilderWeb = (function (romPatcherWeb) {
 			else if (!romPatcherWeb.isInitialized())
 				throw new Error('Rom Patcher JS must be initialized before Patch Builder JS');
 
+
+			if (!document.getElementById('patch-builder-button-create') || document.getElementById('patch-builder-button-create').tagName !== 'BUTTON') {
+				console.error('Patch Builder JS: button#patch-builder-button-create not found');
+				throw new Error('Patch Builder JS: button#patch-builder-button-create not found');
+			}
+			if (!document.getElementById('patch-builder-select-patch-type') || document.getElementById('patch-builder-select-patch-type').tagName !== 'SELECT') {
+				console.error('Patch Builder JS: select#patch-builder-select-patch-type not found');
+				throw new Error('Patch Builder JS: select#patch-builder-select-patch-type not found');
+			}
+			if (!document.getElementById('patch-builder-input-file-original') || document.getElementById('patch-builder-input-file-original').tagName !== 'INPUT' || document.getElementById('patch-builder-input-file-original').type !== 'file') {
+				console.error('Patch Builder JS: input[type=file]#patch-builder-input-file-original not found');
+				throw new Error('Patch Builder JS: input[type=file]#patch-builder-input-file-original not found');
+			}
+			if (!document.getElementById('patch-builder-input-file-modified') || document.getElementById('patch-builder-input-file-modified').tagName !== 'INPUT' || document.getElementById('patch-builder-input-file-modified').type !== 'file') {
+				console.error('Patch Builder JS: input[type=file]#patch-builder-input-file-modified not found');
+				throw new Error('Patch Builder JS: input[type=file]#patch-builder-input-file-modified not found');
+			}
+			if (!isBrowserSafari) {
+				document.getElementById('patch-builder-input-file-original').classList.add('no-file-selector-button');
+				document.getElementById('patch-builder-input-file-modified').classList.add('no-file-selector-button');
+			}
+
+			webWorkerCreate = new Worker(ROM_PATCHER_JS_PATH + 'RomPatcher.webworker.create.js');
+			webWorkerCreate.onmessage = event => { // listen for events from the worker
+				//retrieve arraybuffers back from webworker
+				originalRom._u8array = event.data.originalRomU8Array;
+				modifiedRom._u8array = event.data.modifiedRomU8Array;
+
+				_setElementsStatus(true);
+				_setCreateButtonSpinner(false);
+
+				const patchFile = new BinFile(event.data.patchFileU8Array.buffer);
+				patchFile.fileName = modifiedRom.getName() + '.' + document.getElementById('patch-builder-select-patch-type').value;
+				patchFile.save();
+
+				_setToastError();
+			};
+			webWorkerCreate.onerror = event => { // listen for events from the worker
+				_setElementsStatus(true);
+				_setCreateButtonSpinner(false);
+				_setToastError('webWorkerCreate error: ' + event.message);
+			};
+
 			document.getElementById('patch-builder-button-create').disabled = true;
 
 			document.getElementById('patch-builder-input-file-original').addEventListener('change', function () {
-				_setElementsStatus(false);
-				this.classList.remove('empty');
-				originalRom = new BinFile(this.files[0], function (evt) {
-					_setElementsStatus(true);
+				if (this.files && this.files.length) {
+					_setElementsStatus(false);
+					this.classList.remove('empty');
+					originalRom = new BinFile(this.files[0], function (evt) {
+						_setElementsStatus(true);
 
-					if (RomPatcher.isRomTooBig(originalRom))
-						_setToastError(_('Using big files is not recommended'), 'warning');
-					else if (ZIPManager.isZipFile(originalRom))
-						_setToastError(_('Patch creation is not compatible with zipped ROMs'), 'warning');
-				});
+						if (RomPatcher.isRomTooBig(originalRom))
+							_setToastError(_('Using big files is not recommended'), 'warning');
+						else if (ZIPManager.isZipFile(originalRom))
+							_setToastError(_('Patch creation is not compatible with zipped ROMs'), 'warning');
+					});
+				}
 			});
 			document.getElementById('patch-builder-input-file-modified').addEventListener('change', function () {
 				_setElementsStatus(false);
@@ -1543,18 +1661,35 @@ const PatchBuilderWeb = (function (romPatcherWeb) {
 						_setToastError(_('Patch creation is not compatible with zipped ROMs'), 'warning');
 				});
 			});
+			document.getElementById('patch-builder-select-patch-type').addEventListener('change', function () {
+				if (!document.getElementById('patch-builder-container-metadata-inputs'))
+					return;
+
+				document.getElementById('patch-builder-container-metadata-inputs').innerHTML = '';
+
+				_getMetadataFields(this.value).forEach(function (field) {
+					const input = document.createElement('input');
+					input.id = 'patch-builder-input-metadata-' + field.toLowerCase().replace(/\s+/g, '-');
+					input.className = 'patch-builder-input-metadata';
+					input.type = 'text';
+					input.placeholder = _(field);
+					document.getElementById('patch-builder-container-metadata-inputs').appendChild(input);
+				});
+			});
 			document.getElementById('patch-builder-button-create').addEventListener('click', function () {
+				const patchFormat=document.getElementById('patch-builder-select-patch-type').value;
 				_setElementsStatus(false);
 				_setCreateButtonSpinner(true);
 				webWorkerCreate.postMessage(
 					{
 						originalRomU8Array: originalRom._u8array,
 						modifiedRomU8Array: modifiedRom._u8array,
-						format: document.getElementById('patch-builder-select-patch-type').value
+						format: patchFormat,
+						metadata: _buildMetadataObject(patchFormat)
 					}, [
-					originalRom._u8array.buffer,
-					modifiedRom._u8array.buffer
-				]
+						originalRom._u8array.buffer,
+						modifiedRom._u8array.buffer
+					]
 				);
 			});
 
@@ -1679,6 +1814,9 @@ const ROM_PATCHER_LOCALE = {
 		'Modified ROM:': 'ROM modificada:',
 		'Patch type:': 'Tipo de parche:',
 		'Creating patch...': 'Creando parche...',
+		'Author': 'Autor',
+		'Title': 'Título',
+		'Description': 'Descripción',
 
 		'Source ROM checksum mismatch': 'Checksum de ROM original no válida',
 		'Target ROM checksum mismatch': 'Checksum de ROM creada no válida',
@@ -1813,6 +1951,9 @@ const ROM_PATCHER_LOCALE = {
 		'Modified ROM:': 'ROM modificada:',
 		'Patch type:': 'Tipus de pedaç:',
 		'Creating patch...': 'Creant pedaç...',
+		'Author': 'Autor',
+		'Title': 'Títol',
+		'Description': 'Descripció',
 
 		'Source ROM checksum mismatch': 'Checksum de ROM original no vàlida',
 		'Target ROM checksum mismatch': 'Checksum de ROM creada no vàlida',
