@@ -1,159 +1,118 @@
 <x-layout>
-    <h1 class="text-center text-decoration-underline">Edit Hack Submission Form</h1>
+    <h1 class="text-decoration-underline">Edit Hack: {{ $hack->name }}</h1>
+    <form method="POST" id="manageRomhack" enctype="multipart/form-data">
 
-    <div class="d-flex justify-content-center">
-        <form class="w-100" method="POST" action="{{ route('hacks.update', ['hack' => $hack]) }}"
-            enctype="multipart/form-data" id="hackForm">
-            @csrf
-            @method('PATCH')
-
-            <datalist id="tagnames">
-                @foreach ($tags as $tag)
-                    <option value="{{ $tag }}">{{ $tag }}</option>
-                @endforeach
-            </datalist>
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" for="name">Hackname</label>
-                <div class="col-sm-10">
-                    <input type="text" name="name" class="form-control" id="name" value="{{ $hack->name }}"
-                        required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" for="tagname">Tags<span
-                        class="fa-solid fa-info btn btn-primary rounded-pill ms-2" data-bs-toggle="tooltip"
-                        data-bs-title="Only enter One Tag per Input Field. Press on the + for more Input Fields."></span>
-                    <button class="btn" id="addTag"><span class="fa-solid fa-plus"></span></button></label>
-                <div id="tagsColumn" class="col-sm-10" name="tagname">
-                    @if (sizeof($hack->tags) == 0)
-                        <div class="d-flex justify-content-between">
-                            <input type="text" name="tagname[]" class="form-control mb-2 me-2" list="tagNames">
-                            <button class="btn btn-danger mb-2 removeTag">
-                                <span class="fa-solid fa-minus"></span>
-                            </button>
-                        </div>
-                    @endif
-                    @foreach ($hack->tags as $tag)
-                        <div class="d-flex justify-content-between">
-                            <input type="text" name="tagname[]" class="form-control mb-2 me-2" list="tagNames"
-                                value="{{ $tag->name }}">
-                            <button class="btn btn-danger mb-2 removeTag">
-                                <span class="fa-solid fa-minus"></span>
-                            </button>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            @if (Auth::check() && Auth::user()->hasRole(705528172581486704))
-                <div class="row mb-3">
-                    <div class="col-sm-10 offset-sm-2">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="megapack" id="megapack">
-                            <label for="megapack" class="form-check-label">Megapack</label>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" for="videolink">Videolink</label>
-                <div class="col-sm-10">
-                    <input type="url" name="videolink" class="form-control" id="videolink"
-                        value="{{ $hack->videolink }}">
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" for="image">Images</label>
-                <div class="col-sm-10">
-                    <input type="file" name="image[]" class="form-control mb-4" id="image" multiple>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
-                        Manage Images
-                    </button>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col">Version</div>
-                <div class="col">Recommened</div>
-                <div class="col">Demo</div>
-            </div>
-            @foreach ($hack->versions as $version)
-                <div class="row mb-3">
-                    <div class="col">{{ $version->name }}</div>
-                    <div class="col">
-                        <input class="form-check-input" type="checkbox" name="recommened[]" value="{{ $version->id }}"
-                            @checked($version->recommened)>
-                    </div>
-                    <div class="col">
-                        <input class="form-check-input" type="checkbox" name="demo[]" value="{{ $version->id }}"
-                            @checked($version->demo)>
-                    </div>
-                </div>
+        @method('PUT')
+        <datalist id="tagnames">
+            @foreach ($tags as $tag)
+                <option value="{{ $tag->name }}">{{ $tag->name }}</option>
             @endforeach
+        </datalist>
 
-            <div class="row mb-4">
-                <div class="col">
-                    <label class="mb-2" for="editor-description">
-                        Description <span class="fa-solid fa-info btn btn-primary rounded-pill ms-2"
-                            data-bs-toggle="tooltip"
-                            data-bs-title="Type '/' in the editor box to call the context menu!"></span>
-                    </label>
-                    <div id="editor-description"></div>
-                </div>
-            </div>
+        <datalist id="authors">
+            @foreach ($authors as $author)
+                <option value="{{ $author->name }}">{{ $author->name }}</option>
+            @endforeach
+        </datalist>
 
-            <div class="row mb-3">
-                <div class="col">
-                    <button class="form-control btn btn-primary" type="submit">Submit</button>
-                </div>
-            </div>
-            <input type="hidden" name="description" id="description" value="{{ $hack->description }}">
-        </form>
-
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            Here you can manage your promotional images!
-                        </p>
-                        <p>
-                            To get rid of an already existing image, just
-                            press on the trashcan button on the top right corner of the image you wish to delete!
-                        </p>
-                        <div class="row">
-                            @foreach ($hack->images as $image)
-                                <form class="col mb-4" action="{{ route('image.destroy', $image) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <div class="position-relative d-inline-block">
-                                        <img src="{{ Storage::url($image->filename) }}" height="128">
-                                        <button class="btn btn-danger position-absolute top-0 end-0" type="submit">
-                                            <span class="fa-solid fa-trash"></span>
-                                        </button>
-                                    </div>
-                                </form>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
+        <h2>General Data about the Hack</h2>
+        <div class="row mb-3">
+            <label for="romhack[name]" class="col-sm-2 col-form-label">
+                Hackname
+            </label>
+            <div class="col-sm-10">
+                <input type="text" name="romhack[name]"
+                    class="form-control @error('romhack.name') is-invalid @enderror"
+                    value="{{ $hack->name ?? old('romhack.name') }}">
+                @error('romhack.name')
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
         </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label" for="tagname[]">
+                Tags
+                <span data-bs-toggle="tooltip"
+                    data-bs-title="Only enter one Tag per Input Field. Press the Enter Key to add it.">
+                    <x-bi-info-circle />
+                </span>
+            </label>
+            <div class="col-sm-10">
+                <div class="mb-1"></div>
+                <input type="text" class="form-control mb-2" list="tagnames" id="romhack[tag][name]">
+            </div>
+        </div>
+
+        @can('megapack', App\Models\Romhack::class)
+            <div class="col-sm-10 offset-sm-2 mb-3">
+                <div class="form-check">
+                    <label for="megapack" class="form-check-label">Megapack</label>
+                    <input type="hidden" name="romhack[megapack]" class="form-check-input" value="0">
+                    <input type="checkbox" name="romhack[megapack]" class="form-check-input" value="1"
+                        {{ $hack->megapack ? 'checked' : '' }}>
+                    @error('romhack.megapack')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        @endcan
+        <div class="row mb-3">
+            <label for="editor" class="col-sm-2 col-form-label">
+                Description
+            </label>
+            <div class="col-sm-10">
+                <div class="form-control @error('romhack.description.blocks') is-invalid @enderror" id="editor">
+                    @csrf
+                </div>
+                @error('romhack.description.blocks')
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
+        <hr />
+
+        <div class="row mb-3">
+            <h2>Promotional Media</h2>
+            <div class="col">
+                <label for="romhack[videolink]">Video Link</label>
+                <input type="url" name="romhack[videolink]"
+                    class="form-control @error('romhack.videolink') is-invalid @enderror" id="videolink"
+                    value="{{ $hack->videolink }}">
+                @error('romhack.videolink')
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="col">
+                <label for="romhack[image][]">Images</label>
+                <input type="file" name="romhack[image][]" id="image[]"
+                    class="form-control @error('romhack.image') is-invalid @enderror" multiple>
+                @error('romhack.image')
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+                <button class="form-control btn btn-primary" type="submit" id="submissionButton">Submit</button>
+            </div>
+        </div>
+        <input type="hidden" name="romhack[description]" id="romhack.description"
+            value="{{ json_encode($hack->description) ?? '[]' }}">
+
+        @if (!is_null(old('romhack.version.author.name')))
+            @foreach (old('romhack.version.author.name') as $author)
+                <input name="romhack[version][author][name][]" type="hidden" value="{{ $author }}" />
+            @endforeach
+        @endif
+
+        @foreach ($hack->romhacktags as $tag)
+            <input name="romhack[tag][name][]" type="hidden" value="{{ $tag->name }}" />
+        @endforeach
+
+    </form>
     </div>
 </x-layout>

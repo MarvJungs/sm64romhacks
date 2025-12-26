@@ -1,15 +1,31 @@
-@import url("./bootstrap/bootstrap.css");
-@import url("./fontawesome/fontawesome.css");
-@import url("./fontawesome/brands.css");
-@import url("./fontawesome/solid.css");
-@import url("./streams.css");
-@import url("./megapack.css");
-@import url('./editorjs.css');
-@import url('./RomPatcher.css');
-@import url('/node_modules/flag-icons/css/flag-icons.min.css');
+@import '/node_modules/bootstrap/scss/bootstrap.scss';
+@import './editor.css';
+@import './patcher.css';
+@import './streams.css';
 
-label:has(+ [required])::after {
-    content: ' *';
+.btn-twitch {
+    background-color: #8342e8;
+}
+
+.btn-twitch:hover {
+    background-color: #8b4af3;
+}
+
+.btn-discord {
+    background-color: #505ddc;
+}
+
+.btn-discord:hover {
+    background-color: #5563df;
+}
+
+body {
+    font-family: "Comic Sans MS";
+}
+
+a, .nav-link {
+    color: #00bc8c;
+    text-decoration: none;
 }
 
 a:hover {
@@ -17,21 +33,30 @@ a:hover {
     text-decoration: underline;
 }
 
-a {
-    color: #00bc8c;
-    text-decoration: none;
+.move.ltr {
+    transition: right 5s;
+    right: 100%;
 }
 
-.nav-link {
-    color: #00bc8c;
-    text-decoration: none;
+.movingImage {
+    position: absolute;
+    right: 0;
 }
 
-.nav-link:hover {
+
+#hacksTable {
+    position: relative;
+}
+
+.button-pill {
+    background-color: transparent;
+    border: none;
+}
+
+.line-break {
+    white-space: pre-wrap;
+}
+
+.bi {
     color: white;
-    text-decoration: none;
-}
-
-.clickable {
-    cursor: pointer;
 }

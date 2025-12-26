@@ -3,33 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Newspost;
 use App\Models\Version;
-use App\Models\News;
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Facades\OpenGraph;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class HomeController extends Controller
 {
-    public function index()
+    /**
+     * Returns the Homepage
+     * 
+     * @return View
+     */
+    public function index(): View
     {
-        $news = News::orderByDesc('created_at')->take(3)->get();
-        $versions = Version::whereHas('hack', function (Builder $query) {
-            $query->where('verified', '=', 1);
-        })->orderByDesc('created_at')->take(10)->get();
-        $comments = Comment::orderByDesc('created_at')->take(5)->get();
+        $newsposts = Newspost::orderByDesc('created_at')->limit(5)->get();
+        $comments = Comment::orderByDesc('created_at')->limit(5)->get();
+        $versions = Version::orderByDesc('created_at')->limit(5)->get();
 
-        SEOMeta::setTitle('Home');
+        return view(
+            'welcome',
+            [
+                'newsposts' => $newsposts,
+                'comments' => $comments,
+                'versions' => $versions
+            ]
+        );
+    }
 
-        OpenGraph::setTitle('Home');
-        OpenGraph::setDescription('A quick overview of the recent activities related to our community!');
-        OpenGraph::setType('Articles');
+    public function tos()
+    {
+        return view('terms-of-service');
+    }
 
-
-        return view('home.index', [
-            'news' => $news,
-            'versions' => $versions,
-            'comments' => $comments,
-        ]);
+    public function privacy()
+    {
+        return view('privacy-policy');
     }
 }

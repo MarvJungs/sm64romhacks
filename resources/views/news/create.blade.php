@@ -1,38 +1,32 @@
 <x-layout>
-    <h1 class="mb-4">Create New News</h1>
-    <form id="newsForm" action={{ route('news.store') }} method="post">
-        @csrf
-        <div class="row mb-2">
-            <div class="col">
-                <label class="form-label" for="title">Title *</label>
-            </div>
+    <h1>Create a Newspost</h1>
+    <p>Here you can create a Newspost!</p>
+
+    <form method="post" id="createNewspost">
+        <div class="mb-3">
+            <label class="form-label" for="title">Title</label>
+            @error('title')
+                <p class="text-danger mt-1">{{ $message }}</p>
+            @enderror
+            <input class="form-control @error('title') is-invalid @enderror" name="title" type="text" value="{{old('title')}}" />
+            <p class="form-text">This is the title of the newspost.</p>
         </div>
-        <div class="row mb-4">
-            <div class="col">
-                <input class="form-control" type="text" name="title" id="title" required>
-            </div>
-        </div>
-        <div class="form check mb-4">
-            <label class="form-check-label pe-2" for="important">
-                Important
-            </label>
-            <input class="form-check-input" type="checkbox" name="important" id="important">
-        </div>
-        <div class="row mb-2">
-            <div class="col">
-                <label for="text">Text *</label>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col">
-                <div id="editor-text"></div>
+
+        <div class="mb-3">
+            <label class="form-label" for="text">Text</label>
+            <p class="form-text">This is the text displayed on the post</p>
+            @error('text')
+                <p class="text-danger mt-1">{{ $message }}</p>
+            @enderror
+            @error('text.blocks')
+                <p class="text-danger mt-1">{{ $message }}</p>
+            @enderror
+            <div name="text" class="form-control" id="newsEditor">
+                @csrf
             </div>
         </div>
 
-        <div class="row justify-content-end mb-4">
-            <button class="btn btn-primary" type="submit">Send News</button>
-        </div>
-
-        <input type="hidden" name="text" id="text">
+        <input type="hidden" name="text" id="text" value="{{json_encode(old('text'))}}" />
+        <button class="btn btn-primary" type="button" id="newsSubmitButton">Save Newspost</button>
     </form>
 </x-layout>

@@ -2,72 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Author;
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Facades\OpenGraph;
-use App\Models\Role;
+use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        $roles = Role::all()->pluck('name', 'id')->toArray();
-        return view('users.index', [
-            'users' => $users,
-            'roles' => $roles,
-        ]);
+        $users = User::orderByDesc('created_at')->paginate(100);
+        return view('admin.users.index', ['users' => $users]);
     }
 
     public function show(User $user)
     {
-        SEOMeta::setTitle($user->global_name);
+        $author = Author::where(['user_id' => $user->id])->first();
+        return view('users.profile', ['user' => $user, 'author' => $author]);
 
-        OpenGraph::setTitle($user->global_name);
-        OpenGraph::setType('Profile');
-        OpenGraph::addImage($user->getAvatar());
-
-        $roles = Role::all()->pluck('name', 'id')->toArray();
-        $guildMemberRoles = $user->getRoles();
-
-        return view('users.show', [
-            'user' => $user,
-            'versions' => $user->author?->versions,
-            'comments' => $user->comments->sortByDesc('created_at'),
-            'guildMemberRoles' => $guildMemberRoles,
-            'roles' => $roles,
-        ]);
     }
 
-    public function manage()
+    public function destroy(User $user)
     {
-        $allUsers = User::all()->sortBy('global_name');
-        $allAuthors = Author::all()->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE);
-
-        return view('users.manage', [
-            'allUsers' => $allUsers,
-            'allAuthors' => $allAuthors
-        ]);
+        $user->delete();
+        return redirect(route('admin.users.index'));
     }
 
-    public function update(UpdateUserRequest $request)
+    public function roles(User $user)
     {
-        $user = User::find($request->user_id);
-        $user->update([
-            'role_id' => $request->role_id
-        ]);
-
-        return redirect(route('users.index'));
+        $roles = Role::where('priority', '>', 1)->get();
+        return view('admin.users.roles', ['roles' => $roles, 'user' => $user]);
     }
 
-    public function assignAuthorToUser(UpdateUserRequest $request)
+    public function setRoles(Request $request, User $user)
     {
-        $author = Author::find($request->author_id);
-        $author->update([
-            'user_id' => $request->user_id
-        ]);
-        return redirect(route('home.index'))->with('success', 'assigned author successfully');
+        $roles = collect($request->get('roles'));
+        if ($user->hasRole('admin')) {
+            $roles = $roles->merge(['Admin']);
+        }
+        $ids = $roles->map(fn($role) => Role::where('name', '=', $role)->first());
+        $user->roles()->detach();
+        $user->roles()->attach($ids);
+        return redirect(route('admin.users.index'));
     }
 }

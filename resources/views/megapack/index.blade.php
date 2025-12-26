@@ -7,11 +7,11 @@
     </p>
     <p>
         <em>Contents of this page were last updated: <span
-                class='time'>{{ date('Y-m-d H:i:s', Storage::lastModified('megapack/Grand Rom Hack Megapack 2024 (Summer Edition).zip')) }}</span></em>
+                class='time'>{{ date('Y-m-d H:i:s', Storage::disk('public')->lastModified('megapack/Grand ROM Hack Megapack 2025 (Summer Edition).zip')) }}</span></em>
     </p>
     <div class="btn-group-lg megapackButtons" role="group">
-        <a class="btn btn-primary" href="/megapack/download?type=normal">Download Megapack</a>
-        <a class="btn btn-danger" href="/megapack/download?type=kaizo">Download KAIZO Megapack</a>
+        <a class="btn btn-primary" href="{{ asset('storage/megapack/Grand ROM Hack Megapack 2025 (Summer Edition).zip') }}">Download Megapack</a>
+        <a class="btn btn-danger" href="{{ asset('storage/megapack/Grand SM64 Kaizo Megapack 2025 (Summer Edition).zip') }}">Download KAIZO Megapack</a>
     </div>
 
     <div class="d-flex justify-content-center">
@@ -50,18 +50,18 @@
                     @foreach ($megapack[$difficulty] as $hack)
                         <tr>
                             <td>
-                                <a href="{{ route('hacks.show', $hack) }}">
+                                <a href="{{ route('hack.show', $hack) }}">
                                     {{ $hack->name }}
                                 </a>
                             </td>
                             <td>
-                                {!! $hack->getAuthorList() !!}
+                                {{ $hack->versions->flatMap->authors->pluck('name')->unique()->join(', ') }}
                             </td>
                             <td>
-                                {{ $hack->getStarcount() }}
+                                {{ $hack->versions->max('starcount') }}
                             </td>
                             <td>
-                                {{ $hack->getReleaseDate() }}
+                                {{ $hack->versions->sortBy('releasedate')->pluck('releasedate')->first() }}
                             </td>
                             <td>
                                 {{ Str::ucfirst($difficulty) }}
@@ -100,18 +100,18 @@
                 @foreach ($megapack['kaizo'] as $hack)
                     <tr>
                         <td>
-                            <a href="{{ route('hacks.show', $hack) }}">
+                            <a href="{{ route('hack.show', $hack) }}">
                                 {{ $hack->name }}
                             </a>
                         </td>
                         <td>
-                            {!! $hack->getAuthorList() !!}
+                            {{ $hack->versions->flatMap->authors->pluck('name')->unique()->join(', ') }}
                         </td>
                         <td>
-                            {{ $hack->getStarcount() }}
+                            {{ $hack->versions->max('starcount') }}
                         </td>
                         <td>
-                            {{ $hack->getReleaseDate() }}
+                            {{ $hack->versions->sortBy('releasedate')->pluck('releasedate')->first() }}
                         </td>
                         <td>
                             Kaizo

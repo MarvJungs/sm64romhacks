@@ -13,7 +13,7 @@ class VersionPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -21,13 +21,7 @@ class VersionPolicy
      */
     public function update(User $user, Version $version): bool
     {
-        $authors = $version->authors->toArray();
-        foreach ($authors as $author) {
-            if ($author['user_id'] == $user->id) {
-                return true;
-            }
-        }
-        return $user->isAdmin() || $user->isModerator() || $user->isSiteHelper();
+        return $version->authors()->pluck('user_id')->contains($user->id) || $user->hasRole('owner') || $user->hasRole('admin') || $user->hasRole('moderator');
     }
 
     /**
@@ -35,14 +29,6 @@ class VersionPolicy
      */
     public function delete(User $user, Version $version): bool
     {
-        return $user->isAdmin() || $user->isModerator() || $user->isSiteHelper();
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Version $version): bool
-    {
-        return $this->delete($user, $version);
+        return $version->authors()->pluck('user_id')->contains($user->id) || $user->hasRole('owner') || $user->hasRole('admin') || $user->hasRole('moderator');
     }
 }

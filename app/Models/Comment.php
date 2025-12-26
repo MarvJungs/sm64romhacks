@@ -2,27 +2,45 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Comment extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
+        'romhack_id',
         'user_id',
-        'hack_id',
-        'title',
         'text'
     ];
-
-    public function hack()
+    
+    /**
+     * Summary of romhack
+     * 
+     * @return BelongsTo<Romhack, Comment>
+     */
+    public function romhack(): BelongsTo
     {
-        return $this->belongsTo(Hack::class);
+        return $this->belongsTo(Romhack::class);
     }
 
-    public function user()
+    /**
+     * Summary of user
+     * 
+     * @return BelongsTo<User, Comment>
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Summary of rating
+     * 
+     * @return HasMany<Commentrating, Comment>
+     */
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Commentrating::class);
     }
 }

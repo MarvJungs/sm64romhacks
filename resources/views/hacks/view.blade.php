@@ -1,130 +1,108 @@
 <x-layout>
-    <h1 class="text-center">
-        <span class="text-decoration-underline">
+    <div class="d-flex justify-content-between align-items-center gap-3">
+        <h1 class="text-decoration-underline">
             {{ $hack->name }}
-        </span>
-        @if (Auth::check() &&
-                (Auth::user()->isAuthorOfHack($hack) ||
-                    Auth::user()->isAdmin() ||
-                    Auth::user()->isModerator() ||
-                    Auth::user()->isSiteHelper()))
-            &nbsp;<a href="{{ route('hacks.edit', $hack) }}" class="btn btn-primary">
-                <span class="fa-solid fa-pen"></span> Edit Hack
-            </a> &nbsp;
-            <a href="{{ route('version.create', $hack) }}" class="btn btn-success">
-                <span class="fa-solid fa-plus"></span> Add Version
-            </a>
+        </h1>
+
+        <div>
+            @can('update', $hack)
+                <a href="{{ route('hack.edit', ['hack' => $hack]) }}" class="btn btn-secondary" data-bs-toggle="tooltip"
+                    data-bs-placement="top" data-bs-title="Edit Hack">
+                    <x-bi-pencil />
+                </a>
+            @endcan
+
+            @can('delete', $hack)
+                <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete Hack">
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-confirm"
+                        data-bs-route="{{ route('hack.destroy', ['hack' => $hack]) }}" data-bs-method="DELETE">
+                        <x-bi-trash />
+                    </button>
+                </span>
+            @endcan
+            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+                data-bs-title="Copy Link"
+                onclick="navigator.clipboard.writeText('{{ route('hack.show', ['hack' => $hack]) }}')"><x-bi-clipboard /></button>
+        </div>
+    </div>
+
+    <section id="tags">
+        @foreach ($hack->romhacktags as $tag)
+            <span class="badge rounded-pill text-bg-secondary">{{ $tag->name }}</span>
+        @endforeach
+    </section>
+    <hr />
+
+    <section id="description">
+        @if (!is_null($hack->description) && in_array('blocks', $hack->description))
+            <x-editor-js :blocks="$hack->description['blocks']" />
         @endif
-    </h1>
+    </section>
 
-    <x-table.versions.table :versions="$versions" />
-    
-    @if ($hack->description && $hack->description != '[]')
-        <div class="card">
-            <div class="card-body">
-                @foreach (json_decode($hack->description) as $item)
-                    {!! parseEditorText($item) !!}
-                @endforeach
-            </div>
-        </div>
-    @endif
-    <div class="row mb-4">
-        <div class="col">
-            @if ($hack->videolink && !empty($_COOKIE['hasConsent']) && $_COOKIE['hasConsent'] == true)
-                <iframe
-                    src="https://www.youtube.com/embed/{{ getYoutubeVideoID($hack->videolink) }}"
-                    width="560" height="315" title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            @else
-                <svg class="mb-4" width="560" height="315" xmlns="http://www.w3.org/2000/svg">
-                    <rect height="100%" width="100%" fill="#1d1d1d" />
-                    <image width="160" height="90" x="200" y="72" href="{{ env('APP_URL') }}/images/logo.png" />
-                    <text x="95" y="190" fill="#aeaeae" font-size="36">The Video is unavailable.</text>
-                    <text x="5" y="236" fill="#6c6c6c">HTTP ERROR 502: PUP KAG DQMXXK FTUZW U IAGXP BGF HMXGQMNXQ</text>
-                    <text x="5" y="256" fill="#6c6c6c">UZRADYMFUAZ TQDQ? FTMF IAGXP NQ DQMXXK RGZZK NGF FTUE</text>
-                    <text x="5" y="276" fill="#6c6c6c">YQEEMSQ DQMXXK AZXK QJUEFE FA SUHQ KAG EXQQBXQEE ZUSTFE</text>
-                    <text x="5" y="296" fill="#6c6c6c">MNAGF ITMF FTUE YQEEMSQ OAGXP YQMZ.</text>
-                </svg>
-            @endif
-        </div>
-        <div class="col">
-            @if (sizeof($hack->images) > 0)
-                <div class="carousel slide carousel-fade" id="imageSlider" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @foreach ($hack->images as $index => $image)
-                            @if ($index == 0)
-                                <div class="carousel-item active" data-bs-interval="5000">
-                                @else
-                                    <div class="carousel-item" data-bs-interval="5000">
-                            @endif
-                            <img src="{{ Storage::url($image->filename) }}" class="d-block w-100" height="315">
-                    </div>
-            @endforeach
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#imageSlider" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#imageSlider" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    </div>
-@else
-    <svg class="mb-4" width="560" height="315" xmlns="http://www.w3.org/2000/svg">
-        <rect height="100%" width="100%" fill="#1d1d1d" />
-        <image width="160" height="90" x="200" y="72" href="{{ env('APP_URL') }}/images/logo.png" />
-        <text x="95" y="190" fill="#aeaeae" font-size="36">No Images are available.</text>
-
-        <text x="5" y="236" fill="#6c6c6c">HTTP ERROR 404: O UO IWM ISOH HZE POP EHSQD HLKZV YJCK RNMP </text>
-        <text x="5" y="256" fill="#6c6c6c">EJEZNB BH AWANV LNZS XWWC FS T CWGCLT PTTJ NZEZOEG OW MCQL JZM </text>
-        <text x="5" y="276" fill="#6c6c6c">NVRZ. Q AMUE JZM KEJJGXB YHTD DOKTGM KGIDWP STU NJE ZM TUEDAJV </text>
-        <text x="5" y="296" fill="#6c6c6c">OM AHKJTSTFM. MNAGF ITMF FTUE YQEEMSQ OAGXP YQMZ.</text>
-    </svg>
-    @endif
-    </div>
+    <x-romhack.versions-table :hack="$hack" />
 
     <hr />
 
-    @if (Auth::check())
-        <div class="accordion mb-4" id="accordion">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#addComment" aria-expanded="false" aria-controls="addComment">
-                        Add Comment
-                    </button>
-                </h2>
-                <div id="addComment" class="accordion-collapse collapse" data-bs-parent="#accordion">
-                    <div class="accordion-body">
-
-                        <form action="/comments" method="post">
-                            @csrf
-                            <input type="hidden" name="hack_id" value="{{ $hack->id }}">
-                            <label for="title">Title</label>
-                            <input class="form-control mb-4" type="text" name="title" id="title" required>
-
-                            <label for="text">Comment</label>
-                            <textarea class="form-control mb-4" name="text" id="text" cols="15" rows="10" required></textarea>
-
-                            <button class="btn btn-primary w-100 mb-4" type="submit">Save Comment</button>
-                        </form>
+    <div class="row text-center align-items-center">
+        <section class="col ratio ratio-4x3 border" id="video">
+            @if ($hack->videolink)
+                <p class="top-50">{{ $hack->videolink }}</p>
+            @else
+                <p class="top-50">No video found :(</p>
+            @endif
+        </section>
+        <section class="col ratio ratio-4x3 border" id="images">
+            @if (sizeof($hack->images) > 0)
+                <div class="carousel carousel-dark slide" id="diashow" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        @for ($i = 0; $i < sizeof($hack->images); $i++)
+                            <button type="button" data-bs-target="diashow" data-bs-slide-to="{{ $i }}"
+                                @if ($i == 0) class="active" aria-current="true" @endif
+                                aria-label="Slide {{ $i + 1 }}"></button>
+                        @endfor
+                    </div>
+                    <div class="carousel-inner">
+                        @foreach ($hack->images as $index => $image)
+                            <div
+                                class="carousel-item position-relative @if ($index == 0) active @endif">
+                                @can('update', $hack)
+                                    <button type="button" class="btn btn-danger position-absolute top-0 end-0"
+                                        data-bs-toggle="modal" data-bs-target="#modal-confirm"
+                                        data-bs-route="{{ route('image.destroy', ['hack' => $hack, 'image' => $image]) }}"
+                                        data-bs-method="DELETE"><x-bi-trash-fill /></button>
+                                @endcan
+                                <img src="{{ Storage::url($image->filename) }}" class="d-block w-100" width="640"
+                                    height="480">
+                            </div>
+                        @endforeach
                     </div>
                 </div>
-            </div>
-        </div>
-    @endif
+            @else
+                <p class="top-50">No Images found :(</p>
+            @endif
+        </section>
+    </div>
+    <hr />
 
-    <div id="comments">
-        <h2>Comments</h2>
-        @if (sizeof($comments) > 0)
-            @foreach ($comments as $comment)
-                <x-cards.hack-comment :comment="$comment" />
+    @auth
+        <h2>Add A Comment</h2>
+        <form method="post" action="{{ route('comment.create', ['hack' => $hack]) }}">
+            @csrf
+            <textarea class="form-control mb-2" name="text" rows="5"></textarea>
+            <button class="btn btn-primary" type="submit">Post Comment</button>
+        </form>
+        <hr />
+    @endauth
+
+    <section id="comments">
+        <h1 class="text-decoration-underline" id="comments">Comments</h1>
+        @if ($hack->comments->count() > 0)
+            @foreach ($hack->comments->sortByDesc('created_at') as $comment)
+                <x-romhack-comment :comment="$comment" />
             @endforeach
         @else
-            <em>No Comments found</em>
+            <p>There are no comments for this hack. Be the first one to leave one :) (must be logged in for
+                this)</p>
         @endif
-    </div>
+    </section>
 </x-layout>
