@@ -31,7 +31,10 @@ jobs:
           server-dir: ${{secrets.ftp_server_dir}}
           log-level: verbose
         
-      - name: Setup and run composer
-        uses: php-actions/composer@v6
+      - name: Setup
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          php_version: "8.2"
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.SSH_USER}}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          script: whoami
