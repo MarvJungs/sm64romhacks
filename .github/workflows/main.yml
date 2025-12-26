@@ -32,9 +32,9 @@ jobs:
           log-level: verbose
         
       - name: Setup
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.SSH_USER}}
           key: ${{secrets.SSH_PRIVATE_KEY}}
-          script: setup.sh
+          script_path: setup.sh
