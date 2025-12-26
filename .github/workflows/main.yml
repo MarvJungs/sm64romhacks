@@ -8,6 +8,7 @@ jobs:
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v5
+      
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -15,14 +16,11 @@ jobs:
           node-version-file: package.json
           check-latest: true
           cache-dependency-path: package-lock.json
+      
       - name: Build Project
-        run: | 
+        run: |
           npm install
           npm run build
-      - name: Setup and run composer
-        uses: php-actions/composer@v6
-        with:
-          php_version: "8.2"
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -32,3 +30,8 @@ jobs:
           password: ${{ secrets.ftp_password }}
           server-dir: ${{secrets.ftp_server_dir}}
           log-level: verbose
+        
+      - name: Setup and run composer
+        uses: php-actions/composer@v6
+        with:
+          php_version: "8.2"
