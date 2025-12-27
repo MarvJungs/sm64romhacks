@@ -10,82 +10,83 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Generate .env
-        run: |
-          echo APP_Name=${{secrets.APP_NAME}} > .env
-          echo APP_ENV=${{secrets.APP_ENV}} >> .env
-          echo APP_KEY=${{secrets.APP_KEY}} >> .env
-          echo APP_DEBUG=${{secrets.APP_DEBUG}} >> .env
-          echo APP_URL=${{secrets.APP_URL}} >> .env
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_APP_Name: ${{secrets.APP_NAME}}
+          envkey_APP_ENV: ${{secrets.APP_ENV}} 
+          envkey_APP_KEY: ${{secrets.APP_KEY}} 
+          envkey_APP_DEBUG: ${{secrets.APP_DEBUG}} 
+          envkey_APP_URL: ${{secrets.APP_URL}} 
 
-          echo APP_LOCALE=${{secrets.APP_LOCALE}} >> .env
-          echo APP_FALLBACK_LOCALE=${{secrets.APP_FALLBACK_LOCALE}} >> .env
-          echo APP_FAKER_LOCALE=${{secrets.APP_FAKER_LOCALE}} >> .env
+          envkey_APP_LOCALE: ${{secrets.APP_LOCALE}} 
+          envkey_APP_FALLBACK_LOCALE: ${{secrets.APP_FALLBACK_LOCALE}} 
+          envkey_APP_FAKER_LOCALE: ${{secrets.APP_FAKER_LOCALE}} 
 
-          echo APP_MAINTENANCE_DRIVER=${{secrets.APP_MAINTENANCE_DRIVER}} >> .env
-          echo # APP_MAINTENANCE_STORE=${{secrets.APP_MAINTENANCE_STORE}} >> .env
+          envkey_APP_MAINTENANCE_DRIVER: ${{secrets.APP_MAINTENANCE_DRIVER}} 
+          # envkey_APP_MAINTENANCE_STORE: ${{secrets.APP_MAINTENANCE_STORE}} 
 
-          echo PHP_CLI_SERVER_WORKERS=${{secrets.PHP_CLI_SERVERS_WORKERS}} >> .env
+          envkey_PHP_CLI_SERVER_WORKERS: ${{secrets.PHP_CLI_SERVERS_WORKERS}} 
 
-          echo BCRYPT_ROUNDS=1${{secrets.BCRYPT_ROUNDS}} >> .env
+          envkey_BCRYPT_ROUNDS: 1${{secrets.BCRYPT_ROUNDS}} 
 
-          echo LOG_CHANNEL=${{secrets.LOG_CHANNEL}} >> .env
-          echo LOG_STACK=${{secrets.LOG_STACK}} >> .env
-          echo LOG_DEPRECATIONS_CHANNEL=${{secrets.LOG_DEPRECATIONS_CHANNEL}} >> .env
-          echo LOG_LEVEL=${{secrets.LOG_LEVEL}} >> .env
+          envkey_LOG_CHANNEL: ${{secrets.LOG_CHANNEL}} 
+          envkey_LOG_STACK: ${{secrets.LOG_STACK}} 
+          envkey_LOG_DEPRECATIONS_CHANNEL: ${{secrets.LOG_DEPRECATIONS_CHANNEL}} 
+          envkey_LOG_LEVEL: ${{secrets.LOG_LEVEL}} 
 
-          echo DB_CONNECTION=${{secrets.DB_CONNECTION}} >> .env
-          echo DB_HOST=${{secrets.DB_HOST}} >> .env
-          echo DB_PORT=${{secrets.DB_PORT}} >> .env
-          echo DB_DATABASE=${{secrets.DB_DATABASE}} >> .env
-          echo DB_USERNAME=${{secrets.DB_USERNAME}} >> .env
-          echo DB_PASSWORD=${{secrets.DB_PASSWORD}} >> .env
+          envkey_DB_CONNECTION: ${{secrets.DB_CONNECTION}} 
+          envkey_DB_HOST: ${{secrets.DB_HOST}} 
+          envkey_DB_PORT: ${{secrets.DB_PORT}} 
+          envkey_DB_DATABASE: ${{secrets.DB_DATABASE}} 
+          envkey_DB_USERNAME: ${{secrets.DB_USERNAME}} 
+          envkey_DB_PASSWORD: ${{secrets.DB_PASSWORD}} 
 
-          echo SESSION_DRIVER=${{secrets.SESSION_DRIVER}} >> .env
-          echo SESSION_LIFETIME=${{secrets.SESSION_LIFETIME}} >> .env
-          echo SESSION_ENCRYPT=${{secrets.SESSION_ENCRYPT}} >> .env
-          echo SESSION_PATH=${{secrets.SESSION_PATH}} >> .env
-          echo SESSION_DOMAIN=${{secrets.DOMAIN}} >> .env
+          envkey_SESSION_DRIVER: ${{secrets.SESSION_DRIVER}} 
+          envkey_SESSION_LIFETIME: ${{secrets.SESSION_LIFETIME}} 
+          envkey_SESSION_ENCRYPT: ${{secrets.SESSION_ENCRYPT}} 
+          envkey_SESSION_PATH: ${{secrets.SESSION_PATH}} 
+          envkey_SESSION_DOMAIN: ${{secrets.DOMAIN}} 
 
-          echo BROADCAST_CONNECTION=${{secrets.BROADCAST_CONNECTION}} >> .env
-          echo FILESYSTEM_DISK=${{secrets.FILESYSTEM_DISK}} >> .env
-          echo QUEUE_CONNECTION=${{secrets.QUEUE_CONNECTION}} >> .env
+          envkey_BROADCAST_CONNECTION: ${{secrets.BROADCAST_CONNECTION}} 
+          envkey_FILESYSTEM_DISK: ${{secrets.FILESYSTEM_DISK}} 
+          envkey_QUEUE_CONNECTION: ${{secrets.QUEUE_CONNECTION}} 
 
-          echo CACHE_STORE=${{secrets.CACHE_STORE}} >> .env
-          echo # CACHE_PREFIX=${{secrets.CACHE_PREFIX}} >> .env
+          envkey_CACHE_STORE: ${{secrets.CACHE_STORE}} 
+          # envkey_CACHE_PREFIX: ${{secrets.CACHE_PREFIX}} 
 
-          echo MEMCACHED_HOST=${{secrets.MEMCACHED_HOST}} >> .env
+          envkey_MEMCACHED_HOST: ${{secrets.MEMCACHED_HOST}} 
 
-          echo REDIS_CLIENT=${{secrets.REDIS_CLIENT}} >> .env
-          echo REDIS_HOST=${{secrets.REDIS_HOST}} >> .env
-          echo REDIS_PASSWORD=${{secrets.REDIS_PASSWORD}} >> .env
-          echo REDIS_PORT=${{secrets.REDIS_PORT}} >> .env
+          envkey_REDIS_CLIENT: ${{secrets.REDIS_CLIENT}} 
+          envkey_REDIS_HOST: ${{secrets.REDIS_HOST}} 
+          envkey_REDIS_PASSWORD: ${{secrets.REDIS_PASSWORD}} 
+          envkey_REDIS_PORT: ${{secrets.REDIS_PORT}} 
 
-          echo MAIL_MAILER=${{secrets.MAIL_MAILER}} >> .env
-          echo MAIL_SCHEME=${{secrets.MAIL_SCHEME}} >> .env
-          echo MAIL_HOST=${{secrets.MAIL_HOST}} >> .env
-          echo MAIL_PORT=${{secrets.MAIL_PORT}} >> .env
-          echo MAIL_USERNAME=${{secrets.MAIL_USERNAME}} >> .env
-          echo MAIL_PASSWORD=${{secrets.MAIL_PASSWORD}} >> .env
-          echo MAIL_FROM_ADDRESS=${{secrets.MAIL_FROM_ADDRESS}} >> .env
-          echo MAIL_FROM_NAME="${APP_NAME}" >> .env
+          envkey_MAIL_MAILER: ${{secrets.MAIL_MAILER}} 
+          envkey_MAIL_SCHEME: ${{secrets.MAIL_SCHEME}} 
+          envkey_MAIL_HOST: ${{secrets.MAIL_HOST}} 
+          envkey_MAIL_PORT: ${{secrets.MAIL_PORT}} 
+          envkey_MAIL_USERNAME: ${{secrets.MAIL_USERNAME}} 
+          envkey_MAIL_PASSWORD: ${{secrets.MAIL_PASSWORD}} 
+          envkey_MAIL_FROM_ADDRESS: ${{secrets.MAIL_FROM_ADDRESS}} 
+          envkey_MAIL_FROM_NAME: "${APP_NAME}" 
 
-          echo AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} >> .env
-          echo AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}} >> .env
-          echo AWS_DEFAULT_REGION=${{secrets.AWS_DEFAULT_REGION}} >> .env
-          echo AWS_BUCKET=${{secrets.AWS_BUCKET}} >> .env
-          echo AWS_USE_PATH_STYLE_ENDPOINT=${{secrets.AWS_USE_PATH_STYLE_ENDPOINT}} >> .env
+          envkey_AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}} 
+          envkey_AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}} 
+          envkey_AWS_DEFAULT_REGION: ${{secrets.AWS_DEFAULT_REGION}} 
+          envkey_AWS_BUCKET: ${{secrets.AWS_BUCKET}} 
+          envkey_AWS_USE_PATH_STYLE_ENDPOINT: ${{secrets.AWS_USE_PATH_STYLE_ENDPOINT}} 
 
-          echo VITE_APP_NAME="${APP_NAME}" >> .env
+          envkey_VITE_APP_NAME: "${APP_NAME}" 
 
-          echo DISCORD_CLIENT_ID=${{secrets.DISCORD_CLIENT_ID}} >> .env
-          echo DISCORD_CLIENT_SECRET=${{secrets.DISCORD_CLIENT_SECRET}} >> .env
-          echo DISCORD_REDIRECT_URI=${{secrets.DISCORD_REDIRECT_URI}} >> .env
-          echo DISCORD_AVATAR_GIF=${{secrets.DISCORD_AVATAR_GIF}} >> .env
-          echo DISCORD_EXTENSION_DEFAULT=${{secrets.DISCORD_EXTENSION_DEFAULT}} >> .env
+          envkey_DISCORD_CLIENT_ID: ${{secrets.DISCORD_CLIENT_ID}} 
+          envkey_DISCORD_CLIENT_SECRET: ${{secrets.DISCORD_CLIENT_SECRET}} 
+          envkey_DISCORD_REDIRECT_URI: ${{secrets.DISCORD_REDIRECT_URI}} 
+          envkey_DISCORD_AVATAR_GIF: ${{secrets.DISCORD_AVATAR_GIF}} 
+          envkey_DISCORD_EXTENSION_DEFAULT: ${{secrets.DISCORD_EXTENSION_DEFAULT}} 
 
-          echo TWITCH_CLIENT_ID=${{secrets.TWITCH_CLIENT_ID}} >> .env
-          echo TWITCH_CLIENT_SECRET=${{secrets.TWITCH_CLIENT_SECRET}} >> .env
-          echo TWITCH_REDIRECT_URI=${{secrets.TWITCH_REDIRECT_URI}} >> .env
+          envkey_TWITCH_CLIENT_ID: ${{secrets.TWITCH_CLIENT_ID}} 
+          envkey_TWITCH_CLIENT_SECRET: ${{secrets.TWITCH_CLIENT_SECRET}} 
+          envkey_TWITCH_REDIRECT_URI: ${{secrets.TWITCH_REDIRECT_URI}} 
 
       - name: Setup Node
         uses: actions/setup-node@v6
