@@ -116,4 +116,13 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.SSH_USER}}
           key: ${{secrets.SSH_PRIVATE_KEY}}
-          script: ./setup.sh
+          script: |
+            cd ${{secrets.DEPLOY_PATH}}
+            ${{secrets.PHP_PATH}} ${{secrets.COMPOSER_PATH}} install
+            ${{secrets.PHP_PATH}} artisan cache:clear
+            ${{secrets.PHP_PATH}} artisan config:clear
+            ${{secrets.PHP_PATH}} artisan migrate
+            ${{secrets.PHP_PATH}} artisan storage:link
+            
+
+
