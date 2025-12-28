@@ -124,6 +124,6 @@ jobs:
             cd ${{secrets.DEPLOY_PATH}}
             ${{secrets.PHP_PATH}} artisan optimize:clear
             ${{secrets.PHP_PATH}} ${{secrets.COMPOSER_PATH}} install
-            ${{secrets.PHP_PATH}} artisan migrate
+            ${{secrets.PHP_PATH}} artisan migrate --force
             ${{secrets.PHP_PATH}} artisan storage:link
             ${{secrets.PHP_PATH}} artisan optimize
