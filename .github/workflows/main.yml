@@ -118,11 +118,11 @@ jobs:
           key: ${{secrets.SSH_PRIVATE_KEY}}
           script: |
             cd ${{secrets.DEPLOY_PATH}}
-            ${{secrets.PHP_PATH}} composer install
+            ${{secrets.PHP_PATH}} ${{secrets.COMPOSER_PATH}} install
             ${{secrets.PHP_PATH}} artisan cache:clear
             ${{secrets.PHP_PATH}} artisan config:clear
             ${{secrets.PHP_PATH}} artisan migrate
             ${{secrets.PHP_PATH}} artisan storage:link
-
+            
 
 
