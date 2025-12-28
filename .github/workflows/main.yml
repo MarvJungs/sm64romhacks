@@ -1,13 +1,14 @@
 on:
   push:
     branches:
-      - master
+      - main
+      - ci-cd
 name: 🚀 Deploy website on push
 jobs:
   web-deploy:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
-    environment: staging
+    environment: production
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v5
