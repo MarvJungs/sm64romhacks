@@ -123,6 +123,7 @@ jobs:
             ${{secrets.PHP_PATH}} artisan config:clear
             ${{secrets.PHP_PATH}} artisan migrate
             ${{secrets.PHP_PATH}} artisan storage:link
+            ${{secrets.PHP_PATH}} artisan optimize
             
 
 
