@@ -1,7 +1,7 @@
 <?php
 /**
- * Export to PHP Array plugin for PHPMyAdmin
- * @version 5.2.2
+ * Export to PHP Array plugin for phpMyAdmin
+ * @version 5.2.3
  */
 
 /**
@@ -433,7 +433,7 @@ $hacks = array(
   array('id' => '33164d2e-0921-4bc8-9afd-f345799f4cf3','name' => 'Elf 64','slug' => 'elf-64','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2022-10-29 11:55:41','updated_at' => '2024-09-02 02:32:40'),
   array('id' => '331e6b5f-1f7c-4837-bf31-bd7fe3e466a3','name' => 'The Hole to Hyrule','slug' => 'the-hole-to-hyrule','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2020-08-30 03:58:13','updated_at' => '2024-09-02 02:32:40'),
   array('id' => '335e5780-7248-4c68-ad33-d2ce855d4936','name' => 'Super Mario 64 - Christmas Carnival Special','slug' => 'super-mario-64-christmas-carnival-special','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2020-03-21 07:35:03','updated_at' => '2024-09-02 02:32:40'),
-  // array('id' => '3360e607-7371-403b-a482-a3bbf7beb576','name' => 'Simples Nightmare','slug' => 'simples-nightmare','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2022-08-26 06:08:23','updated_at' => '2024-09-02 02:32:40'),
+  array('id' => '3360e607-7371-403b-a482-a3bbf7beb576','name' => 'Simples Nightmare','slug' => 'simples-nightmare','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2022-08-26 06:08:23','updated_at' => '2024-09-02 02:32:40'),
   array('id' => '337bde32-190e-42b2-8baf-ed33930642ef','name' => 'Beat Block Beatdown','slug' => 'beat-block-beatdown','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2021-07-18 09:33:22','updated_at' => '2024-09-02 02:32:40'),
   array('id' => '337eb3ea-da5c-4698-83d8-609cc5d00ea0','name' => 'Super Mario Galaxy 64','slug' => 'super-mario-galaxy-64','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2020-03-21 07:40:33','updated_at' => '2024-09-02 02:32:40'),
   array('id' => '337f5d4a-8f10-4f10-8dec-1a325ea82f32','name' => 'SM64 All Levels in One (Battle Royale)','slug' => 'sm64-all-levels-in-one-battle-royale','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2020-03-21 07:06:38','updated_at' => '2024-09-02 02:32:40'),
@@ -1724,7 +1724,6 @@ $hacks = array(
   array('id' => 'd4879862-877e-4139-9ede-9e3d37be69ce','name' => 'Play as Slender Man in Super Mario 64','slug' => 'play-as-slender-man-in-super-mario-64','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2020-03-21 07:15:10','updated_at' => '2024-09-02 02:32:43'),
   array('id' => 'd4c3ca71-ac10-4303-84d3-993750a25d4c','name' => 'Super Mario 64 Chaotic Anarchy','slug' => 'super-mario-64-chaotic-anarchy','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2021-08-21 01:47:27','updated_at' => '2024-09-02 02:32:43'),
   array('id' => 'd4e43ba3-fec4-4d49-a835-ba628ef03864','name' => 'jet eriksons GBJ Kingdom','slug' => 'jet-eriksons-gbj-kingdom','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2022-08-26 08:33:49','updated_at' => '2024-09-02 02:32:43'),
-  array('id' => 'd51bddc8-0fb3-4d76-877b-7a8645c0cd36','name' => 'Corroded Charklet City','slug' => 'corroded-charklet-city','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2021-10-30 04:16:41','updated_at' => '2024-09-02 02:32:43'),
   array('id' => 'd52ecb7a-ce40-45cf-97f9-5d9bd4f2de46','name' => 'Insanity Clause','slug' => 'insanity-clause','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2023-04-09 11:15:54','updated_at' => '2024-09-02 02:32:43'),
   array('id' => 'd582f795-6e12-4195-9e87-bafc55aee2bb','name' => 'Rhythm Collection 64','slug' => 'rhythm-collection-64','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2021-07-18 09:41:36','updated_at' => '2024-09-02 02:32:43'),
   array('id' => 'd5a302f3-41f9-45b1-b2ad-5c61f211ec71','name' => 'Super DK 64','slug' => 'super-dk-64','description' => NULL,'videolink' => NULL,'difficulty' => '0','peak' => '0','megapack' => '0','verified' => '1','rejected' => '0','created_at' => '2020-03-21 07:33:22','updated_at' => '2024-09-02 02:32:43'),
