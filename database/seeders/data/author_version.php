@@ -1,7 +1,7 @@
 <?php
 /**
- * Export to PHP Array plugin for PHPMyAdmin
- * @version 5.2.2
+ * Export to PHP Array plugin for phpMyAdmin
+ * @version 5.2.3
  */
 
 /**
@@ -1574,7 +1574,7 @@ $author_version = array(
   array('id' => '85','version_id' => '5f8938f6-ccdc-439d-8db3-2dc65abc1e9b','author_id' => '41'),
   array('id' => '38','version_id' => '5f8e7cec-c452-4805-ba58-cba9b98ef7ad','author_id' => '156'),
   array('id' => '3457','version_id' => '5f921ff9-f588-4bca-a327-5de15d0420dd','author_id' => '458'),
-  // array('id' => '2863','version_id' => '5f965e71-1ab2-4c76-8876-f1cd557cef3b','author_id' => '90'),
+  array('id' => '2863','version_id' => '5f965e71-1ab2-4c76-8876-f1cd557cef3b','author_id' => '90'),
   array('id' => '1840','version_id' => '5fb30186-6131-436e-ad90-4514ab4c7b26','author_id' => '459'),
   array('id' => '2993','version_id' => '5fb93ea9-92de-4720-acec-4751788eddb4','author_id' => '460'),
   array('id' => '665','version_id' => '5fd17d60-e568-499c-b7fc-db2fbee62d8e','author_id' => '60'),
@@ -3147,7 +3147,6 @@ $author_version = array(
   array('id' => '3615','version_id' => 'af333eb5-eae9-400a-833a-51d2b6da664b','author_id' => '13'),
   array('id' => '779','version_id' => 'af8dabf9-ef0b-4916-baf5-fc6eeb1f767e','author_id' => '65'),
   array('id' => '2618','version_id' => 'af95b172-0dd4-48ce-af0a-fbe133b522bc','author_id' => '614'),
-  array('id' => '2358','version_id' => 'af9ff6ff-17f0-4ce7-a2ef-11ac550043b5','author_id' => '388'),
   array('id' => '3169','version_id' => 'afa148cb-d66b-4ecd-bd9b-a5cd3975b4e1','author_id' => '615'),
   array('id' => '198','version_id' => 'afad73e2-525f-4527-bb8a-046676423e6f','author_id' => '316'),
   array('id' => '2027','version_id' => 'afd78ca4-5a21-49b2-929a-22785544e8c5','author_id' => '64'),
@@ -3193,7 +3192,6 @@ $author_version = array(
   array('id' => '1153','version_id' => 'b312f03b-75b3-44d2-bb01-439617c01289','author_id' => '267'),
   array('id' => '1843','version_id' => 'b322e5eb-cb64-4fcc-9a52-e4d49ce758af','author_id' => '64'),
   array('id' => '1844','version_id' => 'b322e5eb-cb64-4fcc-9a52-e4d49ce758af','author_id' => '111'),
-  array('id' => '2357','version_id' => 'b3753bf0-3771-4e01-87a1-e5c13f228f9f','author_id' => '388'),
   array('id' => '2956','version_id' => 'b397f45d-63ba-4d02-9f63-9430f9871b47','author_id' => '354'),
   array('id' => '306','version_id' => 'b3ce12c9-14fd-4478-b487-dcf89817f06a','author_id' => '90'),
   array('id' => '4097','version_id' => 'b40eb4e9-9a56-4c36-a3f4-f013f7a1e1b1','author_id' => '13'),
@@ -4032,7 +4030,6 @@ $author_version = array(
   array('id' => '2727','version_id' => 'eaa4fe06-3fe9-4739-9fe9-b52131f535c0','author_id' => '17'),
   array('id' => '3755','version_id' => 'eaba9e4c-1ce2-4a42-b668-ea54884db920','author_id' => '90'),
   array('id' => '495','version_id' => 'eabb4fa4-b06a-4d0f-a387-a70a6b10bfb1','author_id' => '16'),
-  array('id' => '2455','version_id' => 'eaf4eaa9-d89c-404d-be91-d540aa4a26cc','author_id' => '388'),
   array('id' => '1396','version_id' => 'eb0da165-def9-4490-93d3-a2d01d99ef8e','author_id' => '64'),
   array('id' => '2906','version_id' => 'eb0f71d0-0672-467e-ac4d-e6fb952cf75f','author_id' => '47'),
   array('id' => '1440','version_id' => 'eb1ea308-5242-4708-8b27-22ee9db31348','author_id' => '17'),
