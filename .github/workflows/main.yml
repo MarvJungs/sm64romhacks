@@ -1,14 +1,96 @@
-on: push
+on:
+  push:
+    branches:
+      - main
 name: 🚀 Deploy website on push
 jobs:
   web-deploy:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
-    environment: staging
+    environment: production
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v5
-      
+
+      - name: Generate .env
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_APP_Name: ${{secrets.APP_NAME}}
+          envkey_APP_ENV: ${{secrets.APP_ENV}}
+          envkey_APP_KEY: ${{secrets.APP_KEY}}
+          envkey_APP_DEBUG: ${{secrets.APP_DEBUG}}
+          envkey_APP_URL: ${{secrets.APP_URL}}
+
+          envkey_APP_LOCALE: ${{secrets.APP_LOCALE}}
+          envkey_APP_FALLBACK_LOCALE: ${{secrets.APP_FALLBACK_LOCALE}}
+          envkey_APP_FAKER_LOCALE: ${{secrets.APP_FAKER_LOCALE}}
+
+          envkey_APP_MAINTENANCE_DRIVER: ${{secrets.APP_MAINTENANCE_DRIVER}}
+          # envkey_APP_MAINTENANCE_STORE: ${{secrets.APP_MAINTENANCE_STORE}}
+
+          envkey_PHP_CLI_SERVER_WORKERS: ${{secrets.PHP_CLI_SERVERS_WORKERS}}
+
+          envkey_BCRYPT_ROUNDS: 1${{secrets.BCRYPT_ROUNDS}}
+
+          envkey_LOG_CHANNEL: ${{secrets.LOG_CHANNEL}}
+          envkey_LOG_STACK: ${{secrets.LOG_STACK}}
+          envkey_LOG_DEPRECATIONS_CHANNEL: ${{secrets.LOG_DEPRECATIONS_CHANNEL}}
+          envkey_LOG_LEVEL: ${{secrets.LOG_LEVEL}}
+
+          envkey_DB_CONNECTION: ${{secrets.DB_CONNECTION}}
+          envkey_DB_HOST: ${{secrets.DB_HOST}}
+          envkey_DB_PORT: ${{secrets.DB_PORT}}
+          envkey_DB_DATABASE: ${{secrets.DB_DATABASE}}
+          envkey_DB_USERNAME: ${{secrets.DB_USERNAME}}
+          envkey_DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
+          envkey_SESSION_DRIVER: ${{secrets.SESSION_DRIVER}}
+          envkey_SESSION_LIFETIME: ${{secrets.SESSION_LIFETIME}}
+          envkey_SESSION_ENCRYPT: ${{secrets.SESSION_ENCRYPT}}
+          envkey_SESSION_PATH: ${{secrets.SESSION_PATH}}
+          envkey_SESSION_DOMAIN: ${{secrets.DOMAIN}}
+
+          envkey_BROADCAST_CONNECTION: ${{secrets.BROADCAST_CONNECTION}}
+          envkey_FILESYSTEM_DISK: ${{secrets.FILESYSTEM_DISK}}
+          envkey_QUEUE_CONNECTION: ${{secrets.QUEUE_CONNECTION}}
+
+          envkey_CACHE_STORE: ${{secrets.CACHE_STORE}}
+          # envkey_CACHE_PREFIX: ${{secrets.CACHE_PREFIX}}
+
+          envkey_MEMCACHED_HOST: ${{secrets.MEMCACHED_HOST}}
+
+          envkey_REDIS_CLIENT: ${{secrets.REDIS_CLIENT}}
+          envkey_REDIS_HOST: ${{secrets.REDIS_HOST}}
+          envkey_REDIS_PASSWORD: ${{secrets.REDIS_PASSWORD}}
+          envkey_REDIS_PORT: ${{secrets.REDIS_PORT}}
+
+          envkey_MAIL_MAILER: ${{secrets.MAIL_MAILER}}
+          envkey_MAIL_SCHEME: ${{secrets.MAIL_SCHEME}}
+          envkey_MAIL_HOST: ${{secrets.MAIL_HOST}}
+          envkey_MAIL_PORT: ${{secrets.MAIL_PORT}}
+          envkey_MAIL_USERNAME: ${{secrets.MAIL_USERNAME}}
+          envkey_MAIL_PASSWORD: ${{secrets.MAIL_PASSWORD}}
+          envkey_MAIL_FROM_ADDRESS: ${{secrets.MAIL_FROM_ADDRESS}}
+          envkey_MAIL_FROM_NAME: "${APP_NAME}"
+
+          envkey_AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}}
+          envkey_AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          envkey_AWS_DEFAULT_REGION: ${{secrets.AWS_DEFAULT_REGION}}
+          envkey_AWS_BUCKET: ${{secrets.AWS_BUCKET}}
+          envkey_AWS_USE_PATH_STYLE_ENDPOINT: ${{secrets.AWS_USE_PATH_STYLE_ENDPOINT}}
+
+          envkey_VITE_APP_NAME: "${APP_NAME}"
+
+          envkey_DISCORD_CLIENT_ID: ${{secrets.DISCORD_CLIENT_ID}}
+          envkey_DISCORD_CLIENT_SECRET: ${{secrets.DISCORD_CLIENT_SECRET}}
+          envkey_DISCORD_REDIRECT_URI: ${{secrets.DISCORD_REDIRECT_URI}}
+          envkey_DISCORD_AVATAR_GIF: ${{secrets.DISCORD_AVATAR_GIF}}
+          envkey_DISCORD_EXTENSION_DEFAULT: ${{secrets.DISCORD_EXTENSION_DEFAULT}}
+
+          envkey_TWITCH_CLIENT_ID: ${{secrets.TWITCH_CLIENT_ID}}
+          envkey_TWITCH_CLIENT_SECRET: ${{secrets.TWITCH_CLIENT_SECRET}}
+          envkey_TWITCH_REDIRECT_URI: ${{secrets.TWITCH_REDIRECT_URI}}
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -16,7 +98,7 @@ jobs:
           node-version-file: package.json
           check-latest: true
           cache-dependency-path: package-lock.json
-      
+
       - name: Build Project
         run: |
           npm install
@@ -30,11 +112,17 @@ jobs:
           password: ${{ secrets.ftp_password }}
           server-dir: ${{secrets.ftp_server_dir}}
           log-level: verbose
-        
+
       - name: Setup
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.SSH_USER}}
           key: ${{secrets.SSH_PRIVATE_KEY}}
-          script: ls -la
+          script: |
+            cd ${{secrets.DEPLOY_PATH}}
+            ${{secrets.PHP_PATH}} artisan optimize:clear
+            ${{secrets.PHP_PATH}} ${{secrets.COMPOSER_PATH}} install
+            ${{secrets.PHP_PATH}} artisan migrate --force
+            ${{secrets.PHP_PATH}} artisan storage:link
+            ${{secrets.PHP_PATH}} artisan optimize
