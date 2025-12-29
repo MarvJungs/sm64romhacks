@@ -150,7 +150,7 @@
                             <li>
                                 <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal"
                                     data-bs-target="#modal-confirm"
-                                    data-bs-route="{{ route('auth.delete') }}" data-bs-action="DELETE"><x-bi-person-fill-slash />
+                                    data-bs-route="{{ route('auth.delete') }}" data-bs-method="DELETE"><x-bi-person-fill-slash />
                                     Delete Account</button>
                             </li>
                         </ul>
