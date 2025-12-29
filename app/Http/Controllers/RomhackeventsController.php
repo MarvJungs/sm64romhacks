@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRomhackeventRequest;
+use App\Http\Requests\UpdateRomhackeventRequest;
 use App\Models\Romhackevent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -31,34 +33,14 @@ class RomhackeventsController extends Controller
         return view('events.show', ['event' => $event]);
     }
 
-    public function store(Request $request) {
-        $r = $request->validate(
-            [
-                'name' => 'required|min:1|max:255|string',
-                'slug' => 'required|min:1|max:255|string',
-                'description' => 'required|json',
-                'start_utc' => 'required|date',
-                'end_utc' => 'required|date',
-                'external' => 'required|boolean',
-                'external_url' => 'required_if_accepted:external|nullable|url'
-            ]
-        );
+    public function store(StoreRomhackeventRequest $request) {
+        $r = $request->validated();
         $event = Romhackevent::create($r);
         return redirect(route('events.index'));
     }
 
-    public function update(Request $request, Romhackevent $event) {
-        $r = $request->validate(
-            [
-                'name' => 'required|min:1|max:255|string',
-                'slug' => 'required|min:1|max:255|string',
-                'description' => 'required|json',
-                'start_utc' => 'required|date',
-                'end_utc' => 'required|date',
-                'external' => 'required|boolean',
-                'external_url' => 'required_if_accepted:external|nullable|url'
-            ]
-        );
+    public function update(UpdateRomhackeventRequest $request, Romhackevent $event) {
+        $r = $request->validated();
         $event->update($r);
         return redirect(route('events.index'));
     }
