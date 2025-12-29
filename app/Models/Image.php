@@ -2,20 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Image extends Model
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'filename'
-    ];
-
-    public function hack(): BelongsTo
+    protected $fillable = ['filename'];
+    public function romhack(): BelongsTo
     {
-        return $this->belongsTo(Hack::class);
+        return $this->belongsTo(Romhack::class);
     }
 }

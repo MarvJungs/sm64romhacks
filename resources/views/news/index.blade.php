@@ -1,18 +1,12 @@
 <x-layout>
-    <div class="d-flex justify-content-between mb-4">
-        <h1>News</h1>
-        @if (Auth::check() && Auth::user()->hasRole(705528172581486704))
-            <a href="{{ route('news.create') }}" class="align-self-center btn btn-success">
-                <span class="fa-solid fa-plus"></span>
-                Create New Newspost
-            </a>
-        @endif
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="text-decoration-underlined">Recent News</h1>
+        @can('create', \App\Models\Newspost::class)
+            <a class="btn btn-success" href="{{ route('newspost.create') }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add New Newspost"><x-bi-plus-circle /></a>
+        @endcan
     </div>
-    @if (sizeof($news) > 0)
-        @foreach ($news as $message)
-            <x-cards.news :message="$message" />
-        @endforeach
-    @else
-        <em>No News have been posted yet!</em>
-    @endif
+
+    @foreach ($newsposts as $newspost)
+        <x-newspost :newspost="$newspost" />
+    @endforeach
 </x-layout>

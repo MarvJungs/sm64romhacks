@@ -1,0 +1,8 @@
+.link-tool__progress {
+  background-color: var(--bs-info-bg-subtle) !important;
+}
+
+.link-tool > .link-tool__content--rendered {
+  background-color: var(--bs-secondary-bg) !important;
+  color: var(--bs-secondary-color) !important;
+}

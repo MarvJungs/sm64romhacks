@@ -11,38 +11,43 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create(
+            'users', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('email')->unique()->nullable();
+                $table->timestamp('email_verified_at')->nullable();
+                // $table->timestamp('name_updated_at')->nullable(false)->default(now());
+                // $table->string('password')->nullable();
+                $table->text('description')->nullable();
+                $table->string('twitch_id')->unique()->nullable();
+                $table->string('discord_id')->unique()->nullable();
+                $table->string('avatar')->nullable();
+                $table->unsignedMediumInteger('country_id')->nullable();
+                $table->foreign('country_id')->references('id')->on('countries');
+                $table->rememberToken();
+                $table->timestamps();
+            }
+        );
 
-        Schema::drop('news');
-        Schema::drop('users');
+        Schema::create(
+            'password_reset_tokens', function (Blueprint $table) {
+                $table->string('email')->primary();
+                $table->string('token');
+                $table->timestamp('created_at')->nullable();
+            }
+        );
 
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username');
-            $table->string('discriminator');
-            $table->string('email')->nullable()->unique();
-            $table->string('avatar')->nullable();
-            $table->boolean('verified');
-            $table->string('locale');
-            $table->boolean('mfa_enabled');
-            $table->string('refresh_token')->nullable();
-            $table->boolean('notify')->nullable(false)->default(false);
-            $table->timestamps();
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
-        });
+        Schema::create(
+            'sessions', function (Blueprint $table) {
+                $table->string('id')->primary();
+                $table->foreignId('user_id')->nullable()->index();
+                $table->string('ip_address', 45)->nullable();
+                $table->text('user_agent')->nullable();
+                $table->longText('payload');
+                $table->integer('last_activity')->index();
+            }
+        );
     }
 
     /**

@@ -2,169 +2,151 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Jakyeru\Larascord\Traits\InteractsWithDiscord;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Observers\UserObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Sitemap\Contracts\Sitemapable;
-use Spatie\Sitemap\Tags\Url;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
 
-#[ObservedBy([UserObserver::class])]
-class User extends Authenticatable implements Sitemapable
+class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
 {
-    use HasFactory;
-    use Notifiable;
-    use InteractsWithDiscord;
+    /**
+     *  @use HasFactory<\Database\Factories\UserFactory>
+    **/
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var list<string>
      */
     protected $fillable = [
-        'id',
-        'username',
-        'global_name',
-        'discriminator',
+        'name',
         'email',
-        'avatar',
-        'verified',
-        'banner',
-        'banner_color',
-        'accent_color',
-        'locale',
-        'mfa_enabled',
-        'premium_type',
-        'public_flags',
-        'roles',
-        'notify',
-        'country',
-        'gender'
+        'password',
+        'description',
+        'twitch_id',
+        'discord_id',
+        'country_id',
+        'avatar'
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array
+     * @var list<string>
      */
     protected $hidden = [
+        'password',
         'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'id' => 'integer',
-        'username' => 'string',
-        'global_name' => 'string',
-        'discriminator' => 'string',
-        'email' => 'string',
-        'avatar' => 'string',
-        'verified' => 'boolean',
-        'banner' => 'string',
-        'banner_color' => 'string',
-        'accent_color' => 'string',
-        'locale' => 'string',
-        'mfa_enabled' => 'boolean',
-        'premium_type' => 'integer',
-        'public_flags' => 'integer',
-        'roles' => 'json',
     ];
 
     public function getRouteKeyName(): string
     {
-        return 'global_name';
+        return 'name';
     }
 
-    public function toSitemapTag(): Url|string|array
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return Url::create(route('users.show', $this))
-            ->setLastModificationDate(Carbon::create($this->updated_at))
-            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-            ->setPriority(0.1);
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 
-    public function role(): BelongsTo
+    /**
+     * Get the country that belongs to the User.
+     * 
+     * @return BelongsTo
+     */
+    public function country(): BelongsTo
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Country::class);
     }
 
-    public function author(): HasOne
+    /**
+     * The roles that belong to the user.
+     * 
+     * @return BelongsToMany
+     */
+    public function roles(): BelongsToMany
     {
-        return $this->hasOne(Author::class);
+        return $this->belongsToMany(Role::class);
     }
 
-    public function comments()
+    /**
+     * Gets newsposts from user
+     * 
+     * @return HasMany<Newspost, User>
+     */
+    public function newsposts(): HasMany
+    {
+        return $this->hasMany(Newspost::class);
+    }
+
+    /**
+     * Summary of comments
+     * 
+     * @return HasMany<Comment, User>
+     */
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function news()
+    /**
+     * Checks if user has specified role
+     * 
+     * @return bool
+     */
+    public function hasRole(string $role): bool
     {
-        return $this->hasMany(News::class);
+        $roles = $this->roles;
+        $wantedRole = Role::where('name', $role)->get()->first();
+        return $roles->contains($wantedRole);
     }
 
-    public function isAdmin(): bool
+    /**
+     * Summary of hasRatedComment
+     * 
+     * @param \App\Models\Comment $comment Comment
+     * 
+     * @return void
+     */
+    public function hasLikedComment(Comment $comment): bool
     {
-        return $this->hasRole(705528016914087976);
+        return $comment->ratings->where('rating', 1)->pluck('user_id')->contains($this->id);
     }
 
-    public function isModerator(): bool
+    /**
+     * Summary of hasRatedComment
+     * 
+     * @param \App\Models\Comment $comment Comment
+     * 
+     * @return void
+     */
+    public function hasDislikedComment(Comment $comment): bool
     {
-        return $this->hasRole(705528172581486704);
+        return $comment->ratings->where('rating', -1)->pluck('user_id')->contains($this->id);
     }
 
-    public function isSiteHelper(): bool
+    /**
+     * Summary of isAuthorOf
+     * 
+     * @param \App\Models\Comment|\App\Models\Newspost $post
+     * 
+     * @return bool
+     */
+    public function isAuthorOf(Comment|Newspost $post): bool
     {
-        return $this->hasRole(705530192839311381);
-    }
-
-    public function isEventManager(): bool
-    {
-        return $this->hasRole(737674135747952660);
-    }
-
-    public function getRoles(): array|null
-    {
-        return Cache::remember('roles_' . $this->id, 60 * 60 * 12, function () {
-            try {
-                return $this->getGuildMember(703951576162762813)->roles;
-            } catch (\Throwable $th) {
-                return null;
-            }
-        });
-    }
-
-    public function hasRole($role_id): bool
-    {
-        $guildMemberRoles = $this->getRoles();
-        return !is_null($guildMemberRoles) && in_array($role_id, $guildMemberRoles);
-    }
-
-    public function isAuthorOfHack(Hack $hack): bool
-    {
-        $firstVersion = $hack->versions->sortBy('releasedate')->first();
-        $authors = $firstVersion->authors;
-        return $authors->contains(function (Author $author) {
-            return !is_null($author->user) && $author->user_id == Auth::user()->id;
-        });
-    }
-
-    public function isAuthorOfVersion(Version $version): bool
-    {
-        $authors = $version->authors;
-        return $authors->contains(function (Author $author) {
-            return !is_null($author->user) && $author->user_id == Auth::user()->id;
-        });
+        return $post->user->id === $this->id;
     }
 }

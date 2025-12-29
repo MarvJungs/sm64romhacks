@@ -1,89 +1,154 @@
 <?php
 
-use App\Http\Controllers\CheatController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HackController;
-use App\Http\Controllers\MegapackController;
-use App\Http\Controllers\PrivacyPolicyController;
-use App\Http\Controllers\StreamController;
-use App\Http\Controllers\TermsOfServiceController;
-use App\Http\Controllers\PatchController;
-use App\Http\Controllers\VersionController;
-use App\Http\Controllers\UsersController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\DisruptionController;
-use App\Http\Controllers\ModerationController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\AppController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\LeagueCategoryController;
-use App\Http\Controllers\RacesController;
+use App\Http\Controllers\MegapackController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\NewspostsController;
+use App\Http\Controllers\PatcherController;
+use App\Http\Controllers\RomhackCommentsController;
+use App\Http\Controllers\RomhackeventsController;
+use App\Http\Controllers\RomhacksController;
+use App\Http\Controllers\RomhackVersionsController;
+use App\Http\Controllers\StreamsController;
+use App\Models\Romhack;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+use Symfony\Component\DomCrawler\Crawler;
+use App\Http\Controllers\CheatcodesController;
+use App\Http\Controllers\ImageController;
 
-Route::redirect('/stardisplay', 'https://github.com/aglab2/SM64StarDisplay')->name('stardisplay');
-Route::redirect('/plugins', 'https://sites.google.com/view/shurislibrary/plugin-guide')->name('plugins');
-Route::redirect('/faq', 'https://docs.google.com/document/d/10m5ViLktz-d6SwhHtSeb7gVzDUldOqIBlJte_kr4U14/edit#heading=h.ynvmen1681ne')->name('faq');
-Route::redirect('/discord', 'https://discord.com/invite/BYrpMBG')->name('discord');
-Route::redirect('/support', 'https://ko-fi.com/marvjungs')->name('support');
+require 'auth.php';
+require 'moderation.php';
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::get('hacks/download/{version}', [HackController::class, 'download'])->name('hack.download');
-Route::get('hacks/random', [HackController::class, 'random'])->name('hack.random');
-Route::get('hacks/{hack}/create', [VersionController::class, 'create'])->name('version.create');
-Route::get('hacks/{hack}/{version}/edit', [VersionController::class, 'edit'])->name('version.edit');
+Route::get('', [HomeController::class, 'index'])->name('index');
+Route::get('home', [HomeController::class, 'index'])->name('home.index');
+Route::get('cheats', [CheatcodesController::class, 'index'])->name('cheats.index');
+Route::get('tos', [HomeController::class, 'tos'])->name('tos');
+Route::get('privacy-policy', [HomeController::class, 'privacy'])->name('privacy-policy');
+Route::redirect('faq', 'https://docs.google.com/document/d/10m5ViLktz-d6SwhHtSeb7gVzDUldOqIBlJte_kr4U14/edit?usp=sharing')->name('faq');
+Route::redirect('discord', 'https://discord.gg/BYrpMBG')->name('discord');
+Route::redirect('support', 'https://ko-fi.com/marvjungs')->name('support');
+
+Route::get(
+    'fetchurl',
+    function (Request $request) {
+        if ($request->has('url')) {
+            $data = [];
+            $url = $request->get('url');
+            $url = !Str::isUrl($url) ? 'http://' . $url : $url;
+            $response = Http::get($url);
+            if ($response->successful()) {
+                $crawler = new Crawler($response->body());
+                $title = $crawler->filter('title')->text();
+                $description = $crawler->filter(
+                    'meta'
+                )->reduce(
+                        function (Crawler $node, int $i) {
+                            $name = $node->extract(['name']);
+                            return $name[0] == 'description';
+                        }
+                    )->extract(['content']);
+
+                $icon = $crawler->filter(
+                    'link'
+                )->reduce(
+                        function (Crawler $node, int $i) {
+                            $rel = $node->extract(['rel']);
+                            return Str::contains(Str::lower($rel[0]), 'icon');
+                        }
+                    )->extract(['href']);
+                $data['success'] = 1;
+                $data['meta'] = [
+                    'title' => $title,
+                    'description' => $description,
+                    'image' => ['url' => count($icon) > 0 ? (!Str::isUrl($icon[0]) ? $url . $icon[0] : $icon[0]) : null]
+                ];
+            } else {
+                $data['success'] = 0;
+                $data['meta'] = [];
+            }
+            $data['link'] = $url;
+            return $data;
+        }
+    }
+);
+
+
+Route::prefix('news')->group(
+    function () {
+        Route::get('', [NewspostsController::class, 'index'])->name('newspost.index');
+        Route::get('{newspost}', [NewspostsController::class, 'show'])->name('newspost.show');
+    }
+);
+
+Route::prefix('hacks')->group(
+    function () {
+        Route::get('', [RomhacksController::class, 'index'])->name('hack.index');
+        Route::get('random', [RomhacksController::class, 'random'])->name('hack.random');
+        Route::get('create', [RomhacksController::class, 'create'])->name('hack.create')->can('create', Romhack::class);
+        Route::post('create', [RomhacksController::class, 'store'])->name('hack.store')->can('create', Romhack::class);
+        Route::get('download/{version}', [RomhackVersionsController::class, 'download'])->name('version.download');
+        Route::prefix('{hack}')->group(
+            function () {
+                Route::get('', [RomhacksController::class, 'show'])->name('hack.show');
+                Route::get('edit', [RomhacksController::class, 'edit'])->name('hack.edit')->can('update', 'hack');
+                Route::put('edit', [RomhacksController::class, 'update'])->name('hack.update')->can('update', 'hack');
+                Route::delete('delete', [RomhacksController::class, 'destroy'])->name('hack.destroy')->can('delete', 'hack');
+                Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('image.destroy')->can('update', 'hack');
+
+
+                Route::prefix('versions')->group(
+                    function () {
+                        Route::get('create', [RomhackVersionsController::class, 'create'])->name('version.create')->can('createVersion', 'hack');
+                        Route::post('create', [RomhackVersionsController::class, 'store'])->name('version.store')->can('createVersion', 'hack');
+                        Route::get('{version}/edit', [RomhackVersionsController::class, 'edit'])->name('version.edit')->can('update', 'version');
+                        Route::put('{version}/edit', [RomhackVersionsController::class, 'update'])->name('version.update')->can('update', 'version');
+                        Route::delete('{version}/delete', [RomhackVersionsController::class, 'destroy'])->name('version.destroy')->can('delete', 'version');
+                    }
+                );
+
+                Route::post('comment', [RomhackCommentsController::class, 'create'])->name('comment.create')->middleware(['auth', 'verified']);
+            }
+        );
+        Route::prefix('comments')->group(
+            function () {
+                Route::post('{comment}/like', [RomhackCommentsController::class, 'like'])->name('comment.like')->middleware(['auth', 'verified']);
+                Route::post('{comment}/dislike', [RomhackCommentsController::class, 'dislike'])->name('comment.dislike')->middleware(['auth', 'verified']);
+                Route::delete('{comment}/delete', [RomhackCommentsController::class, 'destroy'])->name('comment.destroy')->can('delete', 'comment');
+            }
+        );
+    }
+);
+
 Route::get('megapack', [MegapackController::class, 'index'])->name('megapack.index');
-Route::get('megapack/download', [MegapackController::class, 'download'])->name('megapack.download');
-Route::get('patcher', [PatchController::class, 'index'])->name('patcher.index');
-Route::get('/streams', [StreamController::class, 'index'])->name('streams.index');
-Route::get('/tos', [TermsOfServiceController::class, 'index'])->name('tos.index');
-Route::get('/privacy-policy', [PrivacyPolicyController::class, 'index'])->name('privacy.name');
 
+Route::get('patcher', [PatcherController::class, 'index'])->name('tools.patcher');
+Route::get('streams', [StreamsController::class, 'index'])->name('streams.index');
+
+Route::get('events/{event}', [RomhackeventsController::class, 'show'])->name('event.show');
 Route::get('users/{user}', [UsersController::class, 'show'])->name('users.show');
 
-Route::resource('/events', EventController::class)->except(['show', 'index'])
-    ->middleware('checkrole:705528172581486704');
-Route::resource('cheats', CheatController::class);
-Route::resource('events', EventController::class)->only(['show']);
-Route::resource('hacks', HackController::class);
-Route::resource('hacks/{hack}/version', VersionController::class)->except(['create', 'edit']);
-Route::resource('news', NewsController::class);
-Route::resource('/moderation/disruptions', DisruptionController::class);
+Route::prefix('tools')->group(
+    function () {
+        Route::redirect('lunas-project64', 'https://github.com/Luna-Project64/Luna-Project64/releases/latest')->name('tools.emulator');
+        Route::redirect('stardisplay', 'https://github.com/aglab2/SM64StarDisplay/releases/latest')->name('tools.stardisplay');
+        Route::redirect('hacktice', 'https://github.com/aglab2/hacktice/releases/latest')->name('tools.hacktice');
+    }
+);
 
-Route::middleware('auth')->group(function () {
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-});
 
-Route::middleware('checkrole:705528172581486704')->group(function () {
-    Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation.index');
-    Route::resource('/moderation/events', EventController::class)->only('index')->name('index', 'events.index');
-});
 
-Route::middleware('checkrole:705528172581486704')->group(function () {
-    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
-    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
-    Route::get('/moderation/comments', [CommentController::class, 'index'])->name('comments.index');
-    Route::get('/moderation/hacks', [HackController::class, 'unverified'])->name('hacks.unverified');
-    Route::get('/moderation/hacks/manage', [HackController::class, 'manage'])->name('hacks.manage');
-    Route::get('/moderation/users', [UsersController::class, 'manage'])->name('users.manage');
-    Route::patch('/users', [UsersController::class, 'update'])->name('users.update');
-    Route::patch('/authors', [UsersController::class, 'assignAuthorToUser'])->name('users.assignAuthorToUser');
-    Route::patch('/hacks', [HackController::class, 'reject'])->name('hacks.reject');
-    Route::put('/hacks', [HackController::class, 'accept'])->name('hacks.accept');
-});
-
-Route::delete('/images/{image}', [ImageController::class, 'destroy'])->name('image.destroy');
-Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
-Route::post('contact', [ContactController::class, 'send'])->name('contact.send');
-
-Route::get('events/{event}/leaderboards/{leagueCategory}', [LeagueCategoryController::class, 'show'])->name('leagueCategory.show');
-Route::get('/events/{event}/register', [RacesController::class, 'register'])->name('races.register');
-Route::post('/events/{event}/register', [RacesController::class, 'register'])->name('races.register');
-Route::post('/events/{event}/unregister', [RacesController::class, 'unregister'])->name('races.unregister');
-Route::get('events/{event}/results', [RacesController::class, 'results'])->name('races.results');
-Route::post('events/{event}/results', [RacesController::class, 'results'])->name('races.results');
+Route::post(
+    '{path}/images/upload',
+    function (Request $request, string $path) {
+        if ($request->exists('image')) {
+            // $path = $request->file('image')->store($path, 'public');
+            return [
+                'success' => 0,
+            ];
+            dd($request->file('image'));
+        }
+    }
+);
