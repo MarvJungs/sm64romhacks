@@ -23,7 +23,7 @@
                     <td>
                         <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete User">
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-confirm"
-                                data-bs-route="{{ route('admin.users.delete', ['user' => $user]) }}"
+                                data-bs-route="{{ route('admin.users.destroy', ['user' => $user]) }}"
                                 data-bs-method="DELETE">
                                 <x-bi-trash />
                             </button>

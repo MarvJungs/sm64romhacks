@@ -63,14 +63,8 @@ class RomhackeventsController extends Controller
         return redirect(route('events.index'));
     }
 
-    public function delete(Romhackevent $event)
-    {
-        return view('events.delete', ['event' => $event]);
-    }
-
     public function destroy(Request $request, Romhackevent $event)
     {
-        dd($request);
         $event->delete();
         return view(route('events.index'));
     }

@@ -52,21 +52,6 @@ class NewspostsController extends Controller
     }
 
     /**
-     * Shows the confirmation window for deleting a resource
-     * 
-     * @param \App\Models\Newspost $newspost Newspost
-     * 
-     * @return void
-     */
-    public function delete(Request $request, Newspost $newspost)
-    {
-        if (!$request->user()?->isAuthorOf($newspost)) {
-            abort(403);
-        }
-        return view('news.delete', ['newspost' => $newspost]);
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Newspost $newspost)
