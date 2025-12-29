@@ -187,9 +187,6 @@ export default class HacksTable {
     removeSpinner() {
         const spinnerContainer = document.getElementById('spinner');
         spinnerContainer.remove();
-
-        const fuck = new FuckYou();
-        fuck.main();
     }
 
     /**
