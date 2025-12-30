@@ -6,11 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Stringable;
 
 class Romhack extends Model
 {
     use HasUuids;
+    use HasSEO;
+
     /**
      * The primary key type.
      *
@@ -103,5 +109,25 @@ class Romhack extends Model
                 $romhack->slug = Str::slug($romhack->name);
             }
         );
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+        return new SEOData(
+            title: $this->name,
+            description: $this->getDescriptionForSEOTags(),
+        );
+    }
+
+    public function getDescriptionForSEOTags(): Stringable | null
+    {
+        $descriptionObject = $this->description;
+        if ($descriptionObject === null) {
+            return null;
+        }
+        $blocks = Arr::get($descriptionObject, 'blocks');
+        $data = Arr::flatten(Arr::pluck($blocks, 'data'));
+        $description = Arr::join($data, '. ');
+        return Str::of($description)->stripTags();
     }
 }

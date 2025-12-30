@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Stringable;
 
 class Newspost extends Model
 {
+    use HasSEO;
     /**
      * The attributes that are mass assignable.
      *
@@ -62,6 +67,13 @@ class Newspost extends Model
                     $newspost->slug = $slug;
                 }
             }
+        );
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+        return new SEOData(
+            title: $this->name,
         );
     }
 }
