@@ -26,11 +26,28 @@ class UpdateRomhackeventRequest extends FormRequest
         return [
             'name' => 'required|min:1|max:255|string',
             'slug' => 'required|min:1|max:255|string',
-            'description' => 'required|json',
+            'description' => 'required|array',
+            'description.blocks' => 'required|array|min:1',
+            'description.time' => 'required|numeric',
+            'description.version' => 'required|string',
             'start_utc' => 'required|date',
             'end_utc' => 'required|date',
             'external' => 'required|boolean',
             'external_url' => 'required_if_accepted:external|nullable|url'
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge(
+            [
+                'description' => json_decode($this['description'], true),
+            ]
+        );
     }
 }
