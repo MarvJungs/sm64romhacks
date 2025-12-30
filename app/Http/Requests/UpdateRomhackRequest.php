@@ -30,7 +30,7 @@ class UpdateRomhackRequest extends FormRequest
             'romhack.videolink' => 'url|nullable',
             'romhack.megapack' => 'boolean',
             'romhack.tag' => 'nullable|array',
-            'romhack.image' => 'required|array|distinct|min:1',
+            'romhack.image' => 'array|distinct|min:1',
             'romhack.image.*' => 'required|image|dimensions:ratio=4/3'
         ];
     }
