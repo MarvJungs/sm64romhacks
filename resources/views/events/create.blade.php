@@ -28,7 +28,9 @@
             @enderror
         </div>
         <div class="col-12">
-            <label for="start_utc" class="form-label">Starttime</label>
+            <label for="start_utc" class="form-label">Starttime</label><button type="button" class="btn p-1 mb-1"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Timezone: UTC"><x-bi-info-circle-fill
+                    class="text-primary" /></button>
             <input type="datetime-local" class="form-control @error('start_utc') is-invalid @enderror" name="start_utc"
                 value="{{ old('start_utc') }}">
             @error('start_utc')
@@ -36,7 +38,9 @@
             @enderror
         </div>
         <div class="col-12">
-            <label for="end_utc" class="form-label">Endtime</label>
+            <label for="end_utc" class="form-label">Endtime</label><button type="button" class="btn p-1 mb-1"
+                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Timezone: UTC"><x-bi-info-circle-fill
+                    class="text-primary" /></button>
             <input type="datetime-local" class="form-control @error('end_utc') is-invalid @enderror" name="end_utc"
                 value="{{ old('end_utc') }}">
             @error('end_utc')
