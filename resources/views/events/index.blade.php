@@ -30,10 +30,12 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="card-text"><x-editor-js :blocks="json_decode($event->description, true)['blocks']" /></p>
+            @if ($event->description !== null)
+                <div class="card-body">
+                    <div class="card-text"><x-editor-js :blocks="$event->description['blocks']" /></p>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     @endforeach
 

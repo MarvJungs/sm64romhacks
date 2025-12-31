@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
 
 class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
 {
@@ -17,6 +19,7 @@ class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
      *  @use HasFactory<\Database\Factories\UserFactory>
     **/
     use HasFactory, Notifiable;
+    use HasSEO;
 
     /**
      * The attributes that are mass assignable.
@@ -148,5 +151,12 @@ class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
     public function isAuthorOf(Comment|Newspost $post): bool
     {
         return $post->user->id === $this->id;
+    }
+
+    public function getDynamicSEOData(): SEOData
+    {
+        return new SEOData(
+            title: $this->name,
+        );
     }
 }

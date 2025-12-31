@@ -71,7 +71,7 @@ class RomhacksController extends Controller
             ['name' => $data['name']],
             collect($data)->except('name')->toArray()
         );
-        
+
         $data['version']['filename'] = $request->file('romhack.version.patchfile')->store('patch', 'public');
         $version = $romhack->versions()->create($data['version']);
         foreach ($data['version']['author']['name'] as $name) {
@@ -95,8 +95,10 @@ class RomhacksController extends Controller
     public function update(UpdateRomhackRequest $request, Romhack $hack)
     {
         $images = $request->file('romhack.image');
-        foreach ($images as $image) {
-            $hack->images()->create(['filename' => $image->store("images/hacks/{$hack->id}", 'public')]);
+        if ($images !== null) {
+            foreach ($images as $image) {
+                $hack->images()->create(['filename' => $image->store("images/hacks/{$hack->id}", 'public')]);
+            }
         }
         $data = $request->safe()->collect()->get('romhack');
         $hack->update($data);
@@ -134,7 +136,7 @@ class RomhacksController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, Romhack $hack)
-    {   
+    {
         foreach ($hack->versions as $version) {
             Storage::disk('public')->delete($version->filename);
         }
@@ -143,7 +145,7 @@ class RomhacksController extends Controller
             Storage::delete($image->filename);
             $image->delete();
         }
-        
+
         $hack->delete();
         return redirect(route('hack.index'));
     }
@@ -158,8 +160,8 @@ class RomhacksController extends Controller
     {
         $hack->update(
             [
-            'verified' => 1,
-            'rejected' => 0
+                'verified' => 1,
+                'rejected' => 0
             ]
         );
         return redirect(route('modhub.hacks.index'))->with('info', 'The Romhack has successfully been verified');

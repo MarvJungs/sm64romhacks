@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :seoModel="$hack">
     <div class="d-flex justify-content-between align-items-center gap-3">
         <h1 class="text-decoration-underline">
             {{ $hack->name }}
@@ -34,7 +34,7 @@
     <hr />
 
     <section id="description">
-        @if (!is_null($hack->description) && in_array('blocks', $hack->description))
+        @if ($hack->description !== null)
             <x-editor-js :blocks="$hack->description['blocks']" />
         @endif
     </section>

@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :seoModel="$user">
     <section class="d-flex flex-row gap-4 mb-5" id="header">
         <img src="{{ Storage::url($user->avatar) }}" style="max-height: 128px" />
         <div class="d-flex flex-column">
