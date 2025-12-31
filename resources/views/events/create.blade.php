@@ -50,7 +50,8 @@
         <div class="col-12">
             <div class="form-check">
                 <input class="form-check-input" type="hidden" name="external" value="0">
-                <input class="form-check-input" type="checkbox" name="external" value="1">
+                <input class="form-check-input" type="checkbox" name="external" value="1"
+                    @if (old('external')) checked @endif>
                 <label class="form-check-label" for="external">
                     External
                 </label>

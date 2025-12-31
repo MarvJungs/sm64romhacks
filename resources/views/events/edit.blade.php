@@ -52,7 +52,7 @@
             <div class="form-check">
                 <input class="form-check-input" type="hidden" name="external" value="0">
                 <input class="form-check-input" type="checkbox" name="external" value="1"
-                    {{ $event->external ? 'checked' : '' }}>
+                    @if (old('external') || $event->external) checked @endif>
                 <label class="form-check-label" for="external">
                     External
                 </label>
