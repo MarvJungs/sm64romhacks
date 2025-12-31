@@ -15,6 +15,7 @@
         "ralphjsmit/laravel-seo": "^1.7",
         "socialiteproviders/discord": "^4.2",
         "socialiteproviders/twitch": "^5.4",
+        "spatie/laravel-sitemap": "^7.3",
         "symfony/dom-crawler": "^7.3"
     },
     "require-dev": {

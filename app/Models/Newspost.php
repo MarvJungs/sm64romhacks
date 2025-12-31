@@ -8,9 +8,11 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 use Stringable;
 
-class Newspost extends Model
+class Newspost extends Model implements Sitemapable
 {
     use HasSEO;
     /**
@@ -75,5 +77,11 @@ class Newspost extends Model
         return new SEOData(
             title: $this->name,
         );
+    }
+
+    public function toSitemapTag(): Url|string|array
+    {
+        return Url::create(route('newspost.show', $this))
+            ->setLastModificationDate($this->updated_at);
     }
 }

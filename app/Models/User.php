@@ -12,8 +12,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
-class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
+class User extends Authenticatable implements CanResetPassword, MustVerifyEmail, Sitemapable
 {
     /**
      *  @use HasFactory<\Database\Factories\UserFactory>
@@ -158,5 +160,11 @@ class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
         return new SEOData(
             title: $this->name,
         );
+    }
+
+    public function toSitemapTag(): Url|string|array
+    {
+        return Url::create(route('users.show', $this))
+            ->setLastModificationDate($this->updated_at);
     }
 }

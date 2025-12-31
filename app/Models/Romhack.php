@@ -10,9 +10,11 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 use Stringable;
 
-class Romhack extends Model
+class Romhack extends Model implements Sitemapable
 {
     use HasUuids;
     use HasSEO;
@@ -129,5 +131,11 @@ class Romhack extends Model
         $data = Arr::flatten(Arr::pluck($blocks, 'data'));
         $description = Arr::join($data, '. ');
         return Str::of($description)->stripTags();
+    }
+
+    public function toSitemapTag(): Url|string|array
+    {
+        return Url::create(route('hack.show', $this))
+            ->setLastModificationDate($this->updated_at);
     }
 }

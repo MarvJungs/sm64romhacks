@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 use Stringable;
 
-class Romhackevent extends Model
+class Romhackevent extends Model implements Sitemapable
 {
     use HasSEO;
 
@@ -59,5 +62,11 @@ class Romhackevent extends Model
         $data = Arr::flatten(Arr::pluck($blocks, 'data'));
         $description = Arr::join($data, '. ');
         return Str::of($description)->stripTags();
+    }
+
+    public function toSitemapTag(): Url|string|array
+    {
+        return Url::create(route('event.show', $this))
+            ->setLastModificationDate($this->updated_at);
     }
 }
