@@ -192,7 +192,7 @@ class RomhacksController extends Controller
     private function downloadYoutubeThumbnail(Romhack $hack, string $videoid)
     {
         $client = new Google_Client();
-        $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+        $client->setDeveloperKey(config('services.google.api_key'));
         $service = new Google_Service_YouTube($client);
         $queryParam = ['id' => $videoid];
         $response = $service->videos->listVideos('snippet,contentDetails,statistics', $queryParam);
