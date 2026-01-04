@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\YoutubeVideoUrl;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRomhackRequest extends FormRequest
@@ -27,7 +28,7 @@ class UpdateRomhackRequest extends FormRequest
             'romhack.description.blocks' => 'required|array|min:1',
             'romhack.description.time' => 'required|numeric',
             'romhack.description.version' => 'required|string',
-            'romhack.videolink' => 'url|nullable',
+            'romhack.videolink' => ['url', 'nullable', new YoutubeVideoUrl],
             'romhack.megapack' => 'boolean',
             'romhack.tag' => 'nullable|array',
             'romhack.image' => 'array|distinct|min:1',

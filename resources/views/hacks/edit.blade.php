@@ -78,7 +78,7 @@
                 <label for="romhack[videolink]">Video Link</label>
                 <input type="url" name="romhack[videolink]"
                     class="form-control @error('romhack.videolink') is-invalid @enderror" id="videolink"
-                    value="{{ $hack->videolink }}">
+                    value="{{ old('romhack.videolink') ?? $hack->videolink }}">
                 @error('romhack.videolink')
                     <p class="text-danger">{{ $message }}</p>
                 @enderror
