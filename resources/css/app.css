@@ -62,3 +62,7 @@ a:hover {
 }
 
 #map { height: 720px; }
+
+section#video, section#images {
+    height: 30em;
+}

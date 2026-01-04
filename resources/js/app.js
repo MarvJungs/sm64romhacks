@@ -12,6 +12,7 @@ import CheatcodesClipboardManager from './CheatcodesClipboardManager';
 import CurrentTimeService from './CurrentTimeService';
 import CarouselManager from './CarouselManager';
 import ModalsManager from './ModalsManager';
+import VideoPlayer from './VideoPlayer';
 
 const hiddenButtons = document.querySelectorAll('button[type=hidden]');
 hiddenButtons.forEach(button => {
@@ -76,3 +77,6 @@ roleButtons.main();
 
 const megapackFilter = new MegapackFilter();
 megapackFilter.main();
+
+const videoPlayer = new VideoPlayer();
+window.onYouTubeIframeAPIReady = () => videoPlayer.initPlayer();

@@ -43,15 +43,27 @@
 
     <hr />
 
-    <div class="row text-center align-items-center">
-        <section class="col ratio ratio-4x3 border" id="video">
-            @if ($hack->videolink)
-                <p class="top-50">{{ $hack->videolink }}</p>
-            @else
-                <p class="top-50">No video found :(</p>
-            @endif
+    <div class="row g-2">
+        <section
+            class="col-md-6 col-12 d-flex @isset($hack->videolink) position-relative @endisset @empty($hack->videolink) align-items-center justify-content-center @endempty"
+            id="video" data-video-id="{{ $videoid ?? null }}">
+            @isset($hack->videolink)
+                <p class="position-absolute">By clicking on the Playbutton, you agree on transfering your Data to
+                    YouTube. Refer to <a href="https://policies.google.com/privacy" target="_blank">YouTube's
+                        Privacy Policy</a> for Further Details</p>
+                <button type="button" id="video__playButton"
+                    class="btn position-absolute top-50 start-50 translate-middle"><x-bi-play-btn-fill class="img-fluid"
+                        height="8rem" width="8rem" /></button>
+                <img src="{{ Storage::url("images/hacks/$hack->id/videoThumbnail.jpg") }}" class="img-fluid" />
+            @endisset
+            @empty($hack->videolink)
+                <p>No Video found :(</p>
+            @endempty
         </section>
-        <section class="col ratio ratio-4x3 border" id="images">
+        <div class="w-100 d-lg-none"></div>
+        <section
+            class="col-md-6 col-12 d-flex align-items-center justify-content-center @if (count($hack->images) > 0) position-relative @endif"
+            id="images">
             @if (sizeof($hack->images) > 0)
                 <div class="carousel carousel-dark slide" id="diashow" data-bs-ride="carousel">
                     <div class="carousel-indicators">
@@ -71,14 +83,13 @@
                                         data-bs-route="{{ route('image.destroy', ['hack' => $hack, 'image' => $image]) }}"
                                         data-bs-method="DELETE"><x-bi-trash-fill /></button>
                                 @endcan
-                                <img src="{{ Storage::url($image->filename) }}" class="d-block w-100" width="640"
-                                    height="480">
+                                <img src="{{ Storage::url($image->filename) }}" class="img-fluid">
                             </div>
                         @endforeach
                     </div>
                 </div>
             @else
-                <p class="top-50">No Images found :(</p>
+                <p>No Images found :(</p>
             @endif
         </section>
     </div>
