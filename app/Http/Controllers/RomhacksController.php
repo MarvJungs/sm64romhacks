@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRomhackRequest;
 use App\Http\Requests\UpdateRomhackRequest;
 use App\Models\Author;
-use App\Models\Image;
 use App\Models\Romhack;
 use App\Models\Romhacktag;
+use Google\Service\YouTube\Video;
+use Google_Client;
+use Google_Service_YouTube;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use Illuminate\Support\Facades\Http;
 
 class RomhacksController extends Controller
 {
@@ -71,7 +73,6 @@ class RomhacksController extends Controller
             ['name' => $data['name']],
             collect($data)->except('name')->toArray()
         );
-
         $data['version']['filename'] = $request->file('romhack.version.patchfile')->store('patch', 'public');
         $version = $romhack->versions()->create($data['version']);
         foreach ($data['version']['author']['name'] as $name) {
@@ -104,6 +105,10 @@ class RomhacksController extends Controller
         $hack->update($data);
         $hack->romhacktags()->detach();
 
+        $videolink = Arr::get($data, 'videolink');
+        preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $videolink, $match);
+        $videoid = $match[1];
+        $this->downloadYoutubeThumbnail($hack, $videoid);
 
         if (Arr::has($data, 'tag')) {
             foreach ($data['tag']['name'] as $tag) {
@@ -120,10 +125,16 @@ class RomhacksController extends Controller
     public function show(Romhack $hack)
     {
         $CrawlerDetect = new CrawlerDetect();
+        $videoid = null;
         if (!$CrawlerDetect->isCrawler()) {
             $hack->increment('views');
         }
-        return view('hacks.view')->with('hack', $hack);
+
+        if ($hack->videolink !== null) {
+            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $hack->videolink, $match);
+            $videoid = $match[1];
+        }
+        return view('hacks.view', ['hack' => $hack, 'videoid' => $videoid]);
     }
 
     public function random()
@@ -176,5 +187,20 @@ class RomhacksController extends Controller
             ]
         );
         return redirect(route('modhub.hacks.index'))->with('info', 'The Romhack has successfully been rejected!');
+    }
+
+    private function downloadYoutubeThumbnail(Romhack $hack, string $videoid)
+    {
+        $client = new Google_Client();
+        $client->setDeveloperKey(env('GOOGLE_API_KEY'));
+        $service = new Google_Service_YouTube($client);
+        $queryParam = ['id' => $videoid];
+        $response = $service->videos->listVideos('snippet,contentDetails,statistics', $queryParam);
+        $videos = $response->getItems();
+        if (count($videos) > 0) {
+            $video = $videos[0];
+            $thumbnail = Http::get($video->getSnippet()->getThumbnails()->getStandard()->getUrl());
+            Storage::put("images/hacks/{$hack->id}/videoThumbnail.jpg", $thumbnail->getBody());
+        }
     }
 }
