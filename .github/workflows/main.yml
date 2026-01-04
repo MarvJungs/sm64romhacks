@@ -91,6 +91,10 @@ jobs:
           envkey_TWITCH_CLIENT_SECRET: ${{secrets.TWITCH_CLIENT_SECRET}}
           envkey_TWITCH_REDIRECT_URI: ${{secrets.TWITCH_REDIRECT_URI}}
 
+          envkey_GOOGLE_API_KEY: ${{secrets.GOOGLE_API_KEY}}
+          envkey_GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+          envkey GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}}
+          
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
