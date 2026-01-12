@@ -109,7 +109,7 @@ Route::prefix('events')->group(
         Route::get('{event}/runs/add', [RomhackeventrunsController::class, 'create'])->name('event.runs.create')->can('update', 'event');
         Route::post('{event}/runs/add', [RomhackeventrunsController::class, 'store'])->name('event.runs.store')->can('update', 'event');
         Route::get('{event}/runs/edit/{run}', [RomhackeventrunsController::class, 'edit'])->name('event.runs.edit')->can('update', 'event');
-        Route::put('{event}/runs/edit/{run}', [RomhackeventrunsController::class, 'update'])->name('event.runs.edit')->can('update', 'event');
+        Route::put('{event}/runs/edit/{run}', [RomhackeventrunsController::class, 'update'])->name('event.runs.update')->can('update', 'event');
         Route::delete('{event}/runs/delete/{run}', [RomhackeventrunsController::class, 'destroy'])->name('event.runs.destroy')->can('update', 'event');
         Route::delete('{event}/delete', [RomhackeventsController::class, 'destroy'])->name('event.destroy')->can('delete', 'event');
     }
