@@ -30,6 +30,11 @@ class Author extends Model
         return $this->belongsToMany(Version::class);
     }
 
+    public function runs(): BelongsToMany
+    {
+        return $this->belongsToMany(Run::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

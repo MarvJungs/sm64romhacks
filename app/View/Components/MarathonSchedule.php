@@ -15,7 +15,7 @@ class MarathonSchedule extends Component
      */
     public function __construct(string $slug)
     {
-        $request = Http::get("https://horaro.org/-/api/v1/events/$slug/schedules");
+        $request = Http::get("https://horaro.net/-/api/v1/events/$slug/schedules");
         $this->schedules = $request->json();
         $this->error = !$request->successful();
     }

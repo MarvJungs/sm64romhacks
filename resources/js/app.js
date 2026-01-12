@@ -13,6 +13,7 @@ import CurrentTimeService from './CurrentTimeService';
 import CarouselManager from './CarouselManager';
 import ModalsManager from './ModalsManager';
 import VideoPlayer from './VideoPlayer';
+import FormManager from './FormManager';
 
 const hiddenButtons = document.querySelectorAll('button[type=hidden]');
 hiddenButtons.forEach(button => {
@@ -80,3 +81,5 @@ megapackFilter.main();
 
 const videoPlayer = new VideoPlayer();
 window.onYouTubeIframeAPIReady = () => videoPlayer.initPlayer();
+
+new FormManager('addRunToEvent');

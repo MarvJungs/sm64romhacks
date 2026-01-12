@@ -7,6 +7,7 @@ use App\Http\Controllers\NewspostsController;
 use App\Http\Controllers\RomhackCommentsController;
 use App\Http\Controllers\RomhackeventsController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\RomhackeventrunsController;
 use App\Http\Controllers\RomhacksController;
 use App\Http\Controllers\RomhackTagsController;
 use App\Http\Controllers\UsersController;
@@ -105,6 +106,11 @@ Route::prefix('events')->group(
         Route::post('create', [RomhackeventsController::class, 'store'])->name('event.store')->can('create', Romhackevent::class);
         Route::get('{event}/edit', [RomhackeventsController::class, 'edit'])->name('event.edit')->can('update', 'event');
         Route::put('{event}/edit', [RomhackeventsController::class, 'update'])->name('event.update')->can('update', 'event');
+        Route::get('{event}/runs/add', [RomhackeventrunsController::class, 'create'])->name('event.runs.create')->can('update', 'event');
+        Route::post('{event}/runs/add', [RomhackeventrunsController::class, 'store'])->name('event.runs.store')->can('update', 'event');
+        Route::get('{event}/runs/edit/{run}', [RomhackeventrunsController::class, 'edit'])->name('event.runs.edit')->can('update', 'event');
+        Route::put('{event}/runs/edit/{run}', [RomhackeventrunsController::class, 'update'])->name('event.runs.edit')->can('update', 'event');
+        Route::delete('{event}/runs/delete/{run}', [RomhackeventrunsController::class, 'destroy'])->name('event.runs.destroy')->can('update', 'event');
         Route::delete('{event}/delete', [RomhackeventsController::class, 'destroy'])->name('event.destroy')->can('delete', 'event');
     }
 );

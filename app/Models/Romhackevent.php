@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use RalphJSmit\Laravel\SEO\Support\HasSEO;
@@ -68,5 +70,21 @@ class Romhackevent extends Model implements Sitemapable
     {
         return Url::create(route('event.show', $this))
             ->setLastModificationDate($this->updated_at);
+    }
+
+    public function runs(): HasMany
+    {
+        return $this->hasMany(Run::class);
+    }
+
+    public function videos()
+    {
+        return Video::whereHasMorph(
+            'videoable',
+            [Run::class],
+            function ($query) {
+                $query->where('romhackevent_id', $this->id);
+            }
+        )->get();
     }
 }
