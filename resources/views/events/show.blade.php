@@ -28,7 +28,7 @@
                                 <time datetime="{{ $videos[$video->videoID]->getContentDetails()->getDuration() }}"
                                     class="position-absolute bottom-0 end-0 border border-primary">{{ (new DateInterval($videos[$video->videoID]->getContentDetails()->getDuration()))->format('%H:%I:%S') }}</time>
                                 <img src="{{ $videos[$video->videoID]->getSnippet()->getThumbnails()->getStandard()->getUrl() }}"
-                                    class="img-fluid" />
+                                    class="img-fluid" title="{{ $run->romhack }} - {{ $run->category }} performed by {{ $run->authors->pluck('name')->join(', ') }}" />
                             </div>
                             <p>{{ $videos[$video->videoID]->getSnippet()->getTitle() }}</p>
                         </div>
