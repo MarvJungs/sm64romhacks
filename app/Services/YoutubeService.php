@@ -6,7 +6,9 @@ use Google\Service\YouTube\Video;
 use Google_Client;
 use Google_Service_YouTube;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class YoutubeService
 {
@@ -23,10 +25,9 @@ class YoutubeService
         foreach (array_chunk($videodata, 50) as $chunk) {
             $ids = Arr::pluck($chunk, 'id');
             $thumbnails = Arr::pluck($chunk, 'thumbnail');
-
             $queryParam = ['id' => Arr::join($ids, ',')];
             $response = $this->google_Service_YouTube->videos->listVideos('snippet,contentDetails,statistics', $queryParam);
-    
+
             foreach ($response->getItems() as $index => $video) {
                 $videos[$video->getId()] = $video;
                 $videos[$video->getId()]->getSnippet()->getThumbnails()->getStandard()->setUrl(Storage::url($thumbnails[$index]));
@@ -35,8 +36,31 @@ class YoutubeService
         return $videos;
     }
 
-    public function getVideo(string $videoid): ?Video
+    public function getVideoIDFromVideolink(string $videolink)
     {
-        return $this->getVideos([$videoid])[$videoid] ?? null;
+        preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $videolink, $match);
+        $videoid = $match[1];
+        return $videoid;
+    }
+
+    public function downloadVideoThumbnails(array $videoids, string $storagePath)
+    {
+        $thumbnails = [];
+        foreach (array_chunk($videoids, 50) as $chunk) {
+            $queryParam = ['id' => Arr::join($videoids, ',')];
+            $response = $this->google_Service_YouTube->videos->listVideos('snippet,contentDetails,statistics', $queryParam);
+            $videos = $response->getItems();
+
+            foreach ($videos as $video) {
+                $filename_prefix = Str::random();
+                $filename_afterfix = $video->getId();
+                $filename = "$filename_prefix" . "_$filename_afterfix.jpg";
+                $thumbnail = Http::get($video->getSnippet()->getThumbnails()->getStandard()->getUrl());
+                $fullFilepath = $storagePath . $filename;
+                Storage::put($fullFilepath, $thumbnail->getBody());
+                $thumbnails[$video->getId()] = $fullFilepath;
+            }
+        }
+        return $thumbnails;
     }
 }
