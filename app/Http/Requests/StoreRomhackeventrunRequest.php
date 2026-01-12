@@ -28,6 +28,8 @@ class StoreRomhackeventrunRequest extends FormRequest
             'romhack' => 'string|required',
             'category' => 'string|required',
             'type' => 'string|required',
+            'author' => 'array|list|required|min:1',
+            'author.*' => 'required|string',
             'videolink' => 'array|list|required|min:1',
             'videolink.*' => ['url', 'active_url', 'distinct', new YoutubeVideoUrl]
         ];
