@@ -14,7 +14,9 @@ export default class FormManager {
         Array.from(fieldWithMultipleEntries).forEach((field, index) => {
             const addButton = field.querySelector('button.btn');
             addButton.addEventListener('click', (e) => this.addInputfield(field));
-
+            
+            console.log("Fields:", field);
+            console.log("Children:", field.children);
             Array.from(field.querySelectorAll('div.row')).forEach((row) => {
                 const button = row.querySelector('button.btn.btn-danger');
                 if (!button.disabled) {
@@ -25,15 +27,18 @@ export default class FormManager {
     }
 
     addInputfield(row) {
+        const defaultInput = row.querySelector('input');
+        console.log(defaultInput);
         const deleteIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"></path></svg>';
-        const label = row.querySelector('label');
-        const name = label.getAttribute('for');
 
         const input = document.createElement('input');
         input.classList.add('form-control', 'mb-2');
-        input.type = 'url';
-        input.name = `${name}[]`;
-        input.required = true;
+        input.type = defaultInput.type;
+        input.name = defaultInput.name;
+        input.required = defaultInput.required;
+        if (defaultInput.list !== null) {
+            input.setAttribute('list', defaultInput.list.id);
+        }
 
         const inputContainer = document.createElement('div');
         inputContainer.classList.add('offset-2', 'col-9');
