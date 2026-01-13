@@ -45,6 +45,10 @@
                     <label class="form-check-label" for="standalone">Standalone Run</label>
                 </div>
                 <div class="form-check">
+                    <input class="form-check-input" type="radio" name="type" id="coop" value="coop">
+                    <label class="form-check-label" for="coop">Cooperative</label>
+                </div>
+                <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" id="race" value="race">
                     <label class="form-check-label" for="race">Race</label>
                 </div>
