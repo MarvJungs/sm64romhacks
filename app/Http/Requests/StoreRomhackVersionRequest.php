@@ -12,7 +12,7 @@ class StoreRomhackVersionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $hack = Romhack::find($this->route('hack'))->first();
+        $hack = $this->route('hack');
         return $this->user()->can('createVersion', $hack);
     }
 
