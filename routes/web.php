@@ -30,7 +30,7 @@ Route::get('privacy-policy', [HomeController::class, 'privacy'])->name('privacy-
 Route::redirect('faq', 'https://docs.google.com/document/d/10m5ViLktz-d6SwhHtSeb7gVzDUldOqIBlJte_kr4U14/edit?usp=sharing')->name('faq');
 Route::redirect('discord', 'https://discord.gg/BYrpMBG')->name('discord');
 Route::redirect('support', 'https://ko-fi.com/marvjungs')->name('support');
-Route::redirect('schedule', 'https://horaro.net/wsrm2026/schedule')->name('schedule');
+Route::redirect('schedule', 'https://horaro.net/ssrm2026/schedule')->name('schedule');
 Route::redirect('events/standardrace2026', 'https://docs.google.com/spreadsheets/d/1jqEt0QnueqdghP9V_h3kFv8Qbro72cOYrB0BoFKatNk/edit?gid=1733776453#gid=1733776453');
 Route::get(
     'fetchurl',
